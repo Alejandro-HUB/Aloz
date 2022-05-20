@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projectcrm/app_bar/app_bar_widget.dart';
 import 'package:projectcrm/panel_center/panel_center_page.dart';
 import 'package:projectcrm/panel_left/panel_left_page.dart';
 import 'package:projectcrm/panel_right/panel_right_page.dart';
@@ -16,7 +17,9 @@ class _WidgetTreeState extends State<WidgetTree> {
     return Scaffold(
       appBar: PreferredSize(
         child: (ResponsiveLayout.istinyLimit(context) || 
-            ResponsiveLayout.isTinyHeightLimit(context) ? Container() : AppBar()), 
+            ResponsiveLayout.isTinyHeightLimit(context) 
+            ? Container() 
+            : AppBarWidget()), 
         preferredSize: Size(double.infinity, 100),
         ), 
         body: ResponsiveLayout(

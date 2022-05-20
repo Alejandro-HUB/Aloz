@@ -43,7 +43,6 @@ static bool isLargeTablet(BuildContext context)=>
     MediaQuery.of(context).size.width >= tabletLimit;
 
 //Computer Displays
-//Large Tablet Displays
 static bool isComputer(BuildContext context)=> 
     MediaQuery.of(context).size.width >= largeTabletLimit;
 
