@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:projectcrm/panel_center/panel_center_page.dart';
+import 'package:projectcrm/panel_left/panel_left_page.dart';
+import 'package:projectcrm/panel_right/panel_right_page.dart';
 import 'package:projectcrm/responsive_layout.dart';
 import 'package:projectcrm/drawer/drawer_page.dart';
 
@@ -18,10 +21,28 @@ class _WidgetTreeState extends State<WidgetTree> {
         ), 
         body: ResponsiveLayout(
           tiny: Container(),
-          phone: Container(),
-          tablet: Container(),
-          largeTablet: Container(),
-          computer: Container(),
+          phone: PanelCenterPage(),
+          tablet: Row(
+            children: [
+              Expanded(child: PanelLeftPage(),),
+              Expanded(child: PanelCenterPage(),),
+            ],
+          ),
+          largeTablet: Row(
+            children: [
+              Expanded(child: PanelLeftPage(),),
+              Expanded(child: PanelCenterPage(),),
+              Expanded(child: PanelRightPage(),),
+            ],
+          ),
+          computer: Row(
+            children: [
+              Expanded(child: DrawerPage(),),
+              Expanded(child: PanelLeftPage(),),
+              Expanded(child: PanelCenterPage(),),
+              Expanded(child: PanelRightPage(),),
+            ],
+          ),
           ),
           drawer: DrawerPage(),
     );

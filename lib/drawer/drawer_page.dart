@@ -7,6 +7,28 @@ class DrawerPage extends StatefulWidget {
   _DrawerPageState createState() => _DrawerPageState();
 }
 
+class ButtonsInfo {
+  String tittle;
+  IconData Icon;
+  ButtonsInfo({
+    required this.tittle,
+    required this.Icon
+  });
+}
+
+int _currentIndex = 0;
+
+List<ButtonsInfo> _buttonNames = [
+  ButtonsInfo(tittle: "Home", Icon: Icons.home),
+  ButtonsInfo(tittle: "Setting", Icon: Icons.settings),
+  ButtonsInfo(tittle: "Notifications", Icon: Icons.notifications),
+  ButtonsInfo(tittle: "Contacts", Icon: Icons.contact_phone_rounded),
+  ButtonsInfo(tittle: "Sales", Icon: Icons.sell),
+  ButtonsInfo(tittle: "Marketing", Icon: Icons.mark_email_read),
+  ButtonsInfo(tittle: "Security", Icon: Icons.verified_user),
+  ButtonsInfo(tittle: "Users", Icon: Icons.supervised_user_circle_rounded),
+];
+
 class _DrawerPageState extends State<DrawerPage>{
   @override 
   Widget build(BuildContext context){
@@ -35,10 +57,54 @@ class _DrawerPageState extends State<DrawerPage>{
                       ),
                     ),
               ),
-            ],
-          )
-        ),
+              //List of Widgets
+              ...List.generate(
+                _buttonNames.length, 
+                (index) => Column(
+                  children: [
+                    Container(
+                      decoration: index == _currentIndex ? BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          colors: [
+                            Constants.redDark.withOpacity(0.9),
+                            Constants.orangeDark.withOpacity(0.9)],
+                        ),
+                      ) : null,
+                      child: ListTile(
+                        title: Text(
+                          _buttonNames[index].tittle,
+                          style: TextStyle(
+                            color: Colors.white,
+                        ),
+                      ),
+                      leading: Padding(
+                        padding: const EdgeInsets.all(Constants.kPadding),
+                        child: Icon(_buttonNames[index].Icon,
+                        color: Colors.white,
+                        ),
+                      ),
+                      onTap: (){
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.white,
+                    thickness: 0.1,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )
       ),
-    );
-  }
+    ),
+  );
+}
 }
