@@ -1,6 +1,10 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/constants.dart';
 import 'package:projectcrm/responsive_layout.dart';
+
+import 'curved_chart.dart';
+import 'circle_graph.dart';
 
 class Todo {
   String name;
@@ -76,6 +80,8 @@ class _PanelLeftPageState extends State<PanelLeftPage> {
                     ),
                   ),
                 ),
+                LineChartSample2(),
+                PieChartSample2(),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: Constants.kPadding / 2,
