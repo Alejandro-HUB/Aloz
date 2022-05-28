@@ -1,5 +1,7 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/app_bar/app_bar_widget.dart';
+import 'package:projectcrm/constants.dart';
 import 'package:projectcrm/panel_center/panel_center_page.dart';
 import 'package:projectcrm/panel_left/panel_left_page.dart';
 import 'package:projectcrm/panel_right/panel_right_page.dart';
@@ -12,6 +14,14 @@ class WidgetTree extends StatefulWidget {
 }
 
 class _WidgetTreeState extends State<WidgetTree> {
+  int currentIndex = 1;
+
+  List<Widget> _icons = [
+    Icon(Icons.add, size: 30),
+    Icon(Icons.list, size: 30),
+    Icon(Icons.compare_arrows, size: 30),
+  ];
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -24,7 +34,11 @@ class _WidgetTreeState extends State<WidgetTree> {
         ), 
         body: ResponsiveLayout(
           tiny: Container(),
-          phone: PanelCenterPage(),
+          phone: currentIndex == 0 
+            ? PanelLeftPage() 
+            : currentIndex == 1 
+              ? PanelCenterPage() 
+              : PanelRightPage(),
           tablet: Row(
             children: [
               Expanded(child: PanelLeftPage(),),
@@ -48,6 +62,18 @@ class _WidgetTreeState extends State<WidgetTree> {
           ),
           ),
           drawer: DrawerPage(),
+          bottomNavigationBar: ResponsiveLayout.isPhone(context) 
+            ? CurvedNavigationBar(
+                index: currentIndex,
+                backgroundColor: Constants.purpleDark,
+                items: _icons,
+                onTap: (index){
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+              ) 
+            : SizedBox(),
     );
   }
 }
