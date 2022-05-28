@@ -1,8 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:projectcrm/constants.dart';
 import 'package:projectcrm/responsive_layout.dart';
-
+import '../Helpers/Constants/Styling.dart';
 import 'curved_chart.dart';
 import 'circle_graph.dart';
 
@@ -33,11 +32,11 @@ class _PanelLeftPageState extends State<PanelLeftPage> {
         children: [
           if (ResponsiveLayout.isComputer(context))
             Container(
-              color: Constants.purpleLight,
+              color: Styling.purpleLight,
               width: 50,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Constants.purpleDark,
+                  color: Styling.purpleDark,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(50),
                   ),
@@ -49,12 +48,12 @@ class _PanelLeftPageState extends State<PanelLeftPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                    left: Constants.kPadding / 2,
-                    right: Constants.kPadding / 2,
-                    top: Constants.kPadding / 2,
+                    left: Styling.kPadding / 2,
+                    right: Styling.kPadding / 2,
+                    top: Styling.kPadding / 2,
                   ),
                   child: Card(
-                    color: Constants.purpleLight,
+                    color: Styling.purpleLight,
                     elevation: 3,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -84,13 +83,13 @@ class _PanelLeftPageState extends State<PanelLeftPage> {
                 PieChartSample2(),
                 Padding(
                   padding: const EdgeInsets.only(
-                    left: Constants.kPadding / 2,
-                    right: Constants.kPadding / 2,
-                    top: Constants.kPadding / 2,
-                    bottom: Constants.kPadding,
+                    left: Styling.kPadding / 2,
+                    right: Styling.kPadding / 2,
+                    top: Styling.kPadding / 2,
+                    bottom: Styling.kPadding,
                   ),
                   child: Card(
-                    color: Constants.purpleLight,
+                    color: Styling.purpleLight,
                     elevation: 3,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../constants.dart';
+import '../Helpers/Constants/Styling.dart';
 import 'linear_graph.dart';
 
 class Person {
@@ -16,16 +15,16 @@ class PanelCenterPage extends StatefulWidget {
 
 class _PanelCenterPageState extends State<PanelCenterPage> {
   List<Person> _persons = [
-    Person(name: "Alejandro Lopez", color: Constants.orangeLight),
-    Person(name: "Fariha Odling", color: Constants.redLight),
-    Person(name: "Viola Willis", color: Constants.blueLight),
-    Person(name: "Emmet Forrest", color: Constants.orangeLight),
-    Person(name: "Nick Jarvis", color: Constants.greenLight),
-    Person(name: "Amit Clayela", color: Constants.orangeLight),
-    Person(name: "Amelie Lens", color: Constants.redLight),
-    Person(name: "Campbell Britton", color: Constants.blueLight),
-    Person(name: "Haley Mellor", color: Constants.redLight),
-    Person(name: "Harlen Higgins", color: Constants.greenLight),
+    Person(name: "Alejandro Lopez", color: Styling.orangeLight),
+    Person(name: "Fariha Odling", color: Styling.redLight),
+    Person(name: "Viola Willis", color: Styling.blueLight),
+    Person(name: "Emmet Forrest", color: Styling.orangeLight),
+    Person(name: "Nick Jarvis", color: Styling.greenLight),
+    Person(name: "Amit Clayela", color: Styling.orangeLight),
+    Person(name: "Amelie Lens", color: Styling.redLight),
+    Person(name: "Campbell Britton", color: Styling.blueLight),
+    Person(name: "Haley Mellor", color: Styling.redLight),
+    Person(name: "Harlen Higgins", color: Styling.greenLight),
   ];
   @override
   Widget build(BuildContext context) {
@@ -35,12 +34,12 @@ class _PanelCenterPageState extends State<PanelCenterPage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                left: Constants.kPadding / 2,
-                right: Constants.kPadding / 2,
-                top: Constants.kPadding / 2,
+                left: Styling.kPadding / 2,
+                right: Styling.kPadding / 2,
+                top: Styling.kPadding / 2,
               ),
               child: Card(
-                color: Constants.purpleLight,
+                color: Styling.purpleLight,
                 elevation: 3,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -69,13 +68,13 @@ class _PanelCenterPageState extends State<PanelCenterPage> {
             BarChartSample2(),
             Padding(
               padding: const EdgeInsets.only(
-                top: Constants.kPadding,
-                left: Constants.kPadding / 2,
-                right: Constants.kPadding / 2,
-                bottom: Constants.kPadding,
+                top: Styling.kPadding,
+                left: Styling.kPadding / 2,
+                right: Styling.kPadding / 2,
+                bottom: Styling.kPadding,
               ),
               child: Card(
-                color: Constants.purpleLight,
+                color: Styling.purpleLight,
                 elevation: 3,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),

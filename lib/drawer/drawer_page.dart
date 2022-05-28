@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:projectcrm/constants.dart';
 import 'package:projectcrm/responsive_layout.dart';
+import 'package:projectcrm/widget_tree.dart';
+import '../Helpers/Constants/Styling.dart';
+import '../Helpers/DB/Insert.dart';
 
 class DrawerPage extends StatefulWidget {
   @override
@@ -35,7 +37,7 @@ class _DrawerPageState extends State<DrawerPage>{
     return Drawer(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Constants.kPadding),
+          padding: const EdgeInsets.all(Styling.kPadding),
           child: Column(
             children: [
               ListTile(
@@ -67,8 +69,8 @@ class _DrawerPageState extends State<DrawerPage>{
                         borderRadius: BorderRadius.circular(20),
                         gradient: LinearGradient(
                           colors: [
-                            Constants.redDark.withOpacity(0.9),
-                            Constants.orangeDark.withOpacity(0.9)],
+                            Styling.redDark.withOpacity(0.9),
+                            Styling.orangeDark.withOpacity(0.9)],
                         ),
                       ) : null,
                       child: ListTile(
@@ -79,7 +81,7 @@ class _DrawerPageState extends State<DrawerPage>{
                         ),
                       ),
                       leading: Padding(
-                        padding: const EdgeInsets.all(Constants.kPadding),
+                        padding: const EdgeInsets.all(Styling.kPadding),
                         child: Icon(_buttonNames[index].Icon,
                         color: Colors.white,
                         ),

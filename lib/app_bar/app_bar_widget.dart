@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projectcrm/constants.dart';
 import 'package:projectcrm/responsive_layout.dart';
+import '../Helpers/Constants/Styling.dart';
 
 List<String> _buttonNames = ["Overview", "Revenue", "Sales", "Control"];
 int _currentSelectedButton = 0;
@@ -14,12 +14,12 @@ class _AppBarWidgetState extends State<AppBarWidget>{
   @override 
   Widget build(BuildContext context){
     return Container(
-      color: Constants.purpleLight,
+      color: Styling.purpleLight,
       child: Row(
         children: [
           if(ResponsiveLayout.isComputer(context))
             Container(
-              margin: EdgeInsets.all(Constants.kPadding),
+              margin: EdgeInsets.all(Styling.kPadding),
               height: double.infinity,
               decoration: BoxDecoration(
                 boxShadow: [
@@ -47,7 +47,7 @@ class _AppBarWidgetState extends State<AppBarWidget>{
                   icon: Icon(Icons.menu),
                 ),
             SizedBox(
-                width: Constants.kPadding,
+                width: Styling.kPadding,
             ),
             Spacer(),
             if(ResponsiveLayout.isComputer(context))
@@ -60,7 +60,7 @@ class _AppBarWidgetState extends State<AppBarWidget>{
                     });
                   }, 
                   child: Padding(
-                    padding: EdgeInsets.all(Constants.kPadding * 2),
+                    padding: EdgeInsets.all(Styling.kPadding * 2),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,15 +74,15 @@ class _AppBarWidgetState extends State<AppBarWidget>{
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.all(Constants.kPadding / 2),
+                          margin: EdgeInsets.all(Styling.kPadding / 2),
                           width: 60,
                           height: 2,
                           decoration: BoxDecoration(
                             gradient: _currentSelectedButton == index
                               ? LinearGradient(
                                   colors: [
-                                    Constants.redDark,
-                                    Constants.orangeDark,
+                                    Styling.redDark,
+                                    Styling.orangeDark,
                                   ],
                                 ) 
                               : null,
@@ -95,7 +95,7 @@ class _AppBarWidgetState extends State<AppBarWidget>{
               ) 
             else 
               Padding(
-                padding: const EdgeInsets.all(Constants.kPadding * 2),
+                padding: const EdgeInsets.all(Styling.kPadding * 2),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,14 +105,14 @@ class _AppBarWidgetState extends State<AppBarWidget>{
                       style: TextStyle(color: Colors.white),
                     ),
                     Container(
-                      margin: EdgeInsets.all(Constants.kPadding / 2),
+                      margin: EdgeInsets.all(Styling.kPadding / 2),
                       width: 60,
                       height: 2,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Constants.redDark,
-                            Constants.orangeDark,
+                            Styling.redDark,
+                            Styling.orangeDark,
                           ],
                         ),
                       ),
@@ -154,7 +154,7 @@ class _AppBarWidgetState extends State<AppBarWidget>{
             ),
             if(!ResponsiveLayout.isPhone(context))
               Container(
-                margin: EdgeInsets.all(Constants.kPadding),
+                margin: EdgeInsets.all(Styling.kPadding),
                 height: double.infinity,
                 decoration: BoxDecoration(
                   boxShadow: [
@@ -167,7 +167,7 @@ class _AppBarWidgetState extends State<AppBarWidget>{
                   shape: BoxShape.circle,
                 ),
                 child: CircleAvatar(
-                  backgroundColor: Constants.orangeDark,
+                  backgroundColor: Styling.orangeDark,
                   radius: 30,
                   child: Image.asset("images/profile.png"),
                 ),

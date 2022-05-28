@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../Helpers/axis_chart_widgets.dart';
-import '../constants.dart';
+import '../Helpers/Charts/axis_chart_widgets.dart';
+import '../Helpers/Constants/Styling.dart';
 
 class _LineChart extends StatelessWidget {
   const _LineChart({required this.isShowingMainData});
@@ -309,14 +309,14 @@ class LineChartSample1State extends State<LineChartSample1> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: Constants.kPadding / 2,
-        right: Constants.kPadding / 2,
-        top: Constants.kPadding,
+        left: Styling.kPadding / 2,
+        right: Styling.kPadding / 2,
+        top: Styling.kPadding,
       ),
       child: AspectRatio(
         aspectRatio: 1.00,
         child: Card(
-          color: Constants.purpleLight,
+          color: Styling.purpleLight,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           elevation: 3,

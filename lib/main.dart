@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:projectcrm/constants.dart';
+import 'package:projectcrm/Helpers/DB/mongodb.dart';
 import 'package:projectcrm/widget_tree.dart';
+import 'Helpers/Constants/Styling.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await MongoDatabase.Connect();
   runApp(const MyApp());
 }
 
@@ -16,8 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Constants.purpleDark,
-        canvasColor: Constants.purpleLight,
+        scaffoldBackgroundColor: Styling.purpleDark,
+        canvasColor: Styling.purpleLight,
       ),
       home: WidgetTree(),
     );

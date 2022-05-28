@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../Helpers/axis_chart_widgets.dart';
-import '../constants.dart';
+import '../Helpers/Charts/axis_chart_widgets.dart';
+import '../Helpers/Constants/Styling.dart';
 
 class BarChartSample2 extends StatefulWidget {
   const BarChartSample2({Key? key}) : super(key: key);
@@ -11,8 +11,8 @@ class BarChartSample2 extends StatefulWidget {
 }
 
 class BarChartSample2State extends State<BarChartSample2> {
-  final Color leftBarColor = Constants.greenLight;
-  final Color rightBarColor = Constants.redLight;
+  final Color leftBarColor = Styling.greenLight;
+  final Color rightBarColor = Styling.redLight;
   final double width = 7;
 
   late List<BarChartGroupData> rawBarGroups;
@@ -50,16 +50,16 @@ class BarChartSample2State extends State<BarChartSample2> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: Constants.kPadding,
-        left: Constants.kPadding / 2,
-        right: Constants.kPadding / 2,
+        top: Styling.kPadding,
+        left: Styling.kPadding / 2,
+        right: Styling.kPadding / 2,
       ),
       child: AspectRatio(
         aspectRatio: 1,
         child: Card(
           elevation: 3,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          color: Constants.purpleLight,
+          color: Styling.purpleLight,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(

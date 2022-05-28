@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../Helpers/Constants/Styling.dart';
 import '../panel_right/wiggle_graph.dart';
-import '../constants.dart';
 
 class Product {
   String name;
@@ -34,12 +34,12 @@ class _PanelRightPageState extends State<PanelRightPage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                left: Constants.kPadding / 2,
-                right: Constants.kPadding / 2,
-                top: Constants.kPadding / 2,
+                left: Styling.kPadding / 2,
+                right: Styling.kPadding / 2,
+                top: Styling.kPadding / 2,
               ),
               child: Card(
-                color: Constants.purpleLight,
+                color: Styling.purpleLight,
                 elevation: 3,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
@@ -68,12 +68,12 @@ class _PanelRightPageState extends State<PanelRightPage> {
             LineChartSample1(),
             Padding(
               padding: const EdgeInsets.only(
-                left: Constants.kPadding / 2,
-                right: Constants.kPadding / 2,
-                top: Constants.kPadding / 2,
+                left: Styling.kPadding / 2,
+                right: Styling.kPadding / 2,
+                top: Styling.kPadding / 2,
               ),
               child: Card(
-                color: Constants.purpleLight,
+                color: Styling.purpleLight,
                 elevation: 3,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),

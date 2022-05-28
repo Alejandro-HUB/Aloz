@@ -1,12 +1,13 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/app_bar/app_bar_widget.dart';
-import 'package:projectcrm/constants.dart';
 import 'package:projectcrm/panel_center/panel_center_page.dart';
 import 'package:projectcrm/panel_left/panel_left_page.dart';
 import 'package:projectcrm/panel_right/panel_right_page.dart';
 import 'package:projectcrm/responsive_layout.dart';
 import 'package:projectcrm/drawer/drawer_page.dart';
+import 'Helpers/Constants/Styling.dart';
+import 'Helpers/DB/Insert.dart';
 
 class WidgetTree extends StatefulWidget {
   @override
@@ -26,10 +27,12 @@ class _WidgetTreeState extends State<WidgetTree> {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: PreferredSize(
+        // ignore: sort_child_properties_last
         child: (ResponsiveLayout.istinyLimit(context) || 
             ResponsiveLayout.isTinyHeightLimit(context) 
             ? Container() 
             : AppBarWidget()), 
+        // ignore: prefer_const_constructors
         preferredSize: Size(double.infinity, 100),
         ), 
         body: ResponsiveLayout(
@@ -65,7 +68,7 @@ class _WidgetTreeState extends State<WidgetTree> {
           bottomNavigationBar: ResponsiveLayout.isPhone(context) 
             ? CurvedNavigationBar(
                 index: currentIndex,
-                backgroundColor: Constants.purpleDark,
+                backgroundColor: Styling.purpleDark,
                 items: _icons,
                 onTap: (index){
                   setState(() {
