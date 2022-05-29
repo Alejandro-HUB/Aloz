@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "869399523655",
+    "project_id": "ation-d6c24",
+    "storage_bucket": "ation-d6c24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869399523655:android:cbade0446239e6664b1c62",
+        "android_client_info": {
+          "package_name": "com.example.projectcrm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869399523655-psp32sjqvfd9fv729mb89kbq37gtskjg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVe7C4Y2R4kpkkEQ-jhSHXLaW_1GFuoBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869399523655-psp32sjqvfd9fv729mb89kbq37gtskjg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

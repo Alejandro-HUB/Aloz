@@ -7,7 +7,6 @@ import 'package:projectcrm/panel_right/panel_right_page.dart';
 import 'package:projectcrm/responsive_layout.dart';
 import 'package:projectcrm/drawer/drawer_page.dart';
 import 'Helpers/Constants/Styling.dart';
-import 'Helpers/DB/Insert.dart';
 
 class WidgetTree extends StatefulWidget {
   @override
