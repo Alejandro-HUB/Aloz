@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projectcrm/responsive_layout.dart';
 import '../Helpers/Constants/Styling.dart';
-import '../Models/Global Variables.dart' as Globals;
+import '../widget_tree.dart';
 
 class DrawerPage extends StatefulWidget {
   @override
@@ -13,6 +13,8 @@ class ButtonsInfo {
   IconData Icon;
   ButtonsInfo({required this.tittle, required this.Icon});
 }
+
+int? currentPage = 0;
 
 List<ButtonsInfo> _buttonNames = [
   ButtonsInfo(tittle: "Home", Icon: Icons.home),
@@ -59,7 +61,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   (index) => Column(
                     children: [
                       Container(
-                        decoration: index == Globals.GlobalData.currentPage
+                        decoration: index == currentPage
                             ? BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 gradient: LinearGradient(
@@ -73,9 +75,12 @@ class _DrawerPageState extends State<DrawerPage> {
                         child: ListTile(
                           onTap: () {
                             setState(() {
-                              Globals.GlobalData.currentPage = index;
+                              currentPage = index;
                             });
-                          }, 
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => WidgetTree(currentPage: currentPage),
+                            ));
+                          },
                           title: Text(
                             _buttonNames[index].tittle,
                             style: TextStyle(
@@ -107,4 +112,3 @@ class _DrawerPageState extends State<DrawerPage> {
     );
   }
 }
-

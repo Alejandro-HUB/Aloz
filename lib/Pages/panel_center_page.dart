@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import '../Helpers/Constants/Styling.dart';
-import '../panel_right/wiggle_graph.dart';
+import '../Charts/linear_graph.dart';
 
-class Product {
+class Person {
   String name;
-  bool enable;
-  Product({this.enable = true, required this.name});
+  Color color;
+  Person({required this.name, required this.color});
 }
 
-class PanelRightPage extends StatefulWidget {
+class PanelCenterPage extends StatefulWidget {
   @override
-  _PanelRightPageState createState() => _PanelRightPageState();
+  _PanelCenterPageState createState() => _PanelCenterPageState();
 }
 
-class _PanelRightPageState extends State<PanelRightPage> {
-  List<Product> _products = [
-    Product(name: "LED Submersible Lights", enable: true),
-    Product(name: "Portable Projector", enable: true),
-    Product(name: "Bluetooth Speaker", enable: true),
-    Product(name: "Smart Watch", enable: true),
-    Product(name: "Temporary Tattoos", enable: true),
-    Product(name: "Bookends", enable: true),
-    Product(name: "Vegetable Chopper", enable: true),
-    Product(name: "Neck Massager", enable: true),
-    Product(name: "Facial Cleanser", enable: true),
-    Product(name: "Back Cushion", enable: true),
+class _PanelCenterPageState extends State<PanelCenterPage> {
+  List<Person> _persons = [
+    Person(name: "Alejandro Lopez", color: Styling.orangeLight),
+    Person(name: "Fariha Odling", color: Styling.redLight),
+    Person(name: "Viola Willis", color: Styling.blueLight),
+    Person(name: "Emmet Forrest", color: Styling.orangeLight),
+    Person(name: "Nick Jarvis", color: Styling.greenLight),
+    Person(name: "Amit Clayela", color: Styling.orangeLight),
+    Person(name: "Amelie Lens", color: Styling.redLight),
+    Person(name: "Campbell Britton", color: Styling.blueLight),
+    Person(name: "Haley Mellor", color: Styling.redLight),
+    Person(name: "Harlen Higgins", color: Styling.greenLight),
   ];
   @override
   Widget build(BuildContext context) {
@@ -42,22 +42,22 @@ class _PanelRightPageState extends State<PanelRightPage> {
                 color: Styling.purpleLight,
                 elevation: 3,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Container(
                   width: double.infinity,
                   child: ListTile(
                     title: Text(
-                      "Net Revenue",
+                      "Products Available",
                       style: TextStyle(color: Colors.white),
                     ),
                     subtitle: Text(
-                      "7% of Sales Avg.",
+                      "82% of the Products Avail.",
                       style: TextStyle(color: Colors.white),
                     ),
                     trailing: Chip(
                       label: Text(
-                        r"$46,450",
+                        "20,500",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -65,12 +65,13 @@ class _PanelRightPageState extends State<PanelRightPage> {
                 ),
               ),
             ),
-            LineChartSample1(),
+            BarChartSample2(),
             Padding(
               padding: const EdgeInsets.only(
+                top: Styling.kPadding,
                 left: Styling.kPadding / 2,
                 right: Styling.kPadding / 2,
-                top: Styling.kPadding / 2,
+                bottom: Styling.kPadding,
               ),
               child: Card(
                 color: Styling.purpleLight,
@@ -80,18 +81,27 @@ class _PanelRightPageState extends State<PanelRightPage> {
                 ),
                 child: Column(
                   children: List.generate(
-                    _products.length,
-                    (index) => SwitchListTile.adaptive(
+                    _persons.length,
+                    (index) => ListTile(
+                      leading: CircleAvatar(
+                        radius: 15,
+                        child: Text(
+                          _persons[index].name.substring(0, 1),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: _persons[index].color,
+                      ),
                       title: Text(
-                        _products[index].name,
+                        _persons[index].name,
                         style: TextStyle(color: Colors.white),
                       ),
-                      value: _products[index].enable,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _products[index].enable = newValue;
-                        });
-                      },
+                      trailing: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.message,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),

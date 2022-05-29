@@ -2,8 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/responsive_layout.dart';
 import '../Helpers/Constants/Styling.dart';
-import 'curved_chart.dart';
-import 'circle_graph.dart';
+import '../Charts/curved_chart.dart';
+import '../Charts/circle_graph.dart';
 
 class Todo {
   String name;

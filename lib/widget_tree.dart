@@ -1,16 +1,20 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/app_bar/app_bar_widget.dart';
-import 'package:projectcrm/panel_center/panel_center_page.dart';
-import 'package:projectcrm/panel_left/panel_left_page.dart';
-import 'package:projectcrm/panel_right/panel_right_page.dart';
+import 'package:projectcrm/Pages/panel_center_page.dart';
+import 'package:projectcrm/Pages/panel_left_page.dart';
+import 'package:projectcrm/Pages/panel_right_page.dart';
 import 'package:projectcrm/responsive_layout.dart';
-import '../Models/Global Variables.dart' as Globals;
 import 'Helpers/Constants/Styling.dart';
 import 'package:projectcrm/drawer/drawer_page.dart';
 
+import 'Pages/Contacts.dart';
+
 class WidgetTree extends StatefulWidget {
   
+   int? currentPage = 0; 
+   WidgetTree({this.currentPage});
+
   @override
   _WidgetTreeState createState() => _WidgetTreeState();
 }
@@ -43,26 +47,47 @@ class _WidgetTreeState extends State<WidgetTree> {
             : currentIndex == 1 
               ? PanelCenterPage() 
               : PanelRightPage(),
-          tablet: Row(
-            children: [
-              Expanded(child: PanelLeftPage(),),
-              Expanded(child: PanelCenterPage(),),
-            ],
-          ),
-          largeTablet: Row(
-            children: [
-              Expanded(child: PanelLeftPage(),),
-              Expanded(child: PanelCenterPage(),),
-              Expanded(child: PanelRightPage(),),
-            ],
-          ),
-          computer: Globals.GlobalData.currentPage == 1 
+          tablet: currentPage == 0 
+            ? Row(
+              children: [
+                Expanded(child: PanelLeftPage(),),
+              	Expanded(child: PanelCenterPage(),),
+              ],
+            )
+            : Row(
+              children: [
+                Expanded(child: DrawerPage(),),
+                Expanded(child: PanelLeftPage(),),
+              ],
+            ),
+          largeTablet: currentPage == 0 
+            ? Row(
+              children: [
+                Expanded(child: PanelLeftPage(),),
+                Expanded(child: PanelCenterPage(),),
+                Expanded(child: PanelRightPage(),),
+              ],
+            )
+            : Row(
+              children: [
+                Expanded(child: DrawerPage(),),
+                Expanded(child: PanelLeftPage(),),
+              ],
+            ),
+          computer: currentPage == 0 
             ? Row(
               children: [
                 Expanded(child: DrawerPage(),),
                 Expanded(child: PanelLeftPage(),),
                 Expanded(child: PanelCenterPage(),),
                 Expanded(child: PanelRightPage(),),
+              ],
+            )
+            : currentPage == 3
+            ? Row(
+              children: [
+                Expanded(child: DrawerPage(),),
+                Expanded(child: ContactsSearchPage(),),
               ],
             )
             : Row(
