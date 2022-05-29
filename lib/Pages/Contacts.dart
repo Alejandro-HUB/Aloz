@@ -11,8 +11,9 @@ class ContactsSearchPage extends StatefulWidget {
 }
 
 class _ContactsSearchPageState extends State<ContactsSearchPage> {
-  CollectionReference _firebaseFirestone =
-      FirebaseFirestore.instance.collection("Contacts");
+  final Stream<QuerySnapshot> Contacts =
+      FirebaseFirestore.instance.collection("Contacts").snapshots();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,18 +40,35 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                         color: Colors.white),
                   ),
                   Container(
-                    height: 250,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: ListView.builder(
-                      itemCount: 2,
-                      itemBuilder: (context, index) {
-                        return Text(
-                          "My name is Alejandro",
-                          style: TextStyle(color: Colors.white),
-                        );
-                      },
-                    ),
-                  ),
+                      height: 250,
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: Contacts,
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot,
+                        ) {
+                          if (snapshot.hasError) {
+                            return Text("Something went wrong");
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return (Text("Loading"));
+                          }
+
+                          final data = snapshot.requireData;
+
+                          return ListView.builder(
+                            itemCount: data.size,
+                            itemBuilder: (context, index) {
+                              return Text(
+                                "My name is ${data.docs[index]['firstName']} ${data.docs[index]['lastName']}",
+                                style: TextStyle(color: Colors.white),
+                              );
+                            },
+                          );
+                        },
+                      )),
                   Text(
                     "Write Data to Cloud Firestore",
                     style: TextStyle(
@@ -79,13 +97,22 @@ class MyCustomForm extends StatefulWidget {
 class MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
 
+  var id = '';
+  var firstName = '';
+  var lastName = '';
+
   @override
   Widget build(BuildContext context) {
+    CollectionReference contacts =
+        FirebaseFirestore.instance.collection("Contacts");
+
     return Form(
+        key: _formKey,
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         TextFormField(
+          style: TextStyle(color: Colors.white),
           decoration: const InputDecoration(
             icon: Icon(
               Icons.person,
@@ -99,8 +126,11 @@ class MyCustomFormState extends State<MyCustomForm> {
             labelStyle: TextStyle(
               color: Colors.white,
             ),
+            hoverColor: Colors.white
           ),
-          onChanged: (value) {},
+          onChanged: (value) {
+            firstName = value;
+          },
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter some text';
@@ -109,6 +139,7 @@ class MyCustomFormState extends State<MyCustomForm> {
           },
         ),
         TextFormField(
+          style: TextStyle(color: Colors.white),
           decoration: const InputDecoration(
             icon: Icon(
               Icons.person,
@@ -123,7 +154,9 @@ class MyCustomFormState extends State<MyCustomForm> {
               color: Colors.white,
             ),
           ),
-          onChanged: (value) {},
+          onChanged: (value) {
+            lastName = value;
+          },
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter some text';
@@ -141,6 +174,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                     content: Text("Sending Data to Cloud Firestore"),
                   ),
                 );
+                contacts
+                    .add({'firstName': firstName, 'lastName': lastName})
+                    .then((value) => print('User Added'))
+                    .catchError((error) => print('Failed to add user: $error'));
               }
             },
             style: ElevatedButton.styleFrom(
