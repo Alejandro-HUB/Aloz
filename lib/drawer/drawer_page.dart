@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projectcrm/responsive_layout.dart';
-import 'package:projectcrm/widget_tree.dart';
 import '../Helpers/Constants/Styling.dart';
+import '../Models/Global Variables.dart' as Globals;
 
 class DrawerPage extends StatefulWidget {
   @override
@@ -11,13 +11,8 @@ class DrawerPage extends StatefulWidget {
 class ButtonsInfo {
   String tittle;
   IconData Icon;
-  ButtonsInfo({
-    required this.tittle,
-    required this.Icon
-  });
+  ButtonsInfo({required this.tittle, required this.Icon});
 }
-
-int _currentIndex = 0;
 
 List<ButtonsInfo> _buttonNames = [
   ButtonsInfo(tittle: "Home", Icon: Icons.home),
@@ -30,82 +25,86 @@ List<ButtonsInfo> _buttonNames = [
   ButtonsInfo(tittle: "Users", Icon: Icons.supervised_user_circle_rounded),
 ];
 
-class _DrawerPageState extends State<DrawerPage>{
-  @override 
-  Widget build(BuildContext context){
+class _DrawerPageState extends State<DrawerPage> {
+  @override
+  Widget build(BuildContext context) {
     return Drawer(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Styling.kPadding),
-          child: Column(
-            children: [
-              ListTile(
-                title: Text(
-                  "Admin Menu",
-                  style: TextStyle(
-                    color: Colors.white,
+            padding: const EdgeInsets.all(Styling.kPadding),
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text(
+                    "Admin Menu",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  trailing: ResponsiveLayout.isComputer(context)
+                      ? null
+                      : IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
+                        ),
+                ),
+                //List of Widgets
+                ...List.generate(
+                  _buttonNames.length,
+                  (index) => Column(
+                    children: [
+                      Container(
+                        decoration: index == Globals.GlobalData.currentPage
+                            ? BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Styling.redDark.withOpacity(0.9),
+                                    Styling.orangeDark.withOpacity(0.9)
+                                  ],
+                                ),
+                              )
+                            : null,
+                        child: ListTile(
+                          onTap: () {
+                            setState(() {
+                              Globals.GlobalData.currentPage = index;
+                            });
+                          }, 
+                          title: Text(
+                            _buttonNames[index].tittle,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          leading: Padding(
+                            padding: const EdgeInsets.all(Styling.kPadding),
+                            child: Icon(
+                              _buttonNames[index].Icon,
+                              color: Colors.white,
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        color: Colors.white,
+                        thickness: 0.1,
+                      ),
+                    ],
                   ),
                 ),
-                trailing: ResponsiveLayout.isComputer(context) 
-                    ? null 
-                    : IconButton(
-                      onPressed: (){
-                        Navigator.pop(context);
-                      }, 
-                      icon: Icon(
-                        Icons.close, 
-                        color: Colors.white,
-                      ),
-                    ),
-              ),
-              //List of Widgets
-              ...List.generate(
-                _buttonNames.length, 
-                (index) => Column(
-                  children: [
-                    Container(
-                      decoration: index == _currentIndex ? BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          colors: [
-                            Styling.redDark.withOpacity(0.9),
-                            Styling.orangeDark.withOpacity(0.9)],
-                        ),
-                      ) : null,
-                      child: ListTile(
-                        title: Text(
-                          _buttonNames[index].tittle,
-                          style: TextStyle(
-                            color: Colors.white,
-                        ),
-                      ),
-                      leading: Padding(
-                        padding: const EdgeInsets.all(Styling.kPadding),
-                        child: Icon(_buttonNames[index].Icon,
-                        color: Colors.white,
-                        ),
-                      ),
-                      onTap: (){
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    color: Colors.white,
-                    thickness: 0.1,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        )
+              ],
+            )),
       ),
-    ),
-  );
+    );
+  }
 }
-}
+
