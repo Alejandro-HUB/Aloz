@@ -17,11 +17,9 @@ class PieChart2State extends State {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: Styling.kPadding / 2,
-        right: Styling.kPadding / 2,
-        top: Styling.kPadding / 2,
-        bottom: Styling.kPadding,
-      ),
+          left: Styling.kPadding / 2,
+          bottom: Styling.kPadding,
+          right: Styling.kPadding / 2),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -55,7 +53,7 @@ class PieChart2State extends State {
                         show: false,
                       ),
                       sectionsSpace: 0,
-                      centerSpaceRadius: 50,
+                      centerSpaceRadius: 40,
                       sections: showingSections()),
                 ),
               ),
