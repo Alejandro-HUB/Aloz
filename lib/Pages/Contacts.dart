@@ -23,39 +23,45 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
         ),
         backgroundColor: Styling.purpleLight,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Read Data from Cloud Firestore",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-            ),
-            Container(
-              height: 250,
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  return Text(
-                    "My name is Alejandro",
-                    style: TextStyle(color: Colors.white),
-                  );
-                },
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Read Data from Cloud Firestore",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                  Container(
+                    height: 250,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: ListView.builder(
+                      itemCount: 2,
+                      itemBuilder: (context, index) {
+                        return Text(
+                          "My name is Alejandro",
+                          style: TextStyle(color: Colors.white),
+                        );
+                      },
+                    ),
+                  ),
+                  Text(
+                    "Write Data to Cloud Firestore",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                  MyCustomForm(),
+                ],
               ),
             ),
-            Text(
-              "Write Data to Cloud Firestore",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-            ),
-            MyCustomForm(),
           ],
         ),
       ),
@@ -143,8 +149,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                     borderRadius: BorderRadius.circular(10))),
             child: Ink(
               decoration: BoxDecoration(
-                  gradient:
-                      const LinearGradient(colors: [Styling.redDark, Styling.orangeDark]),
+                  gradient: const LinearGradient(
+                      colors: [Styling.redDark, Styling.orangeDark]),
                   borderRadius: BorderRadius.circular(10)),
               child: Container(
                 width: 100,

@@ -42,21 +42,30 @@ class _WidgetTreeState extends State<WidgetTree> {
         ), 
         body: ResponsiveLayout(
           tiny: Container(),
-          phone: currentIndex == 0 
-            ? PanelLeftPage() 
-            : currentIndex == 1 
-              ? PanelCenterPage() 
-              : PanelRightPage(),
+          phone: currentPage == 0 ? 
+            currentIndex == 0 
+              ? PanelLeftPage() 
+              : currentIndex == 1 
+                ? PanelCenterPage() 
+                : PanelRightPage()
+          : currentPage == 3 
+            ? ContactsSearchPage()
+            : PanelLeftPage(),
           tablet: currentPage == 0 
             ? Row(
               children: [
                 Expanded(child: PanelLeftPage(),),
-              	Expanded(child: PanelCenterPage(),),
+                Expanded(child: PanelCenterPage(),),
+              ],
+            )
+            : currentPage == 3
+            ? Row(
+              children: [
+                Expanded(child: ContactsSearchPage(),),
               ],
             )
             : Row(
               children: [
-                Expanded(child: DrawerPage(),),
                 Expanded(child: PanelLeftPage(),),
               ],
             ),
@@ -68,9 +77,14 @@ class _WidgetTreeState extends State<WidgetTree> {
                 Expanded(child: PanelRightPage(),),
               ],
             )
+            : currentPage == 3
+            ? Row(
+              children: [
+                Expanded(child: ContactsSearchPage(),),
+              ],
+            )
             : Row(
               children: [
-                Expanded(child: DrawerPage(),),
                 Expanded(child: PanelLeftPage(),),
               ],
             ),
@@ -98,7 +112,7 @@ class _WidgetTreeState extends State<WidgetTree> {
             ),
           ),
           drawer: DrawerPage(),
-          bottomNavigationBar: ResponsiveLayout.isPhone(context) 
+          bottomNavigationBar: ResponsiveLayout.isPhone(context) && currentPage == 0 
             ? CurvedNavigationBar(
                 index: currentIndex,
                 backgroundColor: Styling.purpleDark,
