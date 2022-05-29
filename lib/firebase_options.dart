@@ -27,15 +27,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return linux;
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -79,5 +73,25 @@ class DefaultFirebaseOptions {
     storageBucket: 'ation-d6c24.appspot.com',
     iosClientId: '869399523655-a0t30e76tqc6lgf3s9ile8ls9ihr7pjc.apps.googleusercontent.com',
     iosBundleId: 'com.example.projectcrm',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBtSFEJ-JtQTXBAmWidWBg5B7-TBEDqM-I',
+    appId: '1:869399523655:web:db2d96493f9aa9ed4b1c62',
+    messagingSenderId: '869399523655',
+    projectId: 'ation-d6c24',
+    authDomain: 'ation-d6c24.firebaseapp.com',
+    storageBucket: 'ation-d6c24.appspot.com',
+    measurementId: 'G-N0K8V0W0DQ',
+  );
+
+  static const FirebaseOptions linux = FirebaseOptions(
+    apiKey: 'AIzaSyBtSFEJ-JtQTXBAmWidWBg5B7-TBEDqM-I',
+    appId: '1:869399523655:web:59db0122185d1e0d4b1c62',
+    messagingSenderId: '869399523655',
+    projectId: 'ation-d6c24',
+    authDomain: 'ation-d6c24.firebaseapp.com',
+    storageBucket: 'ation-d6c24.appspot.com',
+    measurementId: 'G-G7CFG3Y05N',
   );
 }

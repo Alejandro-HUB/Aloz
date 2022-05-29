@@ -5,21 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "projectcrm",
+            "name": "Web - Chrome",
+            "type": "dart",
             "request": "launch",
-            "type": "dart"
+            "deviceId": "chrome",
         },
         {
-            "name": "projectcrm (profile mode)",
-            "request": "launch",
+            "name": "Web - Edge",
             "type": "dart",
-            "flutterMode": "profile"
+            "request": "launch",
+            "deviceId": "edge",
         },
         {
-            "name": "projectcrm (release mode)",
-            "request": "launch",
+            "name": "Windows",
             "type": "dart",
-            "flutterMode": "release"
-        }
+            "request": "launch",
+            "deviceId": "windows",
+        },
+        {
+            "name": "Android",
+            "type": "dart",
+            "request": "launch",
+            "deviceId": "android",
+        },
+
     ]
 }

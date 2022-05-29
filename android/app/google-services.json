@@ -29,6 +29,13 @@
             {
               "client_id": "869399523655-psp32sjqvfd9fv729mb89kbq37gtskjg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "869399523655-a0t30e76tqc6lgf3s9ile8ls9ihr7pjc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.projectcrm"
+              }
             }
           ]
         }
