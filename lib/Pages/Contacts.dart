@@ -49,11 +49,11 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                           AsyncSnapshot<QuerySnapshot> snapshot,
                         ) {
                           if (snapshot.hasError) {
-                            return Text("Something went wrong");
+                            return Text("Something went wrong", style: TextStyle(color: Colors.white),);
                           }
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return (Text("Loading"));
+                            return (Text("Loading", style: TextStyle(color: Colors.white),));
                           }
 
                           final data = snapshot.requireData;
