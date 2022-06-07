@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/responsive_layout.dart';
 import '../Helpers/Constants/Styling.dart';
@@ -25,11 +26,13 @@ List<ButtonsInfo> _buttonNames = [
   ButtonsInfo(tittle: "Marketing", Icon: Icons.mark_email_read),
   ButtonsInfo(tittle: "Security", Icon: Icons.verified_user),
   ButtonsInfo(tittle: "Users", Icon: Icons.supervised_user_circle_rounded),
+  ButtonsInfo(tittle: "Logout", Icon: Icons.logout),
 ];
 
 class _DrawerPageState extends State<DrawerPage> {
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
     return Drawer(
       child: SingleChildScrollView(
         child: Padding(
@@ -80,6 +83,10 @@ class _DrawerPageState extends State<DrawerPage> {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => WidgetTree(currentPage: currentPage),
                             ));
+                            if(currentPage == 8)
+                            {
+                              FirebaseAuth.instance.signOut();
+                            }
                           },
                           title: Text(
                             _buttonNames[index].tittle,
