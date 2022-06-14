@@ -58,16 +58,33 @@ class _LoginWidgetState extends State<LoginWidget> {
               width: double.infinity,
               icon: Icon(Icons.lock),
               onPressed: signIn,
-              borderRadius: BorderRadius.circular(10), 
-              child: Text('Sign In'),)
+              borderRadius: BorderRadius.circular(10),
+              child: Text('Sign In'),
+            )
           ],
         ),
       );
 
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Center(
+              child: CircularProgressIndicator(),
+            ));
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
+
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }

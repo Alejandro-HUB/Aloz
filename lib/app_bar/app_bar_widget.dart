@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firedart/generated/google/firestore/v1/document.pb.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/responsive_layout.dart';
 import '../Helpers/Constants/Styling.dart';
 
 List<String> _buttonNames = ["Overview", "Revenue", "Sales", "Control"];
+List<String> _menuItems = ["My Profile", "Logout"];
+String? index;
 int _currentSelectedButton = 0;
 
 class AppBarWidget extends StatefulWidget {
@@ -156,13 +159,25 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
               ],
             ),
-          Stack(
-            children: [
-              Text(
-                user.email!,
-                style: TextStyle(color: Colors.white),
+          Container(
+            child: DropdownButton<String>(
+              hint: Text(user.email!, style: TextStyle(color: Colors.white),),
+              autofocus: true,
+              isDense: true,
+              borderRadius: BorderRadius.circular(20),
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.white,
               ),
-            ],
+              items: _menuItems.map(buildMenuItem).toList(),
+              onChanged: (value) => setState(() {
+                index = value;
+                if (index == "Logout") {
+                  FirebaseAuth.instance.signOut();
+                }
+              }),
+              style: const TextStyle(fontSize: 15),
+            ),
           ),
           Container(
             margin: EdgeInsets.all(Styling.kPadding),
@@ -186,5 +201,17 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         ],
       ),
     );
+  }
+
+  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+        value: item,
+        child: Text(
+          item,
+          style: TextStyle(color: Colors.white),
+        ),
+      );
+
+  Future signOut() async {
+    FirebaseAuth.instance.signOut();
   }
 }
