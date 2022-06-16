@@ -38,8 +38,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 shape: BoxShape.circle,
               ),
               child: CircleAvatar(
-                backgroundColor: Colors.pink,
-                radius: 30,
+                backgroundColor: Colors.transparent,
+                radius: 60,
                 child: Image.asset("images/mapp.png"),
               ),
             )
@@ -161,7 +161,12 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             ),
           Container(
             child: DropdownButton<String>(
-              hint: Text(user.email!, style: TextStyle(color: Colors.white),),
+              hint: Text(
+                user.email!,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: ResponsiveLayout.isPhone(context) ? 9 : 15),
+              ),
               autofocus: true,
               isDense: true,
               borderRadius: BorderRadius.circular(20),
@@ -176,7 +181,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   FirebaseAuth.instance.signOut();
                 }
               }),
-              style: const TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: 15),
             ),
           ),
           Container(
@@ -210,8 +215,4 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           style: TextStyle(color: Colors.white),
         ),
       );
-
-  Future signOut() async {
-    FirebaseAuth.instance.signOut();
-  }
 }

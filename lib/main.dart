@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      title: 'Ation',
+      title: 'Aloz',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Styling.purpleDark,

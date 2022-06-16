@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Helpers/Constants/Styling.dart';
+import '../responsive_layout.dart';
 
 class MyElevatedButton extends StatelessWidget {
   final BorderRadiusGeometry? borderRadius;
@@ -36,8 +37,8 @@ class MyElevatedButton extends StatelessWidget {
         icon: icon,
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
-          shadowColor: Colors.transparent,
+          primary: ResponsiveLayout.isPhone(context) ? Colors.white.withOpacity(0.05) : Colors.transparent,
+          shadowColor: ResponsiveLayout.isPhone(context) ? Colors.white.withOpacity(0.05) : Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
         ),
       ),

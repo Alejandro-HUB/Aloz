@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import '../Helpers/Constants/Styling.dart';
 import "../main.dart";
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,11 @@ class _LoginWidgetState extends State<LoginWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 100,
+                child: Image.asset("images/mapp.png"),
+              ),
             SizedBox(height: 40),
             TextField(
               style: TextStyle(color: Colors.white),
@@ -38,6 +44,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 labelStyle: TextStyle(color: Colors.white),
                 icon: Icon(Icons.mail, color: Colors.white),
                 hintStyle: TextStyle(color: Colors.white),
+                helperStyle: TextStyle(color: Colors.white),
               ),
             ),
             SizedBox(height: 4),
@@ -50,6 +57,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 labelStyle: TextStyle(color: Colors.white),
                 icon: Icon(Icons.password, color: Colors.white),
                 hintStyle: TextStyle(color: Colors.white),
+                helperStyle: TextStyle(color: Colors.white),
               ),
               obscureText: true,
             ),
@@ -60,7 +68,10 @@ class _LoginWidgetState extends State<LoginWidget> {
               onPressed: signIn,
               borderRadius: BorderRadius.circular(10),
               child: Text('Sign In'),
-            )
+            ),
+            SizedBox(
+              height: 24,
+            ),
           ],
         ),
       );
