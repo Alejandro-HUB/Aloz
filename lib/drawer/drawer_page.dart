@@ -32,7 +32,6 @@ List<ButtonsInfo> _buttonNames = [
 class _DrawerPageState extends State<DrawerPage> {
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
     return Drawer(
       child: SingleChildScrollView(
         child: Padding(
@@ -81,7 +80,8 @@ class _DrawerPageState extends State<DrawerPage> {
                               currentPage = index;
                             });
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => WidgetTree(currentPage: currentPage),
+                              builder: (context) =>
+                                  WidgetTree(currentPage: currentPage),
                             ));
                           },
                           title: Text(

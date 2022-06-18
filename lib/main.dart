@@ -36,15 +36,21 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
+
+   bool? isLoggedIn = false; 
+   MainPage({this.isLoggedIn});
+
   @override  
   Widget build (BuildContext context) => Scaffold(
     body: StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        if(snapshot.hasData) {
+        if(snapshot.hasData || isLoggedIn != null && isLoggedIn!) {
+          isLoggedIn = true;
           return WidgetTree();
         }
         else {
+          isLoggedIn = false;
           return LoginWidget();
         }
       },
