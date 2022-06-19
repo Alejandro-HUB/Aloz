@@ -95,10 +95,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
                 obscureText: true,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) =>
-                    value != null && value.length < 6
-                        ? 'Your password must have at least 6 characters.'
-                        : null,
+                validator: (value) => value != null && value.length < 6
+                    ? 'Your password must have at least 6 characters.'
+                    : null,
               ),
               SizedBox(height: 20),
               MyElevatedButton(
@@ -135,8 +134,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
   Future signUp() async {
     final isValid = formKey.currentState!.validate();
-    if(!isValid) return;
-
+    if (!isValid) return;
 
     showDialog(
         context: context,
@@ -149,6 +147,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           email: emailController.text.trim(),
           password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => MainPage(
+          isLoggedIn: false,
+        ),
+      ));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.toString()),

@@ -36,10 +36,10 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.black45,
+                      color: Styling.purpleLight,
                       offset: Offset(0, 0),
                       spreadRadius: 1,
-                      blurRadius: 10),
+                      blurRadius: 0),
                 ],
                 shape: BoxShape.circle,
               ),
