@@ -10,11 +10,13 @@ class MyElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
   final Icon icon;
+  final String label;
 
   const MyElevatedButton({
     Key? key,
     required this.onPressed,
     required this.child,
+    required this.label,
     this.borderRadius,
     this.width,
     this.height = 44.0,
@@ -33,7 +35,7 @@ class MyElevatedButton extends StatelessWidget {
         borderRadius: borderRadius,
       ),
       child: ElevatedButton.icon(
-        label: Text("Sign In", style: TextStyle(color: Colors.white)),
+        label: Text(label, style: TextStyle(color: Colors.white)),
         icon: icon,
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
