@@ -148,9 +148,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MainPage(
-          isLoggedIn: false,
-        ),
+        builder: (context) => MainPage(),
       ));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

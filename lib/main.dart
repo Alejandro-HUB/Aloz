@@ -37,16 +37,12 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  bool? isLoggedIn = false;
-  MainPage({this.isLoggedIn});
-
   @override
   Widget build(BuildContext context) => Scaffold(
         body: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData && !snapshot.hasError) {
-              isLoggedIn = true;
               return WidgetTree();
             } else if (snapshot.hasError) {
               return Center(
@@ -60,7 +56,6 @@ class MainPage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else {
-              isLoggedIn = false;
               return AuthPage();
             }
           },

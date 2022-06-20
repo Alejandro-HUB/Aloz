@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import '../Assets/buttons.dart';
 
 class LoginWidget extends StatefulWidget {
-
   final VoidCallback onClickedSignUp;
 
   const LoginWidget({
@@ -51,7 +50,10 @@ class _LoginWidgetState extends State<LoginWidget> {
               Text(
                 'Hey There,\n Welcome Back',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               SizedBox(
                 height: 40,
@@ -70,10 +72,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                   helperStyle: TextStyle(color: Colors.white),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (email) =>
-                      email != null && !EmailValidator.validate(email)
-                          ? 'Enter a valid email'
-                          : null,
+                validator: (email) =>
+                    email != null && !EmailValidator.validate(email)
+                        ? 'Enter a valid email'
+                        : null,
               ),
               SizedBox(height: 4),
               TextFormField(
@@ -124,7 +126,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   Future signIn() async {
     final isValid = formKey.currentState!.validate();
-    if(!isValid) return;
+    if (!isValid) return;
 
     showDialog(
         context: context,
@@ -139,9 +141,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       );
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MainPage(
-          isLoggedIn: false,
-        ),
+        builder: (context) => MainPage(),
       ));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

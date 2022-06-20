@@ -186,9 +186,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 if (index == "Logout") {
                   FirebaseAuth.instance.signOut();
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MainPage(
-                      isLoggedIn: false,
-                    ),
+                    builder: (context) => MainPage(),
                   ));
                 }
               }),
