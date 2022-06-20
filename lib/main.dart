@@ -45,7 +45,7 @@ class MainPage extends StatelessWidget {
         body: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            if (snapshot.hasData || isLoggedIn != null && isLoggedIn!) {
+            if (snapshot.hasData && !snapshot.hasError) {
               isLoggedIn = true;
               return WidgetTree();
             } else if (snapshot.hasError) {
