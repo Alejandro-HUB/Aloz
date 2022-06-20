@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../Helpers/Constants/Styling.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,7 +13,7 @@ class ContactsSearchPage extends StatefulWidget {
 
 class _ContactsSearchPageState extends State<ContactsSearchPage> {
   final Stream<QuerySnapshot> Contacts =
-      FirebaseFirestore.instance.collection("Contacts").snapshots();
+      FirebaseFirestore.instance.collection("Contacts:" + FirebaseAuth.instance.currentUser!.uid).snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -97,14 +98,13 @@ class MyCustomForm extends StatefulWidget {
 class MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
 
-  var id = '';
   var firstName = '';
   var lastName = '';
 
   @override
   Widget build(BuildContext context) {
     CollectionReference contacts =
-        FirebaseFirestore.instance.collection("Contacts");
+        FirebaseFirestore.instance.collection("Contacts:" + FirebaseAuth.instance.currentUser!.uid);
 
     return Form(
         key: _formKey,
@@ -176,8 +176,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                 );
                 contacts
                     .add({'firstName': firstName, 'lastName': lastName})
-                    .then((value) => print('User Added'))
-                    .catchError((error) => print('Failed to add user: $error'));
+                    .then((value) => print('Contact Added'))
+                    .catchError((error) => print('Failed to add contact: $error'));
               }
             },
             style: ElevatedButton.styleFrom(

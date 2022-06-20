@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -133,6 +134,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       );
 
   Future signUp() async {
+    CollectionReference contacts =
+        FirebaseFirestore.instance.collection("Users");
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
 
@@ -146,6 +149,14 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
+      contacts
+          .add({
+            'id': FirebaseAuth.instance.currentUser!.uid,
+            'email': emailController.text.trim(),
+            'password': passwordController.text.trim()
+          })
+          .then((value) => print('User Added'))
+          .catchError((error) => print('Failed to add user: $error'));
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => MainPage(),
