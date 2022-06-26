@@ -5,6 +5,7 @@ import 'package:projectcrm/widget_tree.dart';
 import 'Helpers/Constants/Styling.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Pages/login_page.dart';
+import 'Pages/verify_email_page.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -43,7 +44,7 @@ class MainPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData && !snapshot.hasError) {
-              return WidgetTree();
+              return VerifyEmailPage();
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(
