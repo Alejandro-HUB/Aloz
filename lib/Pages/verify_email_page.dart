@@ -77,7 +77,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'A vcrification email has been sent to your email.',
+                  'A verification email has been sent.',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
