@@ -12,8 +12,12 @@ class ContactsSearchPage extends StatefulWidget {
 }
 
 class _ContactsSearchPageState extends State<ContactsSearchPage> {
-  final Stream<QuerySnapshot> Contacts =
-      FirebaseFirestore.instance.collection("Contacts:" + FirebaseAuth.instance.currentUser!.uid).snapshots();
+  final Stream<QuerySnapshot> Contacts = FirebaseFirestore.instance
+      .collection("Contacts")
+      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+      .collection(
+          "Contacts:" + FirebaseAuth.instance.currentUser!.uid.toString())
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +54,17 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                           AsyncSnapshot<QuerySnapshot> snapshot,
                         ) {
                           if (snapshot.hasError) {
-                            return Text("Something went wrong", style: TextStyle(color: Colors.white),);
+                            return Text(
+                              "Something went wrong",
+                              style: TextStyle(color: Colors.white),
+                            );
                           }
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return (Text("Loading", style: TextStyle(color: Colors.white),));
+                            return (Text(
+                              "Loading",
+                              style: TextStyle(color: Colors.white),
+                            ));
                           }
 
                           final data = snapshot.requireData;
@@ -103,106 +113,109 @@ class MyCustomFormState extends State<MyCustomForm> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference contacts =
-        FirebaseFirestore.instance.collection("Contacts:" + FirebaseAuth.instance.currentUser!.uid);
+    CollectionReference contacts = FirebaseFirestore.instance
+        .collection("Contacts")
+        .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+        .collection(
+            "Contacts:" + FirebaseAuth.instance.currentUser!.uid.toString());
 
     return Form(
         key: _formKey,
         child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        TextFormField(
-          style: TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            icon: Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-            hintText: 'What\'s Your First Name?',
-            hintStyle: TextStyle(
-              color: Colors.white,
-            ),
-            labelText: 'First Name',
-            labelStyle: TextStyle(
-              color: Colors.white,
-            ),
-            hoverColor: Colors.white
-          ),
-          onChanged: (value) {
-            firstName = value;
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
-        ),
-        TextFormField(
-          style: TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            icon: Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-            hintText: 'What\'s Your Last Name?',
-            hintStyle: TextStyle(
-              color: Colors.white,
-            ),
-            labelText: 'Last Name',
-            labelStyle: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          onChanged: (value) {
-            lastName = value;
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
-        ),
-        SizedBox(height: 10),
-        Center(
-          child: ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Sending Data to Cloud Firestore"),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TextFormField(
+              style: TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.white,
                   ),
-                );
-                contacts
-                    .add({'firstName': firstName, 'lastName': lastName})
-                    .then((value) => print('Contact Added'))
-                    .catchError((error) => print('Failed to add contact: $error'));
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10))),
-            child: Ink(
-              decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                      colors: [Styling.redDark, Styling.orangeDark]),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Container(
-                width: 100,
-                height: 40,
-                alignment: Alignment.center,
-                child: const Text(
-                  'Submit',
-                  style: const TextStyle(
-                      fontSize: 16, fontStyle: FontStyle.normal),
+                  hintText: 'What\'s Your First Name?',
+                  hintStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                  labelText: 'First Name',
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                  hoverColor: Colors.white),
+              onChanged: (value) {
+                firstName = value;
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              style: TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                hintText: 'What\'s Your Last Name?',
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                labelText: 'Last Name',
+                labelStyle: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onChanged: (value) {
+                lastName = value;
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 10),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Sending Data to Cloud Firestore"),
+                      ),
+                    );
+                    contacts
+                        .add({'firstName': firstName, 'lastName': lastName})
+                        .then((value) => print('Contact Added'))
+                        .catchError(
+                            (error) => print('Failed to add contact: $error'));
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                child: Ink(
+                  decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                          colors: [Styling.redDark, Styling.orangeDark]),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Container(
+                    width: 100,
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Submit',
+                      style: const TextStyle(
+                          fontSize: 16, fontStyle: FontStyle.normal),
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-      ],
-    ));
+          ],
+        ));
   }
 }
