@@ -96,7 +96,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       minimumSize: Size.fromHeight(50)),
                   child: Text(
                     'Cancel',
-                    style: TextStyle(fontSize: 24, color: Colors.white),
+                    style: TextStyle(fontSize: 24),
                   ),
                   onPressed: () => FirebaseAuth.instance.signOut(),
                 ),
