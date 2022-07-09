@@ -1,6 +1,6 @@
-# projectcrm
+# Aloz
 
-A new Flutter project.
+A new Flutter CRM Project.
 
 ## Getting Started
 
