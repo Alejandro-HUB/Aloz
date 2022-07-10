@@ -2,9 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firedart/generated/google/firestore/v1/document.pb.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Pages/login_page.dart';
+import 'package:projectcrm/Pages/profile_page.dart';
+import 'package:projectcrm/app_bar/route.dart';
 import 'package:projectcrm/main.dart';
 import 'package:projectcrm/responsive_layout.dart';
 import '../Helpers/Constants/Styling.dart';
+import '../drawer/drawer_page.dart';
 import '../widget_tree.dart';
 
 List<String> _buttonNames = ["Overview", "Revenue", "Sales", "Control"];
@@ -188,6 +191,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => MainPage(),
                   ));
+                } else if (index == "My Profile") {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => RoutePage(
+                            appBar: AppBarWidget(),
+                            page: ProfilePage(),
+                            showDrawer: false,
+                          )));
                 }
               }),
               style: TextStyle(fontSize: 15),
