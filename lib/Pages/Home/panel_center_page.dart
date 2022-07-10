@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../Assets/Charts/linear_graph.dart';
 import '../../Helpers/Constants/Styling.dart';
-import '../../Charts/linear_graph.dart';
 
 class Person {
   String name;

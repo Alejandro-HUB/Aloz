@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../Helpers/Charts/axis_chart_widgets.dart';
-import '../Helpers/Constants/Styling.dart';
+import '../../Helpers/Charts/axis_chart_widgets.dart';
+import '../../Helpers/Constants/Styling.dart';
 
 class BarChartSample2 extends StatefulWidget {
   const BarChartSample2({Key? key}) : super(key: key);

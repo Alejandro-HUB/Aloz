@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../Helpers/Constants/Styling.dart';
+import '../../Helpers/Constants/Styling.dart';
 
 class LineChartSample2 extends StatefulWidget {
   const LineChartSample2({Key? key}) : super(key: key);

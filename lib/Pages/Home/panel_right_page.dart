@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../Assets/Charts/wiggle_graph.dart';
 import '../../Helpers/Constants/Styling.dart';
-import '../../Charts/wiggle_graph.dart';
 
 class Product {
   String name;
