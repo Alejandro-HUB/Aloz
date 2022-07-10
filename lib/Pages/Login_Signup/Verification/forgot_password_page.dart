@@ -1,8 +1,8 @@
 import 'package:email_validator/email_validator.dart';
 
-import '../Assets/buttons.dart';
-import '../Helpers/Constants/Styling.dart';
-import '../main.dart';
+import '../../../Assets/buttons.dart';
+import '../../../Helpers/Constants/Styling.dart';
+import '../../../main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

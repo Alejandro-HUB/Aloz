@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:projectcrm/widget_tree.dart';
+import '../../Home/widget_tree.dart';
 
-import '../Assets/buttons.dart';
-import '../Helpers/Constants/Styling.dart';
+import '../../../Assets/buttons.dart';
+import '../../../Helpers/Constants/Styling.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   @override

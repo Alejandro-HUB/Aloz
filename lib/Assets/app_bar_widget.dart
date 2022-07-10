@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firedart/generated/google/firestore/v1/document.pb.dart';
 import 'package:flutter/material.dart';
-import 'package:projectcrm/Pages/login_page.dart';
-import 'package:projectcrm/Pages/profile_page.dart';
-import 'package:projectcrm/app_bar/route.dart';
+import 'package:projectcrm/Pages/Login_Signup/login_page.dart';
+import 'package:projectcrm/Pages/Users/profile_page.dart';
+import 'package:projectcrm/Helpers/Routing/route.dart';
 import 'package:projectcrm/main.dart';
-import 'package:projectcrm/responsive_layout.dart';
+import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
 import '../Helpers/Constants/Styling.dart';
-import '../drawer/drawer_page.dart';
-import '../widget_tree.dart';
+import 'drawer_page.dart';
+import '../Pages/Home/widget_tree.dart';
 
 List<String> _buttonNames = ["Overview", "Revenue", "Sales", "Control"];
 List<String> _menuItems = ["My Profile", "Logout"];

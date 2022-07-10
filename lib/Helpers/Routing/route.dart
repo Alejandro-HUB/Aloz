@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../Helpers/Constants/Styling.dart';
-import '../drawer/drawer_page.dart';
-import '../responsive_layout.dart';
+import '../Constants/Styling.dart';
+import '../../Assets/drawer_page.dart';
+import '../Constants/responsive_layout.dart';
 
 class RoutePage extends StatelessWidget {
   final Widget appBar;

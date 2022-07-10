@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:projectcrm/Pages/auth_page.dart';
-import 'package:projectcrm/widget_tree.dart';
+import 'Pages/Login_Signup/Verification/auth_page.dart';
+import 'Pages/Home/widget_tree.dart';
 import 'Helpers/Constants/Styling.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'Pages/login_page.dart';
-import 'Pages/verify_email_page.dart';
+import 'Pages/Login_Signup/login_page.dart';
+import 'Pages/Login_Signup/Verification/verify_email_page.dart';
 import 'firebase_options.dart';
 
 void main() async {

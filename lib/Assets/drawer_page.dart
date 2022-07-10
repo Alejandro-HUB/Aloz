@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:projectcrm/responsive_layout.dart';
+import '../Helpers/Constants/responsive_layout.dart';
 import '../Helpers/Constants/Styling.dart';
-import '../widget_tree.dart';
-import '../app_bar/app_bar_widget.dart' as appbar;
+import '../Pages/Home/widget_tree.dart';
+import 'app_bar_widget.dart' as appbar;
 
 class DrawerPage extends StatefulWidget {
-  
   @override
   _DrawerPageState createState() => _DrawerPageState();
 }

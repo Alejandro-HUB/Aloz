@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Helpers/Constants/Styling.dart';
-import '../responsive_layout.dart';
+import '../Helpers/Constants/responsive_layout.dart';
 
 class MyElevatedButton extends StatelessWidget {
   final BorderRadiusGeometry? borderRadius;

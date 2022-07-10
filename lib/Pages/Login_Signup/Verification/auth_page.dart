@@ -1,5 +1,5 @@
-import '../Pages/login_page.dart';
-import '../Pages/signup_page.dart';
+import '../login_page.dart';
+import '../signup_page.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {

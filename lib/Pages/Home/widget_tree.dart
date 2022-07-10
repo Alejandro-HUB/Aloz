@@ -1,15 +1,15 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:projectcrm/app_bar/app_bar_widget.dart';
-import 'package:projectcrm/Pages/panel_center_page.dart';
-import 'package:projectcrm/Pages/panel_left_page.dart';
-import 'package:projectcrm/Pages/panel_right_page.dart';
-import 'package:projectcrm/responsive_layout.dart';
-import 'Helpers/Constants/Styling.dart';
-import 'package:projectcrm/drawer/drawer_page.dart';
+import 'package:projectcrm/Assets/app_bar_widget.dart';
+import 'package:projectcrm/Pages/Home/panel_center_page.dart';
+import 'package:projectcrm/Pages/Home/panel_left_page.dart';
+import 'package:projectcrm/Pages/Home/panel_right_page.dart';
+import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
+import '../../Helpers/Constants/Styling.dart';
+import 'package:projectcrm/Assets/drawer_page.dart';
 
-import 'Pages/Contacts.dart';
-import 'Pages/profile_page.dart';
+import '../Contacts/Contacts.dart';
+import '../Users/profile_page.dart';
 
 class WidgetTree extends StatefulWidget {
   int? currentPage = 0;

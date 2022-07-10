@@ -1,25 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../Helpers/Constants/Styling.dart';
-import "../main.dart";
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../Assets/buttons.dart';
-import 'forgot_password_page.dart';
+import 'package:flutter/gestures.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:projectcrm/Assets/app_bar_widget.dart';
+import '../../Assets/buttons.dart';
+import '../../main.dart';
 
-class LoginWidget extends StatefulWidget {
-  final VoidCallback onClickedSignUp;
+class SignUpWidget extends StatefulWidget {
+  final Function() onClickedSignIn;
 
-  const LoginWidget({
+  const SignUpWidget({
     Key? key,
-    required this.onClickedSignUp,
+    required this.onClickedSignIn,
   }) : super(key: key);
 
   @override
-  _LoginWidgetState createState() => _LoginWidgetState();
+  _SignUpWidgetState createState() => _SignUpWidgetState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class _SignUpWidgetState extends State<SignUpWidget> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -40,6 +40,9 @@ class _LoginWidgetState extends State<LoginWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                height: 60,
+              ),
               CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 100,
@@ -49,7 +52,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 height: 20,
               ),
               Text(
-                'Hey There,\n Welcome Back',
+                'Create account',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 32,
@@ -59,7 +62,6 @@ class _LoginWidgetState extends State<LoginWidget> {
               SizedBox(
                 height: 40,
               ),
-              SizedBox(height: 40),
               TextFormField(
                 style: TextStyle(color: Colors.white),
                 controller: emailController,
@@ -78,7 +80,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                         ? 'Enter a valid email'
                         : null,
               ),
-              SizedBox(height: 4),
+              SizedBox(
+                height: 4,
+              ),
               TextFormField(
                 style: TextStyle(color: Colors.white),
                 controller: passwordController,
@@ -91,44 +95,32 @@ class _LoginWidgetState extends State<LoginWidget> {
                   helperStyle: TextStyle(color: Colors.white),
                 ),
                 obscureText: true,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) => value != null && value.length < 6
+                    ? 'Your password must have at least 6 characters.'
+                    : null,
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               MyElevatedButton(
-                label: 'Sign In',
+                label: 'Sign Up',
                 width: double.infinity,
-                icon: Icon(Icons.lock),
-                onPressed: signIn,
+                icon: Icon(Icons.arrow_upward),
+                onPressed: signUp,
                 borderRadius: BorderRadius.circular(10),
-                child: Text('Sign In'),
+                child: Text('Sign Up'),
               ),
               SizedBox(
                 height: 24,
               ),
-              GestureDetector(
-                child: Text(
-                  'Forgot Password?',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 20,
-                  ),
-                ),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ForgotPasswordPage(),
-                )),
-              ),
-              SizedBox(
-                height: 16,
-              ),
               RichText(
                 text: TextSpan(
                   style: TextStyle(color: Colors.white),
-                  text: 'No account?  ',
+                  text: 'Already have an account?  ',
                   children: [
                     TextSpan(
                       recognizer: TapGestureRecognizer()
-                        ..onTap = widget.onClickedSignUp,
-                      text: 'Sign Up',
+                        ..onTap = widget.onClickedSignIn,
+                      text: 'Log In',
                       style: TextStyle(
                           decoration: TextDecoration.underline,
                           color: Theme.of(context).colorScheme.secondary),
@@ -141,7 +133,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         ),
       );
 
-  Future signIn() async {
+  Future signUp() async {
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
 
@@ -152,10 +144,9 @@ class _LoginWidgetState extends State<LoginWidget> {
               child: CircularProgressIndicator(),
             ));
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => MainPage(),
