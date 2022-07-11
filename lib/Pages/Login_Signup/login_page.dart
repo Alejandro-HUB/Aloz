@@ -5,7 +5,7 @@ import '../../main.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../Assets/buttons.dart';
-import '../Login/forgot_password_page.dart';
+import '../Login_Signup/Verification/forgot_password_page.dart';
 
 class LoginWidget extends StatefulWidget {
   final VoidCallback onClickedSignUp;
