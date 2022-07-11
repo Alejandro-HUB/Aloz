@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../Home/widget_tree.dart';
-
 import '../../../Assets/buttons.dart';
 import '../../../Helpers/Constants/Styling.dart';
 
@@ -13,8 +12,7 @@ class VerifyEmailPage extends StatefulWidget {
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
-  CollectionReference contacts =
-        FirebaseFirestore.instance.collection("Users");
+  CollectionReference users = FirebaseFirestore.instance.collection("Users");
   bool isEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
@@ -46,17 +44,17 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
 
-    if (isEmailVerified)
-    {
+    if (isEmailVerified) {
       timer?.cancel();
-      contacts
-          .add({
+      users
+          .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+          .set({
             'id': FirebaseAuth.instance.currentUser!.uid,
             'email': FirebaseAuth.instance.currentUser!.email,
           })
           .then((value) => print('User Added'))
           .catchError((error) => print('Failed to add user: $error'));
-    } 
+    }
   }
 
   Future sendVerificationEmail() async {
