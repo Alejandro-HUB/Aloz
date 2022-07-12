@@ -30,68 +30,73 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
         backgroundColor: Styling.purpleLight,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Read Data from Cloud Firestore",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
-                  Container(
-                      height: 250,
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: Contacts,
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot,
-                        ) {
-                          if (snapshot.hasError) {
-                            return Text(
-                              "Something went wrong",
-                              style: TextStyle(color: Colors.white),
-                            );
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return (Text(
-                              "Loading",
-                              style: TextStyle(color: Colors.white),
-                            ));
-                          }
-
-                          final data = snapshot.requireData;
-
-                          return ListView.builder(
-                            itemCount: data.size,
-                            itemBuilder: (context, index) {
+        child: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "Read Data from Cloud Firestore",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
+                    ),
+                    Container(
+                        height: 250,
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: Contacts,
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot,
+                          ) {
+                            if (snapshot.hasError) {
                               return Text(
-                                "My name is ${data.docs[index]['firstName']} ${data.docs[index]['lastName']}",
+                                "Something went wrong",
                                 style: TextStyle(color: Colors.white),
                               );
-                            },
-                          );
-                        },
-                      )),
-                  Text(
-                    "Write Data to Cloud Firestore",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
-                  MyCustomForm(),
-                ],
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return (Text(
+                                "Loading",
+                                style: TextStyle(color: Colors.white),
+                              ));
+                            }
+
+                            final data = snapshot.requireData;
+
+                            return Center(
+                              child: ListView.builder(
+                                itemCount: data.size,
+                                itemBuilder: (context, index) {
+                                  return Text(
+                                    "${data.docs[index]['firstName']} ${data.docs[index]['lastName']}",
+                                    style: TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        )),
+                    Text(
+                      "Write Data to Cloud Firestore",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
+                    ),
+                    MyCustomForm(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -121,101 +126,108 @@ class MyCustomFormState extends State<MyCustomForm> {
 
     return Form(
         key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextFormField(
-              style: TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                  hintText: 'What\'s Your First Name?',
-                  hintStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                  labelText: 'First Name',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                  hoverColor: Colors.white),
-              onChanged: (value) {
-                firstName = value;
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              style: TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                hintText: 'What\'s Your Last Name?',
-                hintStyle: TextStyle(
-                  color: Colors.white,
-                ),
-                labelText: 'Last Name',
-                labelStyle: TextStyle(
-                  color: Colors.white,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                width: 300,
+                child: TextFormField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                      icon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      hintText: 'What\'s Your First Name?',
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      labelText: 'First Name',
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      hoverColor: Colors.white),
+                  onChanged: (value) {
+                    firstName = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
                 ),
               ),
-              onChanged: (value) {
-                lastName = value;
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 10),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Sending Data to Cloud Firestore"),
+              SizedBox(
+                width: 300,
+                child: TextFormField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    icon: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                    ),
+                    hintText: 'What\'s Your Last Name?',
+                    hintStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    labelText: 'Last Name',
+                    labelStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  onChanged: (value) {
+                    lastName = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(height: 10),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Sending Data to Cloud Firestore"),
+                        ),
+                      );
+                      contacts
+                          .add({'firstName': firstName, 'lastName': lastName})
+                          .then((value) => print('Contact Added'))
+                          .catchError(
+                              (error) => print('Failed to add contact: $error'));
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                            colors: [Styling.redDark, Styling.orangeDark]),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Container(
+                      width: 100,
+                      height: 40,
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Submit',
+                        style: const TextStyle(
+                            fontSize: 16, fontStyle: FontStyle.normal),
                       ),
-                    );
-                    contacts
-                        .add({'firstName': firstName, 'lastName': lastName})
-                        .then((value) => print('Contact Added'))
-                        .catchError(
-                            (error) => print('Failed to add contact: $error'));
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
-                child: Ink(
-                  decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                          colors: [Styling.redDark, Styling.orangeDark]),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Container(
-                    width: 100,
-                    height: 40,
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Submit',
-                      style: const TextStyle(
-                          fontSize: 16, fontStyle: FontStyle.normal),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }
