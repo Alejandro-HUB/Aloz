@@ -94,7 +94,9 @@ class Storage {
       Map<String, dynamic>? data = docSnapshot.data();
       var value = data?[fieldName]; // <-- The value you want to retrieve.
       // Call setState if needed.
-      await storage.ref().child(value).delete();
+      if (value != null) {
+        await storage.ref().child(value).delete();
+      }
     }
   }
 
@@ -112,7 +114,8 @@ class Storage {
   }
 
   Future<String> downloadURL(String imageName) async {
-    String downloadURL = await storage.ref(imageName).getDownloadURL();
+    String downloadURL =
+        imageName != "" ? await storage.ref(imageName).getDownloadURL() : "";
 
     return downloadURL;
   }
@@ -123,7 +126,7 @@ class listImages extends StatelessWidget {
   final documentName;
   final fieldName;
   final backgroundColor;
-  final radius;
+  final double? radius;
   final circleAvatar;
   final width;
   final height;
@@ -137,9 +140,9 @@ class listImages extends StatelessWidget {
     required this.circleAvatar,
     required this.profilePicture,
     this.backgroundColor = Styling.orangeDark,
-    this.radius = 60,
-    this.width = 500,
-    this.height = 500,
+    this.radius = 60.0,
+    this.width = 500.0,
+    this.height = 500.0,
   }) : super(key: key);
 
   Widget build(BuildContext context) {
@@ -157,13 +160,17 @@ class listImages extends StatelessWidget {
 
               if (snapshot.hasData) {
                 var output = snapshot.data!.data();
-                bucketName = output![fieldName]; // <-- Your value
+                if (output.toString().contains(fieldName)) {
+                  bucketName = output![fieldName];
+                }
+                // <-- Your value
                 return FutureBuilder(
                     future: storage.downloadURL(bucketName),
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
                       if (snapshot.hasData &&
-                          snapshot.connectionState == ConnectionState.done) {
+                          snapshot.connectionState == ConnectionState.done &&
+                          bucketName != "") {
                         if (circleAvatar) {
                           return CircleAvatar(
                             backgroundColor: backgroundColor,
@@ -181,7 +188,7 @@ class listImages extends StatelessWidget {
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
-                      } else if (!snapshot.hasData) {
+                      } else if (!snapshot.hasData || bucketName == "") {
                         if (profilePicture) {
                           return CircleAvatar(
                             backgroundColor: backgroundColor,

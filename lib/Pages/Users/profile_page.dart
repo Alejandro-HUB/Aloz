@@ -112,7 +112,9 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 20),
               listImages(
                 collectionName: "Users",
-                documentName: FirebaseAuth.instance.currentUser!.uid.toString(),
+                documentName: FirebaseAuth.instance.currentUser!.uid == null
+                    ? ""
+                    : FirebaseAuth.instance.currentUser!.uid,
                 fieldName: "profile_picture",
                 circleAvatar: true,
                 profilePicture: true,
