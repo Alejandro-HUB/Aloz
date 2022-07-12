@@ -116,18 +116,24 @@ class _WidgetTreeState extends State<WidgetTree> {
                     ),
                   ],
                 )
-              : Row(
-                  children: [
-                    Expanded(
-                      child: DrawerPage(),
-                    ),
-                    Expanded(
-                      child: currentPage == 3
-                          ? ContactsSearchPage()
-                          : PanelLeftPage(),
-                    ),
-                  ],
-                )),
+              : currentPage == 3
+                  ? Row(
+                      children: [
+                        Expanded(
+                          child: DrawerPage(),
+                        ),
+                        Expanded(
+                          child: PanelLeftPage(),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        Expanded(
+                          child: ContactsSearchPage(),
+                        ),
+                      ],
+                    )),
       drawer: DrawerPage(),
       bottomNavigationBar: ResponsiveLayout.isPhone(context) && currentPage == 0
           ? CurvedNavigationBar(

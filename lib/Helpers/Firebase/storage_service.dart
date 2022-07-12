@@ -184,8 +184,8 @@ class listImages extends StatelessWidget {
                       } else if (!snapshot.hasData) {
                         if (profilePicture) {
                           return CircleAvatar(
-                            backgroundColor: Styling.orangeDark,
-                            radius: 30,
+                            backgroundColor: backgroundColor,
+                            radius: radius,
                             child: Image.asset("images/profile.png"),
                           );
                         } else {
