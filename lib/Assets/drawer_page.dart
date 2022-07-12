@@ -103,7 +103,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         ),
                       ),
                       Divider(
-                        color: Colors.white,
+                        color: Styling.purpleBorder,
                         thickness: 0.1,
                       ),
                     ],

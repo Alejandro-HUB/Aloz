@@ -179,8 +179,9 @@ class listImages extends StatelessWidget {
                           );
                         }
                       }
-                      if (snapshot.connectionState == ConnectionState.waiting ||
-                          !snapshot.hasData) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (!snapshot.hasData) {
                         if (profilePicture) {
                           return CircleAvatar(
                             backgroundColor: Styling.orangeDark,
