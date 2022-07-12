@@ -33,7 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final Storage storage = Storage();
-    String photoy;
 
     return Scaffold(
       appBar: AppBar(
@@ -116,6 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 documentName: FirebaseAuth.instance.currentUser!.uid.toString(),
                 fieldName: "profile_picture",
                 circleAvatar: true,
+                profilePicture: true,
               ),
               SizedBox(height: 20),
               MyElevatedButton(

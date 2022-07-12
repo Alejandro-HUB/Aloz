@@ -11,7 +11,6 @@ import '../Constants/Styling.dart';
 class Storage {
   final FirebaseStorage storage = FirebaseStorage.instance;
   CollectionReference users = FirebaseFirestore.instance.collection("Users");
-  var collection = FirebaseFirestore.instance.collection("Users");
 
   Future<void> uploadFile(String fileName, var uploadfile, BuildContext context,
       Widget currenPage) async {
@@ -25,7 +24,8 @@ class Storage {
       await storage.ref(fileName).putFile(uploadfile);
 
       //Delete the old profile picture
-      await deleteFile();
+      await deleteFile("User",
+          FirebaseAuth.instance.currentUser!.uid.toString(), "profile_picture");
 
       //Put the path of the file into firestore
       addImageToFireStore(context, fileName);
@@ -40,7 +40,10 @@ class Storage {
         await storage.ref(fileName).putData(uploadfile);
 
         //Delete the old profile picture
-        await deleteFile();
+        await deleteFile(
+            "User",
+            FirebaseAuth.instance.currentUser!.uid.toString(),
+            "profile_picture");
 
         //Put the path of the file into firestore
         addImageToFireStore(context, fileName);
@@ -83,13 +86,13 @@ class Storage {
     }
   }
 
-  Future deleteFile() async {
-    var collection = FirebaseFirestore.instance.collection('Users');
-    var docSnapshot = await collection.doc(FirebaseAuth.instance.currentUser!.uid.toString()).get();
+  Future deleteFile(
+      String collectionName, String documentName, String fieldName) async {
+    var collection = FirebaseFirestore.instance.collection(collectionName);
+    var docSnapshot = await collection.doc(documentName).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
-      var value = data?["profile_picture"];
-      print(value); // <-- The value you want to retrieve.
+      var value = data?[fieldName]; // <-- The value you want to retrieve.
       // Call setState if needed.
       await storage.ref().child(value).delete();
     }
@@ -124,15 +127,17 @@ class listImages extends StatelessWidget {
   final circleAvatar;
   final width;
   final height;
+  final profilePicture;
 
   const listImages({
     Key? key,
     required this.collectionName,
     required this.documentName,
     required this.fieldName,
+    required this.circleAvatar,
+    required this.profilePicture,
     this.backgroundColor = Styling.orangeDark,
     this.radius = 60,
-    this.circleAvatar = false,
     this.width = 500,
     this.height = 500,
   }) : super(key: key);
@@ -176,7 +181,15 @@ class listImages extends StatelessWidget {
                       }
                       if (snapshot.connectionState == ConnectionState.waiting ||
                           !snapshot.hasData) {
-                        return CircularProgressIndicator();
+                        if (profilePicture) {
+                          return CircleAvatar(
+                            backgroundColor: Styling.orangeDark,
+                            radius: 30,
+                            child: Image.asset("images/profile.png"),
+                          );
+                        } else {
+                          return CircularProgressIndicator();
+                        }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

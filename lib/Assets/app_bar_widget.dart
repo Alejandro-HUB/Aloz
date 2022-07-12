@@ -215,6 +215,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               documentName: FirebaseAuth.instance.currentUser!.uid.toString(),
               fieldName: "profile_picture",
               circleAvatar: true,
+              profilePicture: true,
               radius: 30,
             ),
           ),
