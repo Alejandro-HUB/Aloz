@@ -24,7 +24,7 @@ class Storage {
       await storage.ref(fileName).putFile(uploadfile);
 
       //Delete the old profile picture
-      await deleteFile("User",
+      await deleteFile('Users',
           FirebaseAuth.instance.currentUser!.uid.toString(), "profile_picture");
 
       //Put the path of the file into firestore
@@ -41,7 +41,7 @@ class Storage {
 
         //Delete the old profile picture
         await deleteFile(
-            "User",
+            'Users',
             FirebaseAuth.instance.currentUser!.uid.toString(),
             "profile_picture");
 
