@@ -120,17 +120,17 @@ class _WidgetTreeState extends State<WidgetTree> {
                   ? Row(
                       children: [
                         Expanded(
-                          child: DrawerPage(),
-                        ),
-                        Expanded(
-                          child: PanelLeftPage(),
+                          child: ContactsSearchPage(),
                         ),
                       ],
                     )
                   : Row(
                       children: [
                         Expanded(
-                          child: ContactsSearchPage(),
+                          child: DrawerPage(),
+                        ),
+                        Expanded(
+                          child: PanelLeftPage(),
                         ),
                       ],
                     )),
