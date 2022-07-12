@@ -3,17 +3,15 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mongo_dart/mongo_dart.dart';
-import 'package:projectcrm/Helpers/Routing/route.dart';
-import 'package:projectcrm/Pages/Users/profile_page.dart';
 
-import '../../Assets/app_bar_widget.dart';
-import '../../main.dart';
+import '../Constants/Styling.dart';
 
 class Storage {
   final FirebaseStorage storage = FirebaseStorage.instance;
   CollectionReference users = FirebaseFirestore.instance.collection("Users");
+  var collection = FirebaseFirestore.instance.collection("Users");
 
   Future<void> uploadFile(String fileName, var uploadfile, BuildContext context,
       Widget currenPage) async {
@@ -26,6 +24,9 @@ class Storage {
     try {
       await storage.ref(fileName).putFile(uploadfile);
 
+      //Delete the old profile picture
+      await deleteFile();
+
       //Put the path of the file into firestore
       addImageToFireStore(context, fileName);
 
@@ -37,6 +38,9 @@ class Storage {
     } catch (e) {
       try {
         await storage.ref(fileName).putData(uploadfile);
+
+        //Delete the old profile picture
+        await deleteFile();
 
         //Put the path of the file into firestore
         addImageToFireStore(context, fileName);
@@ -68,14 +72,26 @@ class Storage {
             'email': FirebaseAuth.instance.currentUser!.email,
             'profile_picture': imagePath,
           })
-          .then((value) => print('User Added'))
-          .catchError((error) => print('Failed to add user: $error'));
+          .then((value) => print('Image Added'))
+          .catchError((error) => print('Failed to add Image: $error'));
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.toString()),
         ),
       );
+    }
+  }
+
+  Future deleteFile() async {
+    var collection = FirebaseFirestore.instance.collection('Users');
+    var docSnapshot = await collection.doc(FirebaseAuth.instance.currentUser!.uid.toString()).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic>? data = docSnapshot.data();
+      var value = data?["profile_picture"];
+      print(value); // <-- The value you want to retrieve.
+      // Call setState if needed.
+      await storage.ref().child(value).delete();
     }
   }
 
@@ -100,38 +116,84 @@ class Storage {
 }
 
 class listImages extends StatelessWidget {
-  final bucketName;
+  final collectionName;
+  final documentName;
+  final fieldName;
+  final backgroundColor;
+  final radius;
+  final circleAvatar;
+  final width;
+  final height;
 
   const listImages({
     Key? key,
-    required this.bucketName,
+    required this.collectionName,
+    required this.documentName,
+    required this.fieldName,
+    this.backgroundColor = Styling.orangeDark,
+    this.radius = 60,
+    this.circleAvatar = false,
+    this.width = 500,
+    this.height = 500,
   }) : super(key: key);
 
   Widget build(BuildContext context) {
     final Storage storage = Storage();
-    return FutureBuilder(
-        future: storage.downloadURL(bucketName),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData &&
-              snapshot.connectionState == ConnectionState.done) {
-            return Container(
-              width: 300,
-              height: 250,
-              child: Image.network(snapshot.data!, fit: BoxFit.cover),
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              !snapshot.hasData) {
-            return CircularProgressIndicator();
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Something went wrong'),
-              ),
-            );
-            return Container();
-          }
-        });
+    var collection = FirebaseFirestore.instance.collection(collectionName);
+    String bucketName = "";
+
+    return Container(
+      child: Column(
+        children: [
+          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            stream: collection.doc(documentName).snapshots(),
+            builder: (_, snapshot) {
+              if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+
+              if (snapshot.hasData) {
+                var output = snapshot.data!.data();
+                bucketName = output![fieldName]; // <-- Your value
+                return FutureBuilder(
+                    future: storage.downloadURL(bucketName),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      if (snapshot.hasData &&
+                          snapshot.connectionState == ConnectionState.done) {
+                        if (circleAvatar) {
+                          return CircleAvatar(
+                            backgroundColor: backgroundColor,
+                            radius: radius,
+                            backgroundImage: NetworkImage(snapshot.data!),
+                          );
+                        } else {
+                          return Container(
+                            width: width,
+                            height: height,
+                            child: Image.network(snapshot.data!,
+                                fit: BoxFit.cover),
+                          );
+                        }
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting ||
+                          !snapshot.hasData) {
+                        return CircularProgressIndicator();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Something went wrong'),
+                          ),
+                        );
+                        return Container();
+                      }
+                    });
+              }
+
+              return Center(child: CircularProgressIndicator());
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -163,7 +225,7 @@ class listImageNames extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         onPressed: () {},
-                        child: Text(data!.items[index].name),
+                        child: Text(data.items[index].name),
                       ));
                 },
               ),

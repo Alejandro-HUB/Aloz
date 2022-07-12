@@ -22,7 +22,6 @@ class _ProfilePageState extends State<ProfilePage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  
   @override
   void dispose() {
     emailController.dispose();
@@ -34,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final Storage storage = Storage();
-    String photoy; 
+    String photoy;
 
     return Scaffold(
       appBar: AppBar(
@@ -112,10 +111,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.white),
               ),
               SizedBox(height: 20),
-              CircleAvatar(
-                backgroundColor: Styling.purpleDark,
-                radius: 60,
-                child: Image.asset("images/profile.png"),
+              listImages(
+                collectionName: "Users",
+                documentName: FirebaseAuth.instance.currentUser!.uid.toString(),
+                fieldName: "profile_picture",
+                circleAvatar: true,
               ),
               SizedBox(height: 20),
               MyElevatedButton(
@@ -126,8 +126,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 borderRadius: BorderRadius.circular(10),
                 child: Text('Upload File'),
               ),
-              
-              listImages(bucketName: ""),
             ],
           ),
         ),

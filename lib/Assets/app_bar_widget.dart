@@ -7,6 +7,7 @@ import 'package:projectcrm/Helpers/Routing/route.dart';
 import 'package:projectcrm/main.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
 import '../Helpers/Constants/Styling.dart';
+import '../Helpers/Firebase/storage_service.dart';
 import 'drawer_page.dart';
 import '../Pages/Home/widget_tree.dart';
 
@@ -207,19 +208,14 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             margin: EdgeInsets.all(Styling.kPadding),
             height: double.infinity,
             decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black45,
-                    offset: Offset(0, 0),
-                    spreadRadius: 1,
-                    blurRadius: 10),
-              ],
               shape: BoxShape.circle,
             ),
-            child: CircleAvatar(
-              backgroundColor: Styling.orangeDark,
+            child: listImages(
+              collectionName: "Users",
+              documentName: FirebaseAuth.instance.currentUser!.uid.toString(),
+              fieldName: "profile_picture",
+              circleAvatar: true,
               radius: 30,
-              child: Image.asset("images/profile.png"),
             ),
           ),
         ],
