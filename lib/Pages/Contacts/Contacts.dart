@@ -194,7 +194,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     if (_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text("Sending Data to Cloud Firestore"),
+                          content: Text("Sending Data to Cloud Firestore."),
                         ),
                       );
                       contacts
