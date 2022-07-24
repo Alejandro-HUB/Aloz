@@ -13,6 +13,8 @@ import 'package:firebase_core/firebase_core.dart';
 import '../../firebase_options.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../../main.dart';
+
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -157,6 +159,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         );
         FirebaseAuth.instance.signOut();
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MainPage(),
+        ));
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
