@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../Assets/app_bar_widget.dart';
+import '../../Assets/buttons.dart';
 import '../../Helpers/Constants/Styling.dart';
 import 'package:firebase_core/firebase_core.dart';
+import '../../Helpers/Routing/route.dart';
 import '../../Models/ContactsModel.dart';
 import '../../firebase_options.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -47,8 +50,29 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                           fontWeight: FontWeight.w600,
                           color: Colors.white),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(),
+                        MyElevatedButton(
+                          label: 'Import Data',
+                          width: 150,
+                          icon: Icon(Icons.import_export),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => RoutePage(
+                                      appBar: AppBarWidget(),
+                                      page: MyCustomForm(),
+                                      showDrawer: false,
+                                    )));
+                          },
+                          borderRadius: BorderRadius.circular(10),
+                          child: Text('Import Data'),
+                        ),
+                      ],
+                    ),
                     Container(
-                        height: 250,
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: StreamBuilder<QuerySnapshot>(
                           stream: Contacts,
@@ -85,36 +109,41 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
 
                             return Center(
                               child: SingleChildScrollView(
-                                child: DataTable(
-                                    border:
-                                        TableBorder.all(color: Colors.white),
-                                    columns: [
-                                      DataColumn(
-                                        label: Text(
-                                          'First Name',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
+                                child: Container(
+                                  width: double.infinity,
+                                  child: DataTable(
+                                      headingTextStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
                                       ),
-                                      DataColumn(
-                                        label: Text(
-                                          'Last Name',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
+                                      decoration: BoxDecoration(
+                                        color: Styling.purpleLight,
                                       ),
-                                    ],
-                                    rows: contactRows),
+                                      border: TableBorder.all(
+                                        width: 1.5,
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      columns: [
+                                        DataColumn(
+                                          label: Text(
+                                            'First Name',
+                                          ),
+                                        ),
+                                        DataColumn(
+                                          label: Text(
+                                            'Last Name',
+                                          ),
+                                        ),
+                                      ],
+                                      rows: contactRows),
+                                ),
                               ),
                             );
                           },
                         )),
-                    Text(
-                      "Write Data to Cloud Firestore",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
-                    ),
-                    MyCustomForm(),
                   ],
                 ),
               ),
@@ -147,110 +176,140 @@ class MyCustomFormState extends State<MyCustomForm> {
         .collection(
             "Contacts:" + FirebaseAuth.instance.currentUser!.uid.toString());
 
-    return Form(
-        key: _formKey,
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                width: 300,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                      icon: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
-                      hintText: 'What\'s Your First Name?',
-                      hintStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      labelText: 'First Name',
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      hoverColor: Colors.white),
-                  onChanged: (value) {
-                    firstName = value;
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 300,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    icon: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                    hintText: 'What\'s Your Last Name?',
-                    hintStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    labelText: 'Last Name',
-                    labelStyle: TextStyle(
-                      color: Colors.white,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Import Data",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Styling.purpleLight,
+      ),
+      body: Form(
+          key: _formKey,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "Write Data to Cloud Firestore",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                          icon: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ),
+                          hintText: 'What\'s Your First Name?',
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          labelText: 'First Name',
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          hoverColor: Colors.white),
+                      onChanged: (value) {
+                        firstName = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                     ),
                   ),
-                  onChanged: (value) {
-                    lastName = value;
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              SizedBox(height: 10),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Sending Data to Cloud Firestore"),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        icon: Icon(
+                          Icons.person,
+                          color: Colors.white,
                         ),
-                      );
-                      contacts
-                          .add({'firstName': firstName, 'lastName': lastName})
-                          .then((value) => print('Contact Added'))
-                          .catchError((error) =>
-                              print('Failed to add contact: $error'));
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            colors: [Styling.redDark, Styling.orangeDark]),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Container(
-                      width: 100,
-                      height: 40,
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Submit',
-                        style: const TextStyle(
-                            fontSize: 16, fontStyle: FontStyle.normal),
+                        hintText: 'What\'s Your Last Name?',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        labelText: 'Last Name',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        lastName = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Sending Data to Cloud Firestore"),
+                            ),
+                          );
+                          contacts
+                              .add({
+                                'firstName': firstName,
+                                'lastName': lastName
+                              })
+                              .then((value) => print('Contact Added'))
+                              .catchError((error) =>
+                                  print('Failed to add contact: $error'));
+
+                          //Return to contacts page
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => RoutePage(
+                                    appBar: AppBarWidget(),
+                                    page: ContactsSearchPage(),
+                                    showDrawer: false,
+                                  )));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                                colors: [Styling.redDark, Styling.orangeDark]),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Container(
+                          width: 100,
+                          height: 40,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Submit',
+                            style: const TextStyle(
+                                fontSize: 16, fontStyle: FontStyle.normal),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ));
+            ),
+          )),
+    );
   }
 }
