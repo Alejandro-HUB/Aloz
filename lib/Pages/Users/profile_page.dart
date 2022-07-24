@@ -100,6 +100,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   obscureText: true,
                 ),
               ),
+              SizedBox(height: 20),
+              MyElevatedButton(
+                label: 'Submit Changes',
+                width: 150,
+                icon: Icon(Icons.update),
+                onPressed: () async {
+                  updateUserDetails(emailController.text.toString(),
+                      passwordController.text.toString());
+                },
+                borderRadius: BorderRadius.circular(10),
+                child: Text('Upload File'),
+              ),
               SizedBox(height: 40),
               Text(
                 'Update your Profile Picture:',
@@ -133,6 +145,53 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  Future updateUserDetails(String email, String password) async {
+    if (email != null && email.isNotEmpty) {
+      try {
+        await FirebaseAuth.instance.currentUser!.updateEmail(email);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Updated Email."),
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Email was not updated."),
+        ),
+      );
+    }
+    if (password != null && password.isNotEmpty) {
+      try {
+        await FirebaseAuth.instance.currentUser!.updatePassword(password);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Updated Password."),
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Password was not updated."),
+        ),
+      );
+    }
   }
 
   Future uploadFile() async {
