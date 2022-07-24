@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../Helpers/Constants/Styling.dart';
 import 'package:firebase_core/firebase_core.dart';
+import '../../Models/ContactsModel.dart';
 import '../../firebase_options.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import '../../Helpers/Tables/TableHelpers.dart';
 
 class ContactsSearchPage extends StatefulWidget {
   @override
@@ -69,17 +71,38 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                             }
 
                             final data = snapshot.requireData;
+                            List<DataRow> contactRows = [];
+                            List<Contact> rowsData = [];
+
+                            if (data != null) {
+                              rowsData =
+                                  Contact.populateContactsList(data, rowsData);
+                            }
+
+                            contactRows =
+                                TableHelpers.buildContactListOfDataRows(context,
+                                    rowsData, Colors.white, TextAlign.center);
 
                             return Center(
-                              child: ListView.builder(
-                                itemCount: data.size,
-                                itemBuilder: (context, index) {
-                                  return Text(
-                                    "${data.docs[index]['firstName']} ${data.docs[index]['lastName']}",
-                                    style: TextStyle(color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  );
-                                },
+                              child: SingleChildScrollView(
+                                child: DataTable(
+                                    border:
+                                        TableBorder.all(color: Colors.white),
+                                    columns: [
+                                      DataColumn(
+                                        label: Text(
+                                          'First Name',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Text(
+                                          'Last Name',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                    rows: contactRows),
                               ),
                             );
                           },
@@ -194,14 +217,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                     if (_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text("Sending Data to Cloud Firestore."),
+                          content: Text("Sending Data to Cloud Firestore"),
                         ),
                       );
                       contacts
                           .add({'firstName': firstName, 'lastName': lastName})
                           .then((value) => print('Contact Added'))
-                          .catchError(
-                              (error) => print('Failed to add contact: $error'));
+                          .catchError((error) =>
+                              print('Failed to add contact: $error'));
                     }
                   },
                   style: ElevatedButton.styleFrom(
