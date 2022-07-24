@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../../Home/widget_tree.dart';
 import '../../../Assets/buttons.dart';
@@ -51,6 +52,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           .set({
             'id': FirebaseAuth.instance.currentUser!.uid,
             'email': FirebaseAuth.instance.currentUser!.email,
+            'profile_picture':
+                FirebaseAuth.instance.currentUser!.photoURL != null &&
+                        FirebaseAuth.instance.currentUser!.photoURL!.isNotEmpty
+                    ? FirebaseAuth.instance.currentUser!.photoURL
+                    : "",
           })
           .then((value) => print('User Added'))
           .catchError((error) => print('Failed to add user: $error'));

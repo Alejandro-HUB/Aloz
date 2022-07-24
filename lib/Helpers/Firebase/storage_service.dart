@@ -76,6 +76,11 @@ class Storage {
           })
           .then((value) => print('Image Added'))
           .catchError((error) => print('Failed to add Image: $error'));
+          
+      //Add profile picture to FirebaseAuth as well
+      if (imagePath != null && imagePath.isNotEmpty) {
+        FirebaseAuth.instance.currentUser!.updatePhotoURL(imagePath);
+      }
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

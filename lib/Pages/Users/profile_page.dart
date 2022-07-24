@@ -153,9 +153,10 @@ class _ProfilePageState extends State<ProfilePage> {
         await FirebaseAuth.instance.currentUser!.updateEmail(email);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Updated Email."),
+            content: Text("Updated Email: Logging you out..."),
           ),
         );
+        FirebaseAuth.instance.signOut();
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
