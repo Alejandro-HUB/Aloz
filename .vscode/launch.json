@@ -28,6 +28,18 @@
             "request": "launch",
             "deviceId": "android",
         },
+        {
+            "name": "IOS",
+            "type": "dart",
+            "request": "launch",
+            "deviceId": "312500BA-B697-4593-9B35-1EEECB6D9C6C",
+        },
+        {
+            "name": "macOS",
+            "type": "dart",
+            "request": "launch",
+            "deviceId": "macos",
+        },
 
     ]
 }
