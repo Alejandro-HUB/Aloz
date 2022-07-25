@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../Assets/app_bar_widget.dart';
@@ -16,8 +17,26 @@ class ContactsSearchPage extends StatefulWidget {
   _ContactsSearchPageState createState() => _ContactsSearchPageState();
 }
 
+String? query;
+CollectionReference contacts = FirebaseFirestore.instance
+    .collection("Contacts")
+    .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+    .collection(
+        "Contacts:" + FirebaseAuth.instance.currentUser!.uid.toString());
+
 class _ContactsSearchPageState extends State<ContactsSearchPage> {
-  final Stream<QuerySnapshot> Contacts = FirebaseFirestore.instance
+  final searchController = TextEditingController();
+  List<DataRow> contactRows = [];
+  List<Contact> rowsData = [];
+
+  @override
+  void dispose() {
+    searchController.dispose();
+
+    super.dispose();
+  }
+
+  Stream<QuerySnapshot> Contacts = FirebaseFirestore.instance
       .collection("Contacts")
       .doc(FirebaseAuth.instance.currentUser!.uid.toString())
       .collection(
@@ -42,19 +61,51 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    Text(
-                      "Read Data from Cloud Firestore",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
-                    ),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(),
+                        SizedBox(
+                          width: 200,
+                          child: TextFormField(
+                            style: TextStyle(color: Colors.white),
+                            controller: searchController,
+                            onChanged: (value) {
+                              setState(() {
+                                query = value;
+
+                                rowsData = rowsData
+                                    .where((element) =>
+                                        element.firstName
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()) ||
+                                        element.lastName
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()) ||
+                                        element.emailAddress
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()))
+                                    .toList();
+
+                                contactRows =
+                                    TableHelpers.buildContactListOfDataRows(
+                                        context,
+                                        rowsData,
+                                        Colors.white,
+                                        TextAlign.center);
+                              });
+                            },
+                            textInputAction: TextInputAction.search,
+                            decoration: InputDecoration(
+                              hintText: 'Search for Contacts',
+                              icon: Icon(Icons.search, color: Colors.white),
+                              hintStyle: TextStyle(color: Colors.white),
+                              helperStyle: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
                         MyElevatedButton(
                           label: 'Import Data',
                           width: 150,
@@ -95,51 +146,69 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                             }
 
                             final data = snapshot.requireData;
-                            List<DataRow> contactRows = [];
-                            List<Contact> rowsData = [];
 
-                            if (data != null) {
-                              rowsData =
-                                  Contact.populateContactsList(data, rowsData);
+                            //Fill the list of Contacts from Firebase
+                            if (data != null &&
+                                contactRows.length < data.size) {
+                              if (query == null || query == "") {
+                                rowsData.clear();
+                                contactRows.clear();
+
+                                rowsData = Contact.populateContactsList(
+                                    data, rowsData);
+
+                                contactRows =
+                                    TableHelpers.buildContactListOfDataRows(
+                                        context,
+                                        rowsData,
+                                        Colors.white,
+                                        TextAlign.center);
+                              }
                             }
 
-                            contactRows =
-                                TableHelpers.buildContactListOfDataRows(context,
-                                    rowsData, Colors.white, TextAlign.center);
-
                             return Center(
-                              child: SingleChildScrollView(
-                                child: Container(
-                                  width: double.infinity,
-                                  child: DataTable(
-                                      headingTextStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Styling.purpleLight,
-                                      ),
-                                      border: TableBorder.all(
-                                        width: 1.5,
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                      columns: [
-                                        DataColumn(
-                                          label: Text(
-                                            'First Name',
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 344,
+                                    width: double.infinity,
+                                    child: SingleChildScrollView(
+                                      child: DataTable(
+                                          headingTextStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
                                           ),
-                                        ),
-                                        DataColumn(
-                                          label: Text(
-                                            'Last Name',
+                                          decoration: BoxDecoration(
+                                            color: Styling.purpleLight,
                                           ),
-                                        ),
-                                      ],
-                                      rows: contactRows),
-                                ),
+                                          border: TableBorder.all(
+                                            width: 1.5,
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                          ),
+                                          columns: [
+                                            DataColumn(
+                                              label: Text(
+                                                'First Name',
+                                              ),
+                                            ),
+                                            DataColumn(
+                                              label: Text(
+                                                'Last Name',
+                                              ),
+                                            ),
+                                            DataColumn(
+                                              label: Text(
+                                                'Email Address',
+                                              ),
+                                            ),
+                                          ],
+                                          rows: contactRows),
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                           },
@@ -167,15 +236,10 @@ class MyCustomFormState extends State<MyCustomForm> {
 
   var firstName = '';
   var lastName = '';
+  var emailAddress = '';
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference contacts = FirebaseFirestore.instance
-        .collection("Contacts")
-        .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-        .collection(
-            "Contacts:" + FirebaseAuth.instance.currentUser!.uid.toString());
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -184,132 +248,120 @@ class MyCustomFormState extends State<MyCustomForm> {
         ),
         backgroundColor: Styling.purpleLight,
       ),
-      body: Form(
-          key: _formKey,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    "Write Data to Cloud Firestore",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
-                  SizedBox(
-                    width: 300,
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                          icon: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                          ),
-                          hintText: 'What\'s Your First Name?',
-                          hintStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          labelText: 'First Name',
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          hoverColor: Colors.white),
-                      onChanged: (value) {
-                        firstName = value;
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 300,
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        icon: Icon(
-                          Icons.person,
-                          color: Colors.white,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Form(
+                key: _formKey,
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        onChanged: (value) {
+                          firstName = value;
+                        },
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          labelText: "First Name",
+                          labelStyle: TextStyle(color: Colors.white),
+                          icon: Icon(Icons.person_pin, color: Colors.white),
+                          hintStyle: TextStyle(color: Colors.white),
+                          helperStyle: TextStyle(color: Colors.white),
                         ),
-                        hintText: 'What\'s Your Last Name?',
-                        hintStyle: TextStyle(
-                          color: Colors.white,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 4),
+                      TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        onChanged: (value) {
+                          lastName = value;
+                        },
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          labelText: "Last Name",
+                          labelStyle: TextStyle(color: Colors.white),
+                          icon: Icon(Icons.person_pin, color: Colors.white),
+                          hintStyle: TextStyle(color: Colors.white),
+                          helperStyle: TextStyle(color: Colors.white),
                         ),
-                        labelText: 'Last Name',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 4),
+                      TextFormField(
+                        style: TextStyle(color: Colors.white),
+                        onChanged: (value) {
+                          emailAddress = value;
+                        },
+                        textInputAction: TextInputAction.done,
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          labelStyle: TextStyle(color: Colors.white),
+                          icon: Icon(Icons.email, color: Colors.white),
+                          hintStyle: TextStyle(color: Colors.white),
+                          helperStyle: TextStyle(color: Colors.white),
+                        ),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (email) =>
+                            email != null && !EmailValidator.validate(email)
+                                ? 'Enter a valid email'
+                                : null,
+                      ),
+                      SizedBox(height: 10),
+                      Center(
+                        child: MyElevatedButton(
+                          label: 'Add Contact',
+                          width: double.infinity,
+                          icon: Icon(Icons.person_add),
+                          onPressed: addContacts,
+                          borderRadius: BorderRadius.circular(10),
+                          child: Text('Add Contact'),
                         ),
                       ),
-                      onChanged: (value) {
-                        lastName = value;
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
+                    ],
                   ),
-                  SizedBox(height: 10),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Sending Data to Cloud Firestore"),
-                            ),
-                          );
-                          contacts
-                              .add({
-                                'firstName': firstName,
-                                'lastName': lastName
-                              })
-                              .then((value) => print('Contact Added'))
-                              .catchError((error) =>
-                                  print('Failed to add contact: $error'));
-
-                          //Return to contacts page
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => RoutePage(
-                                    appBar: AppBarWidget(),
-                                    page: ContactsSearchPage(),
-                                    showDrawer: false,
-                                  )));
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                                colors: [Styling.redDark, Styling.orangeDark]),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Container(
-                          width: 100,
-                          height: 40,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Submit',
-                            style: const TextStyle(
-                                fontSize: 16, fontStyle: FontStyle.normal),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )),
+                )),
+          ],
+        ),
+      ),
     );
+  }
+
+  Future addContacts() async {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Sending Data to Cloud Firestore"),
+        ),
+      );
+      contacts
+          .add({
+            'firstName': firstName,
+            'lastName': lastName,
+            'emailAddress': emailAddress
+          })
+          .then((value) => print('Contact Added'))
+          .catchError((error) => print('Failed to add contact: $error'));
+
+      //Return to contacts page
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => RoutePage(
+                appBar: AppBarWidget(),
+                page: ContactsSearchPage(),
+                showDrawer: false,
+              )));
+    }
   }
 }

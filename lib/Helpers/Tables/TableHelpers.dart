@@ -10,6 +10,7 @@ class TableHelpers {
     for (int i = 0; i < rowsData.length; i++) {
       String fistName = rowsData[i].firstName;
       String lastName = rowsData[i].lastName;
+      String emailAddress = rowsData[i].emailAddress;
 
       DataRow row = DataRow(
         cells: [
@@ -20,6 +21,11 @@ class TableHelpers {
           )),
           DataCell(Text(
             lastName,
+            style: TextStyle(color: textColor),
+            textAlign: textAlign,
+          )),
+          DataCell(Text(
+            emailAddress,
             style: TextStyle(color: textColor),
             textAlign: textAlign,
           )),
