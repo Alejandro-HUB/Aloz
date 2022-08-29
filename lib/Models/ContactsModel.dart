@@ -2,11 +2,13 @@ class Contact {
   String firstName;
   String lastName;
   String emailAddress;
+  bool? selected;
 
   Contact({
     this.firstName = '',
     this.lastName = '',
     this.emailAddress = '',
+    this.selected = false,
   });
 
   static List<Contact> populateContactsList(
