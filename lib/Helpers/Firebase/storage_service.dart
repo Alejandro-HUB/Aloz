@@ -1,9 +1,6 @@
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
 import '../Constants/Styling.dart';
 
@@ -16,7 +13,7 @@ class Storage {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(
+        builder: (context) => const Center(
               child: CircularProgressIndicator(),
             ));
     try {
@@ -27,10 +24,12 @@ class Storage {
           FirebaseAuth.instance.currentUser!.uid.toString(), "profile_picture");
 
       //Put the path of the file into firestore
+      // ignore: use_build_context_synchronously
       addImageToFireStore(context, fileName);
 
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("File Uploaded."),
         ),
       );
@@ -45,10 +44,12 @@ class Storage {
             "profile_picture");
 
         //Put the path of the file into firestore
+        // ignore: use_build_context_synchronously
         addImageToFireStore(context, fileName);
 
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("File Uploaded."),
           ),
         );
@@ -61,6 +62,7 @@ class Storage {
       }
     }
 
+    // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
 
@@ -74,11 +76,13 @@ class Storage {
             'email': FirebaseAuth.instance.currentUser!.email,
             'profile_picture': imagePath,
           })
+          // ignore: avoid_print
           .then((value) => print('Image Added'))
+          // ignore: avoid_print
           .catchError((error) => print('Failed to add Image: $error'));
           
       //Add profile picture to FirebaseAuth as well
-      if (imagePath != null && imagePath.isNotEmpty) {
+      if (imagePath.isNotEmpty) {
         FirebaseAuth.instance.currentUser!.updatePhotoURL(imagePath);
       }
     } on FirebaseAuthException catch (e) {
@@ -107,19 +111,21 @@ class Storage {
   Future<ListResult> listFiles(String bucketName, BuildContext context) async {
     ListResult results = await storage.ref(bucketName).listAll();
 
-    results.items.forEach((Reference ref) {
+    for (var ref in results.items) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Found file: $ref'),
         ),
       );
-    });
+    }
     return results;
   }
 
   Future<String> downloadURL(String imageName) async {
-    String downloadURL =
-        imageName != "" ? await storage.ref(imageName).getDownloadURL() : "";
+    String downloadURL = "";
+
+    downloadURL = imageName != "" ? await storage.ref(imageName).getDownloadURL() : "";
 
     return downloadURL;
   }
@@ -191,7 +197,7 @@ class listImages extends StatelessWidget {
                         }
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (!snapshot.hasData || bucketName == "") {
                         if (profilePicture) {
                           return CircleAvatar(
@@ -200,11 +206,11 @@ class listImages extends StatelessWidget {
                             child: Image.asset("images/profile.png"),
                           );
                         } else {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text('Something went wrong'),
                           ),
                         );
@@ -213,7 +219,7 @@ class listImages extends StatelessWidget {
                     });
               }
 
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             },
           ),
         ],
@@ -222,7 +228,9 @@ class listImages extends StatelessWidget {
   }
 }
 
+// ignore: camel_case_types
 class listImageNames extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final bucketName;
 
   const listImageNames({
@@ -258,10 +266,10 @@ class listImageNames extends StatelessWidget {
           }
           if (snapshot.connectionState == ConnectionState.waiting ||
               !snapshot.hasData) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Something went wrong'),
               ),
             );
