@@ -1,15 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firedart/generated/google/firestore/v1/document.pb.dart';
 import 'package:flutter/material.dart';
-import 'package:projectcrm/Pages/Login_Signup/login_page.dart';
 import 'package:projectcrm/Pages/Users/profile_page.dart';
 import 'package:projectcrm/Helpers/Routing/route.dart';
 import 'package:projectcrm/main.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
 import '../Helpers/Constants/Styling.dart';
 import '../Helpers/Firebase/storage_service.dart';
-import 'drawer_page.dart';
-import '../Pages/Home/widget_tree.dart';
 
 List<String> _buttonNames = ["Overview", "Revenue", "Sales", "Control"];
 List<String> _menuItems = ["My Profile", "Logout"];
@@ -18,7 +14,10 @@ String email = "user";
 int _currentSelectedButton = 0;
 
 class AppBarWidget extends StatefulWidget {
+  const AppBarWidget({Key? key}) : super(key: key);
+
   @override
+  // ignore: library_private_types_in_public_api
   _AppBarWidgetState createState() => _AppBarWidgetState();
 }
 
@@ -35,11 +34,12 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         children: [
           if (ResponsiveLayout.isComputer(context))
             Container(
-              margin: EdgeInsets.all(Styling.kPadding),
+              margin: const EdgeInsets.all(Styling.kPadding),
               height: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
+                  // ignore: unnecessary_const
+                  const BoxShadow(
                       color: Styling.purpleLight,
                       offset: Offset(0, 0),
                       spreadRadius: 1,
@@ -60,12 +60,12 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               },
               iconSize: 30,
               color: Colors.white,
-              icon: Icon(Icons.menu),
+              icon: const Icon(Icons.menu),
             ),
-          SizedBox(
+          const SizedBox(
             width: Styling.kPadding,
           ),
-          Spacer(),
+          const Spacer(),
           if (ResponsiveLayout.isComputer(context))
             ...List.generate(
               _buttonNames.length,
@@ -76,7 +76,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   });
                 },
                 child: Padding(
-                  padding: EdgeInsets.all(Styling.kPadding * 2),
+                  padding: const EdgeInsets.all(Styling.kPadding * 2),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,12 +89,12 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                                 : Colors.white70),
                       ),
                       Container(
-                        margin: EdgeInsets.all(Styling.kPadding / 2),
+                        margin: const EdgeInsets.all(Styling.kPadding / 2),
                         width: 60,
                         height: 2,
                         decoration: BoxDecoration(
                           gradient: _currentSelectedButton == index
-                              ? LinearGradient(
+                              ? const LinearGradient(
                                   colors: [
                                     Styling.redDark,
                                     Styling.orangeDark,
@@ -117,13 +117,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 children: [
                   Text(
                     _buttonNames[_currentSelectedButton],
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   Container(
-                    margin: EdgeInsets.all(Styling.kPadding / 2),
+                    margin: const EdgeInsets.all(Styling.kPadding / 2),
                     width: 60,
                     height: 2,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
                           Styling.redDark,
@@ -135,13 +135,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ],
               ),
             ),
-          Spacer(),
+          const Spacer(),
           if (!ResponsiveLayout.isPhone(context))
             IconButton(
               color: Colors.white,
               iconSize: 30,
               onPressed: () {},
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
             ),
           if (!ResponsiveLayout.isPhone(context))
             Stack(
@@ -150,12 +150,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   color: Colors.white,
                   iconSize: 30,
                   onPressed: () {},
-                  icon: Icon(Icons.notifications_none_outlined),
+                  icon: const Icon(Icons.notifications_none_outlined),
                 ),
-                Positioned(
+                const Positioned(
                   right: 6,
                   top: 6,
-                  child: CircleAvatar(
+                  // ignore: unnecessary_const
+                  child: const CircleAvatar(
                     backgroundColor: Colors.pink,
                     radius: 8,
                     child: Text(
@@ -169,50 +170,48 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
               ],
             ),
-          Container(
-            child: DropdownButton<String>(
-              hint: Text(
-                email,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: ResponsiveLayout.isPhone(context) ? 9 : 15),
-              ),
-              autofocus: true,
-              isDense: true,
-              borderRadius: BorderRadius.circular(20),
-              icon: Icon(
-                Icons.arrow_drop_down,
-                color: Colors.white,
-              ),
-              items: _menuItems.map(buildMenuItem).toList(),
-              onChanged: (value) => setState(() {
-                index = value;
-                if (index == "Logout") {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MainPage(),
-                  ));
-                } else if (index == "My Profile") {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => RoutePage(
-                            appBar: AppBarWidget(),
-                            page: ProfilePage(),
-                            showDrawer: false,
-                          )));
-                }
-              }),
-              style: TextStyle(fontSize: 15),
+          DropdownButton<String>(
+            hint: Text(
+              email,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: ResponsiveLayout.isPhone(context) ? 9 : 15),
             ),
+            autofocus: true,
+            isDense: true,
+            borderRadius: BorderRadius.circular(20),
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.white,
+            ),
+            items: _menuItems.map(buildMenuItem).toList(),
+            onChanged: (value) => setState(() {
+              index = value;
+              if (index == "Logout") {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const MainPage(),
+                ));
+              } else if (index == "My Profile") {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => RoutePage(
+                          appBar: AppBarWidget(),
+                          page: ProfilePage(),
+                          showDrawer: false,
+                        )));
+              }
+            }),
+            style: const TextStyle(fontSize: 15),
           ),
           Container(
-            margin: EdgeInsets.all(Styling.kPadding),
+            margin: const EdgeInsets.all(Styling.kPadding),
             height: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
             child: listImages(
               collectionName: "Users",
-              documentName: FirebaseAuth.instance.currentUser!.uid == null
+              documentName: FirebaseAuth.instance.currentUser?.uid == null
                   ? ""
                   : FirebaseAuth.instance.currentUser!.uid,
               fieldName: "profile_picture",
@@ -230,7 +229,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         value: item,
         child: Text(
           item,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       );
 }
