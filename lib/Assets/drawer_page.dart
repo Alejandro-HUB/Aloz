@@ -20,7 +20,7 @@ int? currentPage = 0;
 
 List<ButtonsInfo> _buttonNames = [
   ButtonsInfo(tittle: "Home", Icon: Icons.home),
-  ButtonsInfo(tittle: "Settings", Icon: Icons.settings),
+  ButtonsInfo(tittle: "Setting", Icon: Icons.settings),
   ButtonsInfo(tittle: "Notifications", Icon: Icons.notifications),
   ButtonsInfo(tittle: "Contacts", Icon: Icons.contact_phone_rounded),
   ButtonsInfo(tittle: "Sales", Icon: Icons.sell),
