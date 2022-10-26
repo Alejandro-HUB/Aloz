@@ -266,7 +266,6 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                 value: rowsData[i].selected,
                 onChanged: (value) {
                   setState(() {
-                    Test = value.toString() + rowsData[i].firstName;
                     rowsData[i].selected = value == null
                         ? false
                         : value == false
