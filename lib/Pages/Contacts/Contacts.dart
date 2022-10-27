@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../Assets/app_bar_widget.dart';
@@ -8,7 +7,6 @@ import '../../Helpers/Constants/Styling.dart';
 import '../../Helpers/Routing/route.dart';
 import '../../Models/ContactsModel.dart';
 import 'ContactEntryForm.dart';
-import '../../Helpers/Tables/TableHelpers.dart';
 
 class ContactsSearchPage extends StatefulWidget {
   const ContactsSearchPage({Key? key}) : super(key: key);
@@ -31,13 +29,12 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
   //List to hold selected contacts
   List<Contact> selectedContacts = [];
   bool allContactsSelected = false;
-  
+
   //Initialize data table data
   List<DataRow> contactRows = [];
   List<Contact> rowsData = [];
   List<DataColumn> contactColumns = [];
   List<String> columnsData = [
-    "",
     "First Name",
     "Last Name",
     "Email Address",
@@ -214,25 +211,86 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                                   scrollDirection: Axis.vertical,
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    child: DataTable(
-                                        // ignore: prefer_const_constructors
-                                        headingTextStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                              left: 0,
+                                              top: 55,
+                                              right: 0,
+                                              bottom: 0),
+                                          height: 400,
+                                          width: 100,
+                                          child: ScrollConfiguration(
+                                            behavior:
+                                                ScrollConfiguration.of(context)
+                                                    .copyWith(
+                                                        scrollbars: false),
+                                            child: ListView.builder(
+                                                itemCount: rowsData.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return CheckboxListTile(
+                                                    value: rowsData[index]
+                                                        .selected,
+                                                    onChanged: (selected) {
+                                                      setState(() {
+                                                        rowsData[index]
+                                                                .selected =
+                                                            selected != null &&
+                                                                    selected !=
+                                                                        false
+                                                                ? true
+                                                                : false;
+
+                                                        if (rowsData[index]
+                                                            .selected) {
+                                                          selectedContacts.add(
+                                                              rowsData[index]);
+                                                        } else {
+                                                          selectedContacts
+                                                              .remove(rowsData[
+                                                                  index]);
+                                                        }
+                                                      });
+                                                    },
+                                                  );
+                                                }),
+                                          ),
                                         ),
-                                        // ignore: prefer_const_constructors
-                                        decoration: BoxDecoration(
-                                          color: Styling.purpleLight,
+                                        Container(
+                                          // ignore: prefer_const_constructors
+                                          constraints: BoxConstraints(
+                                            maxHeight: 400,
+                                          ),
+                                          child: DataTable(
+                                              // ignore: prefer_const_constructors
+                                              headingTextStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                              // ignore: prefer_const_constructors
+                                              decoration: BoxDecoration(
+                                                color: Styling.purpleLight,
+                                              ),
+                                              border: TableBorder.all(
+                                                width: 1.5,
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10)),
+                                              ),
+                                              columns: contactColumns,
+                                              rows: contactRows),
                                         ),
-                                        border: TableBorder.all(
-                                          width: 1.5,
-                                          color: Colors.white,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        columns: contactColumns,
-                                        rows: contactRows),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -260,28 +318,6 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
 
       DataRow row = DataRow(
         cells: [
-          DataCell(Theme(
-              data: ThemeData(unselectedWidgetColor: Colors.white),
-              child: Checkbox(
-                value: rowsData[i].selected,
-                onChanged: (value) {
-                  setState(() {
-                    rowsData[i].selected = value == null
-                        ? false
-                        : value == false
-                            ? false
-                            : true;
-                  });
-
-                  if (value == true) {
-                    selectedContacts.add(rowsData[i]);
-                  } else {
-                    selectedContacts.remove(rowsData[i]);
-                  }
-                },
-                activeColor: Colors.orange,
-                tristate: true,
-              ))),
           DataCell(Text(
             firstName,
             style: TextStyle(color: textColor),
@@ -314,49 +350,13 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
       String columnName = columnData[i];
       DataColumn column = const DataColumn(label: Text(""));
 
-      if (columnName == "") {
-        column = DataColumn(
-            label: Theme(
-                data: ThemeData(unselectedWidgetColor: Colors.white),
-                child: Checkbox(
-                  value: allContactsSelected,
-                  onChanged: (value) {
-                    setState(() {
-                      allContactsSelected = value == null
-                          ? false
-                          : value == false
-                              ? false
-                              : true;
-
-                      if (selectedContacts.isNotEmpty) {
-                        selectedContacts.clear();
-                      }
-
-                      if (allContactsSelected) {
-                        for (var element in rowsData) {
-                          element.selected = true;
-                          selectedContacts.add(element);
-                        }
-                      } else {
-                        for (var element in rowsData) {
-                          element.selected = false;
-                        }
-                        selectedContacts.clear();
-                      }
-                    });
-                  },
-                  activeColor: Colors.orange,
-                  tristate: true,
-                )));
-      } else {
-        column = DataColumn(
-          label: Text(
-            columnName,
-            style: TextStyle(color: textColor),
-            textAlign: textAlign,
-          ),
-        );
-      }
+      column = DataColumn(
+        label: Text(
+          columnName,
+          style: TextStyle(color: textColor),
+          textAlign: textAlign,
+        ),
+      );
 
       dataColumns.add(column);
     }
