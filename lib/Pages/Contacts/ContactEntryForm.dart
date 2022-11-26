@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +8,7 @@ import '../../Assets/app_bar_widget.dart';
 import '../../Assets/buttons.dart';
 import '../../Helpers/Constants/Styling.dart';
 import '../../Helpers/Routing/route.dart';
+import '../../Models/ContactsModel.dart';
 import 'Contacts.dart';
 
 class ContactEntryForm extends StatefulWidget {
@@ -23,12 +26,9 @@ class ContactEntryFormState extends State<ContactEntryForm> {
   CollectionReference contacts = FirebaseFirestore.instance
       .collection("Contacts")
       .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection(
-          "Contacts:${FirebaseAuth.instance.currentUser!.uid}");
+      .collection("Contacts:${FirebaseAuth.instance.currentUser!.uid}");
 
-  var firstName = '';
-  var lastName = '';
-  var emailAddress = '';
+  Contact contactToAdd = Contact();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class ContactEntryFormState extends State<ContactEntryForm> {
                       TextFormField(
                         style: const TextStyle(color: Colors.white),
                         onChanged: (value) {
-                          firstName = value;
+                          contactToAdd.firstName = value;
                         },
                         textInputAction: TextInputAction.next,
                         // ignore: prefer_const_constructors
@@ -62,7 +62,8 @@ class ContactEntryFormState extends State<ContactEntryForm> {
                           labelText: "First Name",
                           // ignore: prefer_const_constructors
                           labelStyle: TextStyle(color: Colors.white),
-                          icon: const Icon(Icons.person_pin, color: Colors.white),
+                          icon:
+                              const Icon(Icons.person_pin, color: Colors.white),
                           hintStyle: const TextStyle(color: Colors.white),
                           helperStyle: const TextStyle(color: Colors.white),
                         ),
@@ -77,14 +78,15 @@ class ContactEntryFormState extends State<ContactEntryForm> {
                       TextFormField(
                         style: const TextStyle(color: Colors.white),
                         onChanged: (value) {
-                          lastName = value;
+                          contactToAdd.lastName = value;
                         },
                         textInputAction: TextInputAction.next,
                         // ignore: prefer_const_constructors
                         decoration: InputDecoration(
                           labelText: "Last Name",
                           labelStyle: const TextStyle(color: Colors.white),
-                          icon: const Icon(Icons.person_pin, color: Colors.white),
+                          icon:
+                              const Icon(Icons.person_pin, color: Colors.white),
                           hintStyle: const TextStyle(color: Colors.white),
                           // ignore: prefer_const_constructors
                           helperStyle: TextStyle(color: Colors.white),
@@ -100,7 +102,7 @@ class ContactEntryFormState extends State<ContactEntryForm> {
                       TextFormField(
                         style: const TextStyle(color: Colors.white),
                         onChanged: (value) {
-                          emailAddress = value;
+                          contactToAdd.emailAddress = value;
                         },
                         textInputAction: TextInputAction.done,
                         decoration: const InputDecoration(
@@ -143,20 +145,22 @@ class ContactEntryFormState extends State<ContactEntryForm> {
           content: Text("Sending Data to Cloud Firestore"),
         ),
       );
-      contacts
-          .add({
-            'firstName': firstName,
-            'lastName': lastName,
-            'emailAddress': emailAddress
-          })
+
+      var doc = contacts.doc();
+      contactToAdd.id = doc.id;
+      await doc
+          .set(contactToAdd.toJson())
+          // ignore: avoid_print
           .then((value) => print('Contact Added'))
           // ignore: avoid_print
           .catchError((error) => print('Failed to add contact: $error'));
 
       //Return to contacts page
+      // ignore: use_build_context_synchronously
       Navigator.of(context).push(MaterialPageRoute(
+          // ignore: prefer_const_constructors
           builder: (context) => RoutePage(
-                appBar: AppBarWidget(),
+                appBar: const AppBarWidget(),
                 page: const ContactsSearchPage(),
                 showDrawer: false,
               )));

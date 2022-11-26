@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:projectcrm/Assets/SelectedContent.dart';
+import 'package:projectcrm/Pages/Contacts/ContactDetail.dart';
 import '../../Assets/app_bar_widget.dart';
 import '../../Assets/buttons.dart';
 import '../../Helpers/Constants/Styling.dart';
@@ -16,6 +18,8 @@ class ContactsSearchPage extends StatefulWidget {
   _ContactsSearchPageState createState() => _ContactsSearchPageState();
 }
 
+Contact selectedContact = Contact();
+
 //Firebase connection to collection in firestore
 String? query;
 CollectionReference contacts = FirebaseFirestore.instance
@@ -26,15 +30,15 @@ CollectionReference contacts = FirebaseFirestore.instance
 class _ContactsSearchPageState extends State<ContactsSearchPage> {
   final searchController = TextEditingController();
 
-  //List to hold selected contacts
-  List<Contact> selectedContacts = [];
-  bool allContactsSelected = false;
+  //Shows Contact Menu Bar
+  bool isContactSelected = false;
 
   //Initialize data table data
   List<DataRow> contactRows = [];
   List<Contact> rowsData = [];
   List<DataColumn> contactColumns = [];
   List<String> columnsData = [
+    "Select",
     "First Name",
     "Last Name",
     "Email Address",
@@ -56,254 +60,224 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // ignore: prefer_const_constructors
-        title: Text(
-          "Contacts",
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Styling.purpleLight,
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    if (selectedContacts.isNotEmpty)
-                      Text(
-                        // ignore: prefer_interpolation_to_compose_strings
-                        "Selected Contacts: " +
-                            selectedContacts.length.toString(),
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isContactSelected = false;
+        });
+      },
+      child: Stack(children: [
+        Scaffold(
+          appBar: AppBar(
+            // ignore: prefer_const_constructors
+            title: Text(
+              "Contacts",
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Styling.purpleLight,
+          ),
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
                       children: [
-                        Container(),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(),
 
-                        //Text box for querying contacts
-                        FittedBox(
-                          child: SizedBox(
-                            width: 200,
-                            child: TextFormField(
-                              style: const TextStyle(color: Colors.white),
-                              controller: searchController,
-                              onChanged: (value) {
-                                setState(() {
-                                  //Update Contacts based on query specified by the user
-                                  query = value;
-
-                                  rowsData = rowsData
-                                      .where((element) =>
-                                          element.firstName
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase()) ||
-                                          element.lastName
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase()) ||
-                                          element.emailAddress
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase()))
-                                      .toList();
-
-                                  contactRows = buildContactListOfDataRows(
-                                      context,
-                                      rowsData,
-                                      Colors.white,
-                                      TextAlign.center);
-                                });
-                              },
-                              textInputAction: TextInputAction.search,
-                              // ignore: prefer_const_constructors
-                              decoration: InputDecoration(
-                                hintText: 'Search for Contacts',
-                                icon: const Icon(Icons.search,
-                                    color: Colors.white),
-                                hintStyle: const TextStyle(color: Colors.white),
-                                helperStyle:
-                                    const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        //Button for importing data
-                        FittedBox(
-                          child: MyElevatedButton(
-                            label: "Import Data",
-                            width: 150,
-                            icon: const Icon(Icons.import_export),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  // ignore: prefer_const_constructors
-                                  builder: (context) => RoutePage(
-                                        appBar: AppBarWidget(),
-                                        page: const ContactEntryForm(),
-                                        showDrawer: false,
-                                      )));
-                            },
-                            borderRadius: BorderRadius.circular(10),
-                            child: const Text('Import Data'),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    //Contains the Data Table and data
-                    Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: StreamBuilder<QuerySnapshot>(
-                          stream: Contacts,
-                          builder: (
-                            BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot,
-                          ) {
-                            if (snapshot.hasError) {
-                              // ignore: prefer_const_constructors
-                              return Text(
-                                "Something went wrong",
-                                style: const TextStyle(color: Colors.white),
-                              );
-                            }
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return (const Text(
-                                "Loading",
-                                style: TextStyle(color: Colors.white),
-                              ));
-                            }
-
-                            final data = snapshot.requireData;
-
-                            //Fill the list of Columns
-                            contactColumns = buildListOfDataColumns(
-                                columnsData, Colors.white, TextAlign.center);
-
-                            //Fill the list of Contacts from Firebase
-                            if (data != null &&
-                                contactRows.length < data.size) {
-                              if (query == null || query == "") {
-                                rowsData.clear();
-                                contactRows.clear();
-
-                                rowsData = Contact.populateContactsList(
-                                    data, rowsData);
-
-                                contactRows = buildContactListOfDataRows(
-                                    context,
-                                    rowsData,
-                                    Colors.white,
-                                    TextAlign.center);
-                              }
-                            }
-
-                            //Data Table to show Contact Data
-                            return Center(
+                            //Text box for querying contacts
+                            FittedBox(
                               child: SizedBox(
-                                width: double.infinity,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                              left: 0,
-                                              top: 55,
-                                              right: 0,
-                                              bottom: 0),
-                                          height: 400,
-                                          width: 100,
-                                          child: ScrollConfiguration(
-                                            behavior:
-                                                ScrollConfiguration.of(context)
-                                                    .copyWith(
-                                                        scrollbars: false),
-                                            child: ListView.builder(
-                                                itemCount: rowsData.length,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  return CheckboxListTile(
-                                                    value: rowsData[index]
-                                                        .selected,
-                                                    onChanged: (selected) {
-                                                      setState(() {
-                                                        rowsData[index]
-                                                                .selected =
-                                                            selected != null &&
-                                                                    selected !=
-                                                                        false
-                                                                ? true
-                                                                : false;
+                                width: 200,
+                                child: TextFormField(
+                                  style: const TextStyle(color: Colors.white),
+                                  controller: searchController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      //Update Contacts based on query specified by the user
+                                      query = value;
 
-                                                        if (rowsData[index]
-                                                            .selected) {
-                                                          selectedContacts.add(
-                                                              rowsData[index]);
-                                                        } else {
-                                                          selectedContacts
-                                                              .remove(rowsData[
-                                                                  index]);
-                                                        }
-                                                      });
-                                                    },
-                                                  );
-                                                }),
-                                          ),
-                                        ),
-                                        Container(
-                                          // ignore: prefer_const_constructors
-                                          constraints: BoxConstraints(
-                                            maxHeight: 400,
-                                          ),
-                                          child: DataTable(
-                                              // ignore: prefer_const_constructors
-                                              headingTextStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                              ),
-                                              // ignore: prefer_const_constructors
-                                              decoration: BoxDecoration(
-                                                color: Styling.purpleLight,
-                                              ),
-                                              border: TableBorder.all(
-                                                width: 1.5,
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(10)),
-                                              ),
-                                              columns: contactColumns,
-                                              rows: contactRows),
-                                        ),
-                                      ],
-                                    ),
+                                      rowsData = rowsData
+                                          .where((element) =>
+                                              element.firstName
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      value.toLowerCase()) ||
+                                              element.lastName
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      value.toLowerCase()) ||
+                                              element.emailAddress
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      value.toLowerCase()))
+                                          .toList();
+
+                                      contactRows = buildContactListOfDataRows(
+                                          context,
+                                          rowsData,
+                                          Colors.white,
+                                          TextAlign.center);
+                                    });
+                                  },
+                                  textInputAction: TextInputAction.search,
+                                  // ignore: prefer_const_constructors
+                                  decoration: InputDecoration(
+                                    hintText: 'Search for Contacts',
+                                    icon: const Icon(Icons.search,
+                                        color: Colors.white),
+                                    hintStyle:
+                                        const TextStyle(color: Colors.white),
+                                    helperStyle:
+                                        const TextStyle(color: Colors.white),
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        )),
-                  ],
-                ),
+                            ),
+
+                            //Button for importing data
+                            FittedBox(
+                              child: MyElevatedButton(
+                                label: "Import Data",
+                                width: 150,
+                                icon: const Icon(Icons.import_export),
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      // ignore: prefer_const_constructors
+                                      builder: (context) => RoutePage(
+                                            appBar: AppBarWidget(),
+                                            page: const ContactEntryForm(),
+                                            showDrawer: false,
+                                          )));
+                                },
+                                borderRadius: BorderRadius.circular(10),
+                                child: const Text('Import Data'),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        //Contains the Data Table and data
+                        Container(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: Contacts,
+                              builder: (
+                                BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot,
+                              ) {
+                                if (snapshot.hasError) {
+                                  // ignore: prefer_const_constructors
+                                  return Text(
+                                    "Something went wrong",
+                                    style: const TextStyle(color: Colors.white),
+                                  );
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return (const Text(
+                                    "Loading",
+                                    style: TextStyle(color: Colors.white),
+                                  ));
+                                }
+
+                                final data = snapshot.requireData;
+
+                                //Fill the list of Columns
+                                contactColumns = buildListOfDataColumns(
+                                    columnsData,
+                                    Colors.white,
+                                    TextAlign.center);
+
+                                //Fill the list of Contacts from Firebase
+                                if (data != null &&
+                                    contactRows.length < data.size) {
+                                  if (query == null || query == "") {
+                                    rowsData.clear();
+                                    contactRows.clear();
+
+                                    rowsData = Contact.populateContactsList(
+                                        data, rowsData);
+
+                                    contactRows = buildContactListOfDataRows(
+                                        context,
+                                        rowsData,
+                                        Colors.white,
+                                        TextAlign.center);
+                                  }
+                                }
+
+                                //Data Table to show Contact Data
+                                return Center(
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: DataTable(
+                                            // ignore: prefer_const_constructors
+                                            headingTextStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                            // ignore: prefer_const_constructors
+                                            decoration: BoxDecoration(
+                                              color: Styling.purpleLight,
+                                            ),
+                                            border: TableBorder.all(
+                                              width: 1.5,
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(10)),
+                                            ),
+                                            columns: contactColumns,
+                                            rows: contactRows),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            )),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+        //Shows Contact Menu Bar
+        if (isContactSelected)
+          SelectedContent(
+              onPressedOpen: (() {
+                setState(() {
+                  openContact();
+                  isContactSelected = false;
+                });
+              }),
+              onPressedExport: (() {
+                setState(() {
+                  isContactSelected = false;
+                });
+              }),
+              onPressedDelete: (() {
+                setState(() {
+                  deleteContact();
+                  isContactSelected = false;
+                });
+              }),
+              label:
+                  "Contact selected: ${selectedContact.firstName} ${selectedContact.lastName}")
+      ]),
     );
   }
 
@@ -318,6 +292,19 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
 
       DataRow row = DataRow(
         cells: [
+          DataCell(
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    selectedContact = rowsData[i];
+                    isContactSelected = true;
+                  });
+                },
+                icon: const Icon(
+                  Icons.pending,
+                  color: Colors.white,
+                )),
+          ),
           DataCell(Text(
             firstName,
             style: TextStyle(color: textColor),
@@ -362,5 +349,35 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
     }
 
     return dataColumns;
+  }
+
+  Future openContact() async{
+    // ignore: use_build_context_synchronously
+      Navigator.of(context).push(MaterialPageRoute(
+          // ignore: prefer_const_constructors
+          builder: (context) => RoutePage(
+                appBar: const AppBarWidget(),
+                page: ContactDetail(selectedContact: selectedContact),
+                showDrawer: false,
+              )));
+  }
+
+  Future deleteContact() async {
+    await contacts
+        .doc(selectedContact.id)
+        .delete()
+        .then((value) => {
+              setState(
+                () {
+                  // ignore: avoid_print
+                  print(
+                      "Contact Deleted: ${selectedContact.firstName} ${selectedContact.lastName}");
+                  rowsData.remove(selectedContact);
+                  contactRows = buildContactListOfDataRows(
+                      context, rowsData, Colors.white, TextAlign.center);
+                },
+              )
+            })
+        .catchError((error) => print('Failed to add contact: $error'));
   }
 }

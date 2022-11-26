@@ -7,7 +7,6 @@ import 'package:projectcrm/Pages/Home/panel_right_page.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
 import '../../Helpers/Constants/Styling.dart';
 import 'package:projectcrm/Assets/drawer_page.dart';
-
 import '../Contacts/Contacts.dart';
 import '../Users/profile_page.dart';
 
