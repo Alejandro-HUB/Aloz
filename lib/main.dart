@@ -32,12 +32,14 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Styling.purpleDark,
         canvasColor: Styling.purpleLight,
       ),
-      home: MainPage(),
+      home: const MainPage(),
     );
   }
 }
 
 class MainPage extends StatelessWidget {
+  const MainPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: StreamBuilder<User?>(
@@ -46,14 +48,14 @@ class MainPage extends StatelessWidget {
             if (snapshot.hasData && !snapshot.hasError) {
               return VerifyEmailPage();
             } else if (snapshot.hasError) {
-              return Center(
+              return const Center(
                 child: Text(
                   'Something went wrong',
                   style: TextStyle(color: Colors.white),
                 ),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else {
