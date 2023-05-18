@@ -1,11 +1,17 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:excel/excel.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Assets/SelectedContent.dart';
+import 'package:projectcrm/Helpers/ExportData/ExcelHelper.dart';
 import 'package:projectcrm/Pages/Contacts/ContactDetail.dart';
 import '../../Assets/app_bar_widget.dart';
 import '../../Assets/buttons.dart';
 import '../../Helpers/Constants/Styling.dart';
+import '../../Helpers/Constants/responsive_layout.dart';
 import '../../Helpers/Routing/route.dart';
 import '../../Models/ContactsModel.dart';
 import 'ContactEntryForm.dart';
@@ -44,6 +50,9 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
     "Email Address",
   ];
 
+  //Export file
+  ExcelHelper excelHelper = ExcelHelper();
+
   @override
   void dispose() {
     searchController.dispose();
@@ -80,176 +89,185 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
             child: Center(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
+                  const SizedBox(height: 10),
+                  //Page Controls
+                  SizedBox(
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(),
+                        //Button for exporting data
+                        if (!ResponsiveLayout.isPhone(context))
+                          MyElevatedButton(
+                            label: "Export Data",
+                            width: 150,
+                            icon: const Icon(Icons.download),
+                            onPressed: () {
+                              excelHelper.exportToExcel(contactRows,
+                                  contactColumns, 'Contacts', true);
+                            },
+                            borderRadius: BorderRadius.circular(10),
+                            child: const Text('Export Data'),
+                          ),
+                        //Text box for querying contacts
+                        SizedBox(
+                          width: 200,
+                          child: TextFormField(
+                            style: const TextStyle(color: Colors.white),
+                            controller: searchController,
+                            onChanged: (value) {
+                              setState(() {
+                                //Update Contacts based on query specified by the user
+                                query = value;
 
-                            //Text box for querying contacts
-                            FittedBox(
-                              child: SizedBox(
-                                width: 200,
-                                child: TextFormField(
-                                  style: const TextStyle(color: Colors.white),
-                                  controller: searchController,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      //Update Contacts based on query specified by the user
-                                      query = value;
+                                rowsData = rowsData
+                                    .where((element) =>
+                                        element.firstName
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()) ||
+                                        element.lastName
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()) ||
+                                        element.emailAddress
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()))
+                                    .toList();
 
-                                      rowsData = rowsData
-                                          .where((element) =>
-                                              element.firstName
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      value.toLowerCase()) ||
-                                              element.lastName
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      value.toLowerCase()) ||
-                                              element.emailAddress
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      value.toLowerCase()))
-                                          .toList();
-
-                                      contactRows = buildContactListOfDataRows(
-                                          context,
-                                          rowsData,
-                                          Colors.white,
-                                          TextAlign.center);
-                                    });
-                                  },
-                                  textInputAction: TextInputAction.search,
-                                  // ignore: prefer_const_constructors
-                                  decoration: InputDecoration(
-                                    hintText: 'Search for Contacts',
-                                    icon: const Icon(Icons.search,
-                                        color: Colors.white),
-                                    hintStyle:
-                                        const TextStyle(color: Colors.white),
-                                    helperStyle:
-                                        const TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            //Button for importing data
-                            FittedBox(
-                              child: MyElevatedButton(
-                                label: "Import Data",
-                                width: 150,
-                                icon: const Icon(Icons.import_export),
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      // ignore: prefer_const_constructors
-                                      builder: (context) => RoutePage(
-                                            appBar: AppBarWidget(),
-                                            page: const ContactEntryForm(),
-                                            showDrawer: false,
-                                          )));
-                                },
-                                borderRadius: BorderRadius.circular(10),
-                                child: const Text('Import Data'),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        //Contains the Data Table and data
-                        Container(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: StreamBuilder<QuerySnapshot>(
-                              stream: Contacts,
-                              builder: (
-                                BuildContext context,
-                                AsyncSnapshot<QuerySnapshot> snapshot,
-                              ) {
-                                if (snapshot.hasError) {
-                                  // ignore: prefer_const_constructors
-                                  return Text(
-                                    "Something went wrong",
-                                    style: const TextStyle(color: Colors.white),
-                                  );
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return (const Text(
-                                    "Loading",
-                                    style: TextStyle(color: Colors.white),
-                                  ));
-                                }
-
-                                final data = snapshot.requireData;
-
-                                //Fill the list of Columns
-                                contactColumns = buildListOfDataColumns(
-                                    columnsData,
+                                contactRows = buildContactListOfDataRows(
+                                    context,
+                                    rowsData,
                                     Colors.white,
                                     TextAlign.center);
+                              });
+                            },
+                            textInputAction: TextInputAction.search,
+                            // ignore: prefer_const_constructors
+                            decoration: InputDecoration(
+                              hintText: 'Search for Contacts',
+                              icon:
+                                  const Icon(Icons.search, color: Colors.white),
+                              hintStyle: const TextStyle(color: Colors.white),
+                              helperStyle: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
 
-                                //Fill the list of Contacts from Firebase
-                                if (data != null &&
-                                    contactRows.length < data.size) {
-                                  if (query == null || query == "") {
-                                    rowsData.clear();
-                                    contactRows.clear();
-
-                                    rowsData = Contact.populateContactsList(
-                                        data, rowsData);
-
-                                    contactRows = buildContactListOfDataRows(
-                                        context,
-                                        rowsData,
-                                        Colors.white,
-                                        TextAlign.center);
-                                  }
-                                }
-
-                                //Data Table to show Contact Data
-                                return Center(
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: DataTable(
-                                            // ignore: prefer_const_constructors
-                                            headingTextStyle: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
-                                            // ignore: prefer_const_constructors
-                                            decoration: BoxDecoration(
-                                              color: Styling.purpleLight,
-                                            ),
-                                            border: TableBorder.all(
-                                              width: 1.5,
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(10)),
-                                            ),
-                                            columns: contactColumns,
-                                            rows: contactRows),
-                                      ),
-                                    ),
-                                  ),
-                                );
+                        //Buttons for importing and exporting data
+                        Column(
+                          children: [
+                            if (ResponsiveLayout.isPhone(context))
+                              MyElevatedButton(
+                                label: "Export Data",
+                                width: 150,
+                                icon: const Icon(Icons.download),
+                                onPressed: () {
+                                  excelHelper.exportToExcel(contactRows,
+                                      contactColumns, 'Contacts', true);
+                                },
+                                borderRadius: BorderRadius.circular(10),
+                                child: const Text('Export Data'),
+                              ),
+                            const SizedBox(height: 10),
+                            MyElevatedButton(
+                              label: "Import Data",
+                              width: 150,
+                              icon: const Icon(Icons.import_export),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    // ignore: prefer_const_constructors
+                                    builder: (context) => RoutePage(
+                                          appBar: AppBarWidget(),
+                                          page: const ContactEntryForm(),
+                                          showDrawer: false,
+                                        )));
                               },
-                            )),
+                              borderRadius: BorderRadius.circular(10),
+                              child: const Text('Import Data'),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
+
+                  //Contains the Data Table and data
+                  Container(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: Contacts,
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot,
+                        ) {
+                          if (snapshot.hasError) {
+                            // ignore: prefer_const_constructors
+                            return Text(
+                              "Something went wrong",
+                              style: const TextStyle(color: Colors.white),
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return (const Text(
+                              "Loading",
+                              style: TextStyle(color: Colors.white),
+                            ));
+                          }
+
+                          final data = snapshot.requireData;
+
+                          //Fill the list of Columns
+                          contactColumns = buildListOfDataColumns(
+                              columnsData, Colors.white, TextAlign.center);
+
+                          //Fill the list of Contacts from Firebase
+                          if (data != null && contactRows.length < data.size) {
+                            if (query == null || query == "") {
+                              rowsData.clear();
+                              contactRows.clear();
+
+                              rowsData =
+                                  Contact.populateContactsList(data, rowsData);
+
+                              contactRows = buildContactListOfDataRows(context,
+                                  rowsData, Colors.white, TextAlign.center);
+                            }
+                          }
+
+                          //Data Table to show Contact Data
+                          return Center(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: DataTable(
+                                      // ignore: prefer_const_constructors
+                                      headingTextStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      // ignore: prefer_const_constructors
+                                      decoration: BoxDecoration(
+                                        color: Styling.purpleLight,
+                                      ),
+                                      border: TableBorder.all(
+                                        width: 1.5,
+                                        color: Colors.white,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      columns: contactColumns,
+                                      rows: contactRows),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )),
                 ],
               ),
             ),
@@ -266,6 +284,14 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
               }),
               onPressedExport: (() {
                 setState(() {
+                  List<DataRow> dataRows = [];
+                  DataRow? row =
+                      getRowByText(contactRows, selectedContact.firstName);
+                  if (row != null) {
+                    dataRows.add(row);
+                    excelHelper.exportToExcel(
+                        dataRows, contactColumns, "Contacts", true);
+                  }
                   isContactSelected = false;
                 });
               }),
@@ -279,6 +305,21 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                   "Contact selected: ${selectedContact.firstName} ${selectedContact.lastName}")
       ]),
     );
+  }
+
+  DataRow? getRowByText(List<DataRow> rows, String searchText) {
+    try {
+      return rows.firstWhere((element) {
+        return element.cells.any((cell) {
+          if (cell.child is Text && (cell.child as Text).data == searchText) {
+            return true;
+          }
+          return false;
+        });
+      });
+    } catch (e) {
+      return null;
+    }
   }
 
   List<DataRow> buildContactListOfDataRows(BuildContext context,
@@ -351,15 +392,15 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
     return dataColumns;
   }
 
-  Future openContact() async{
+  Future openContact() async {
     // ignore: use_build_context_synchronously
-      Navigator.of(context).push(MaterialPageRoute(
-          // ignore: prefer_const_constructors
-          builder: (context) => RoutePage(
-                appBar: const AppBarWidget(),
-                page: ContactDetail(selectedContact: selectedContact),
-                showDrawer: false,
-              )));
+    Navigator.of(context).push(MaterialPageRoute(
+        // ignore: prefer_const_constructors
+        builder: (context) => RoutePage(
+              appBar: const AppBarWidget(),
+              page: ContactDetail(selectedContact: selectedContact),
+              showDrawer: false,
+            )));
   }
 
   Future deleteContact() async {
