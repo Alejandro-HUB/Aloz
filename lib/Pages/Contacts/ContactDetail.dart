@@ -6,7 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Assets/buttons.dart';
 import 'package:projectcrm/Helpers/Constants/Styling.dart';
+import '../../Assets/app_bar_widget.dart';
+import '../../Helpers/Routing/route.dart';
 import '../../Models/ContactsModel.dart';
+import 'Contacts.dart';
 
 class ContactDetail extends StatefulWidget {
   final Contact selectedContact;
@@ -252,7 +255,15 @@ class _ContactDetailPageState extends State<ContactDetail> {
               'lastName': lastName,
               'emailAddress': email,
             })
-            .then((value) => print('User Updated'))
+            .then((value) => //Return to contacts page
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).push(MaterialPageRoute(
+                    // ignore: prefer_const_constructors
+                    builder: (context) => RoutePage(
+                          appBar: const AppBarWidget(),
+                          page: const ContactsSearchPage(),
+                          showDrawer: false,
+                        ))))
             .catchError((error) => print('Failed to update user: $error'));
       }
     }
