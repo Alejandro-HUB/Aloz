@@ -1,21 +1,18 @@
+// ignore_for_file: library_private_types_in_public_api, unnecessary_null_comparison, use_build_context_synchronously, duplicate_ignore, avoid_init_to_null, prefer_typing_uninitialized_variables
+
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Helpers/Firebase/storage_service.dart';
 import '../../Assets/buttons.dart';
 import '../../Helpers/Constants/Styling.dart';
-import 'package:firebase_core/firebase_core.dart';
-import '../../firebase_options.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
 import '../../main.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -34,11 +31,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Storage storage = Storage();
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Profile Page",
           style: TextStyle(color: Colors.white),
         ),
@@ -48,10 +43,10 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text(
+              const Text(
                 'Update your information:',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -59,11 +54,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               SizedBox(
                 width: 300,
                 child: TextFormField(
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                   ),
                   controller: emailController,
@@ -73,10 +68,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     labelText: "Change Email",
                     hintText:
                         FirebaseAuth.instance.currentUser!.email.toString(),
-                    labelStyle: TextStyle(color: Colors.white),
-                    icon: Icon(Icons.mail, color: Colors.white),
-                    hintStyle: TextStyle(color: Colors.white),
-                    helperStyle: TextStyle(color: Colors.white),
+                    labelStyle: const TextStyle(color: Colors.white),
+                    icon: const Icon(Icons.mail, color: Colors.white),
+                    hintStyle: const TextStyle(color: Colors.white),
+                    helperStyle: const TextStyle(color: Colors.white),
                   ),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (email) =>
@@ -85,14 +80,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           : null,
                 ),
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               SizedBox(
                 width: 300,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   controller: passwordController,
                   textInputAction: TextInputAction.done,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Change Password",
                     labelStyle: TextStyle(color: Colors.white),
                     icon: Icon(Icons.password, color: Colors.white),
@@ -102,20 +97,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   obscureText: true,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               MyElevatedButton(
                 label: 'Submit Changes',
                 width: 150,
-                icon: Icon(Icons.update),
+                icon: const Icon(Icons.update),
                 onPressed: () async {
                   updateUserDetails(emailController.text.toString(),
                       passwordController.text.toString());
                 },
                 borderRadius: BorderRadius.circular(10),
-                child: Text('Upload File'),
+                child: const Text('Upload File'),
               ),
-              SizedBox(height: 40),
-              Text(
+              const SizedBox(height: 40),
+              const Text(
                 'Update your Profile Picture:',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -123,9 +118,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               listImages(
                 collectionName: "Users",
+                // ignore: prefer_if_null_operators
                 documentName: FirebaseAuth.instance.currentUser!.uid == null
                     ? ""
                     : FirebaseAuth.instance.currentUser!.uid,
@@ -133,14 +129,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 circleAvatar: true,
                 profilePicture: true,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               MyElevatedButton(
                 label: 'Upload File',
                 width: 150,
-                icon: Icon(Icons.cloud),
+                icon: const Icon(Icons.cloud),
                 onPressed: uploadFile,
                 borderRadius: BorderRadius.circular(10),
-                child: Text('Upload File'),
+                child: const Text('Upload File'),
               ),
             ],
           ),
@@ -153,14 +149,16 @@ class _ProfilePageState extends State<ProfilePage> {
     if (email != null && email.isNotEmpty) {
       try {
         await FirebaseAuth.instance.currentUser!.updateEmail(email);
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("Updated Email: Logging you out..."),
           ),
         );
         FirebaseAuth.instance.signOut();
+        // ignore: use_build_context_synchronously
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MainPage(),
+          builder: (context) => const MainPage(),
         ));
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -171,7 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Email was not updated."),
         ),
       );
@@ -179,12 +177,14 @@ class _ProfilePageState extends State<ProfilePage> {
     if (password != null && password.isNotEmpty) {
       try {
         await FirebaseAuth.instance.currentUser!.updatePassword(password);
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("Updated Password."),
           ),
         );
       } on FirebaseAuthException catch (e) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
@@ -193,7 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Password was not updated."),
         ),
       );
@@ -229,14 +229,13 @@ class _ProfilePageState extends State<ProfilePage> {
       catch (e) {
         uploadfile = result.files.single.bytes;
       }
-      final fileName = 'UserImages/' +
-          FirebaseAuth.instance.currentUser!.uid.toString() +
-          '/' +
+      // ignore: prefer_interpolation_to_compose_strings
+      final fileName = 'UserImages/${FirebaseAuth.instance.currentUser!.uid}/' +
           result.files.first.name;
-      storage.uploadFile(fileName, uploadfile, context, ProfilePage());
+      storage.uploadFile(fileName, uploadfile, context, const ProfilePage());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("No file selected."),
         ),
       );

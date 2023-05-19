@@ -39,32 +39,36 @@ class SelectedContent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // ignore: sort_child_properties_last
+                  // Open Button
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: MyElevatedButton(
-                        onPressed: onPressedOpen,
-                        label: "Open",
-                        icon: const Icon(Icons.open_in_new),
-                        borderRadius: BorderRadius.circular(10),
-                        child: const Text("Open")),
-                  ),
-                  // ignore: sort_child_properties_last
-                  MyElevatedButton(
-                      onPressed: onPressedExport,
-                      label: "Export",
-                      icon: const Icon(Icons.import_export),
+                      onPressed: onPressedOpen,
+                      label: "Open",
+                      icon: const Icon(Icons.open_in_new),
                       borderRadius: BorderRadius.circular(10),
-                      child: const Text("Export")),
+                      child: const Text("Open"),
+                    ),
+                  ),
+                  // Export Button
+                  MyElevatedButton(
+                    onPressed: onPressedExport,
+                    label: "Export",
+                    icon: const Icon(Icons.import_export),
+                    borderRadius: BorderRadius.circular(10),
+                    child: const Text("Export"),
+                  ),
+                  // Delete Button
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: MyElevatedButton(
-                        onPressed: onPressedDelete,
-                        label: "Delete",
-                        icon: const Icon(Icons.delete),
-                        borderRadius: BorderRadius.circular(10),
-                        child: const Text("Delete")),
-                  )
+                      onPressed: onPressedDelete,
+                      label: "Delete",
+                      icon: const Icon(Icons.delete),
+                      borderRadius: BorderRadius.circular(10),
+                      child: const Text("Delete"),
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:projectcrm/Assets/app_bar_widget.dart';
 import '../../Assets/buttons.dart';
 import '../../main.dart';
 
@@ -34,13 +34,13 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               CircleAvatar(
@@ -48,10 +48,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 radius: 100,
                 child: Image.asset("images/mapp.png"),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text(
+              const Text(
                 'Create account',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -59,15 +59,15 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               TextFormField(
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: emailController,
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Email",
                   labelStyle: TextStyle(color: Colors.white),
                   icon: Icon(Icons.mail, color: Colors.white),
@@ -80,14 +80,14 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                         ? 'Enter a valid email'
                         : null,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               TextFormField(
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: passwordController,
                 textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Password",
                   labelStyle: TextStyle(color: Colors.white),
                   icon: Icon(Icons.password, color: Colors.white),
@@ -100,21 +100,21 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     ? 'Your password must have at least 6 characters.'
                     : null,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               MyElevatedButton(
                 label: 'Sign Up',
                 width: double.infinity,
-                icon: Icon(Icons.arrow_upward),
+                icon: const Icon(Icons.arrow_upward),
                 onPressed: signUp,
                 borderRadius: BorderRadius.circular(10),
-                child: Text('Sign Up'),
+                child: const Text('Sign Up'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               RichText(
                 text: TextSpan(
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   text: 'Already have an account?  ',
                   children: [
                     TextSpan(
@@ -140,7 +140,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(
+        builder: (context) => const Center(
               child: CircularProgressIndicator(),
             ));
     try {
@@ -149,7 +149,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MainPage(),
+        builder: (context) => const MainPage(),
       ));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

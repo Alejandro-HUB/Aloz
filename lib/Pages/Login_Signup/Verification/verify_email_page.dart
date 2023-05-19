@@ -1,13 +1,16 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../../Home/widget_tree.dart';
 import '../../../Assets/buttons.dart';
 import '../../../Helpers/Constants/Styling.dart';
 
 class VerifyEmailPage extends StatefulWidget {
+  const VerifyEmailPage({Key? key}) : super(key: key);
+
   @override
   _VerifyEmailPageState createState() => _VerifyEmailPageState();
 }
@@ -22,12 +25,15 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   void initState() {
     super.initState();
 
+    // Check if email is verified
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
 
     if (!isEmailVerified) {
+      // Send verification email and start a timer to check for email verification
       sendVerificationEmail();
 
-      timer = Timer.periodic(Duration(seconds: 3), (_) => checkEmailVerified());
+      timer = Timer.periodic(
+          const Duration(seconds: 3), (_) => checkEmailVerified());
     }
   }
 
@@ -39,6 +45,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   Future checkEmailVerified() async {
+    // Reload user to get updated email verification status
     await FirebaseAuth.instance.currentUser!.reload();
 
     setState(() {
@@ -47,6 +54,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
     if (isEmailVerified) {
       timer?.cancel();
+
+      // Save user data to Firestore after email verification
       users
           .doc(FirebaseAuth.instance.currentUser!.uid.toString())
           .set({
@@ -69,7 +78,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       await user.sendEmailVerification();
 
       setState(() => canResendEmail = false);
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 5));
       setState(() => canResendEmail = true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -82,36 +91,37 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? WidgetTree()
+      ? WidgetTree() // If email is verified, navigate to the main widget tree
       : Scaffold(
           appBar: AppBar(
-            title: Text('Verify Email', style: TextStyle(color: Colors.white)),
+            title: const Text('Verify Email',
+                style: TextStyle(color: Colors.white)),
             backgroundColor: Styling.purpleLight,
           ),
           body: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'A verification email has been sent.',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 MyElevatedButton(
                   label: 'Resend Email',
                   width: double.infinity,
-                  icon: Icon(Icons.mail),
+                  icon: const Icon(Icons.mail),
                   onPressed: canResendEmail ? sendVerificationEmail : null,
                   borderRadius: BorderRadius.circular(10),
-                  child: Text('Resend Email'),
+                  child: const Text('Resend Email'),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 TextButton(
                   style: ElevatedButton.styleFrom(
-                      minimumSize: Size.fromHeight(50)),
-                  child: Text(
+                      minimumSize: const Size.fromHeight(50)),
+                  child: const Text(
                     'Cancel',
                     style: TextStyle(fontSize: 24),
                   ),

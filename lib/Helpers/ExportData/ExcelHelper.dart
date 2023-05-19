@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +34,7 @@ class ExcelHelper {
         }
         final cellData = row.cells.elementAt(columnIndex).child;
         final cellText =
-            cellData is Text ? (cellData as Text).data : cellData.toString();
+            cellData is Text ? (cellData).data : cellData.toString();
         sheet
             .cell(CellIndex.indexByColumnRow(
                 columnIndex: columnIndex - 1, rowIndex: rowIndex + 1))
