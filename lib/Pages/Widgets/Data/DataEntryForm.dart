@@ -4,29 +4,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../Assets/app_bar_widget.dart';
-import '../../Assets/buttons.dart';
-import '../../Helpers/Constants/Styling.dart';
-import '../../Helpers/Routing/route.dart';
-import '../../Models/ContactsModel.dart';
-import 'Contacts.dart';
+import '../../Home/app_bar_widget.dart';
+import '../../../Assets/buttons.dart';
+import '../../Home/drawer_page.dart';
+import '../../../Helpers/Constants/Styling.dart';
+import '../../../Helpers/Routing/route.dart';
+import '../../../Models/ContactsModel.dart';
+import 'DataWidget.dart';
 
-class ContactEntryForm extends StatefulWidget {
-  const ContactEntryForm({Key? key}) : super(key: key);
+class DataEntryForm extends StatefulWidget {
+  const DataEntryForm({Key? key}) : super(key: key);
 
   @override
-  ContactEntryFormState createState() {
-    return ContactEntryFormState();
+  DataEntryFormState createState() {
+    return DataEntryFormState();
   }
 }
 
-class ContactEntryFormState extends State<ContactEntryForm> {
+class DataEntryFormState extends State<DataEntryForm> {
   final _formKey = GlobalKey<FormState>();
 
   CollectionReference contacts = FirebaseFirestore.instance
-      .collection("Contacts")
+      .collection("UserWidgetData")
       .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection("Contacts:${FirebaseAuth.instance.currentUser!.uid}");
+      .collection(currentWidget!.documentIdData);
 
   Contact contactToAdd = Contact();
 
@@ -161,8 +162,8 @@ class ContactEntryFormState extends State<ContactEntryForm> {
           // ignore: prefer_const_constructors
           builder: (context) => RoutePage(
                 appBar: const AppBarWidget(),
-                page: const ContactsSearchPage(),
-                showDrawer: false,
+                page: const DataWidget(),
+                showDrawer: true,
               )));
     }
   }

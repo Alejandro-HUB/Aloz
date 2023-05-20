@@ -6,27 +6,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Assets/buttons.dart';
 import 'package:projectcrm/Helpers/Constants/Styling.dart';
-import '../../Assets/app_bar_widget.dart';
-import '../../Helpers/Routing/route.dart';
-import '../../Models/ContactsModel.dart';
-import 'Contacts.dart';
+import '../../Home/app_bar_widget.dart';
+import '../../Home/drawer_page.dart';
+import '../../../Helpers/Routing/route.dart';
+import '../../../Models/ContactsModel.dart';
+import 'DataWidget.dart';
 
-class ContactDetail extends StatefulWidget {
+class DataDetail extends StatefulWidget {
   final Contact selectedContact;
 
-  const ContactDetail({Key? key, required this.selectedContact})
-      : super(key: key);
+  const DataDetail({Key? key, required this.selectedContact}) : super(key: key);
 
   @override
-  _ContactDetailPageState createState() => _ContactDetailPageState();
+  _DataDetailPageState createState() => _DataDetailPageState();
 }
 
 CollectionReference contacts = FirebaseFirestore.instance
-    .collection("Contacts")
+    .collection("UserWidgetData")
     .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-    .collection("Contacts:${FirebaseAuth.instance.currentUser!.uid}");
+    .collection(currentWidget!.documentIdData);
 
-class _ContactDetailPageState extends State<ContactDetail> {
+class _DataDetailPageState extends State<DataDetail> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers for the form fields
@@ -261,8 +261,8 @@ class _ContactDetailPageState extends State<ContactDetail> {
                     // ignore: prefer_const_constructors
                     builder: (context) => RoutePage(
                           appBar: const AppBarWidget(),
-                          page: const ContactsSearchPage(),
-                          showDrawer: false,
+                          page: const DataWidget(),
+                          showDrawer: true,
                         ))))
             .catchError((error) => print('Failed to update user: $error'));
       }

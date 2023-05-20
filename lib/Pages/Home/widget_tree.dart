@@ -2,26 +2,32 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:projectcrm/Assets/app_bar_widget.dart';
-import 'package:projectcrm/Pages/Home/panel_center_page.dart';
-import 'package:projectcrm/Pages/Home/panel_left_page.dart';
-import 'package:projectcrm/Pages/Home/panel_right_page.dart';
+import 'package:projectcrm/Pages/Home/app_bar_widget.dart';
+import 'package:projectcrm/Pages/Widgets/GraphWidgets/panel_center_page.dart';
+import 'package:projectcrm/Pages/Widgets/GraphWidgets/panel_left_page.dart';
+import 'package:projectcrm/Pages/Widgets/GraphWidgets/panel_right_page.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
 import '../../Helpers/Constants/Styling.dart';
-import 'package:projectcrm/Assets/drawer_page.dart';
-import '../Contacts/Contacts.dart';
+import 'package:projectcrm/Pages/Home/drawer_page.dart';
+import '../Widgets/Data/DataWidget.dart';
 
 // ignore: must_be_immutable
 class WidgetTree extends StatefulWidget {
-  int? currentPage = 0;
-  WidgetTree({Key? key, this.currentPage}) : super(key: key);
+  WidgetsInfo? currentWidget = WidgetsInfo(
+      id: "",
+      title: "",
+      icon: Icons.arrow_back,
+      widgetType: "",
+      currentPage: 0,
+      documentIdData: "");
+  WidgetTree({Key? key, this.currentWidget}) : super(key: key);
 
   @override
   _WidgetTreeState createState() => _WidgetTreeState();
 }
 
 class _WidgetTreeState extends State<WidgetTree> {
-  int currentIndex = 1;
+  int currentIndexBottomNavigationBar = 1;
 
   final List<Widget> _icons = [
     const Icon(Icons.add, size: 30),
@@ -43,17 +49,15 @@ class _WidgetTreeState extends State<WidgetTree> {
         // Small Sized Screen -> Do not show UI
         tiny: Container(),
         // Phone Sized Screen
-        phone: currentPage == 0
-            ? currentIndex == 0
+        phone: currentWidget?.currentPage == 0
+            ? currentIndexBottomNavigationBar == 0
                 ? PanelLeftPage()
-                : currentIndex == 1
+                : currentIndexBottomNavigationBar == 1
                     ? PanelCenterPage()
                     : PanelRightPage()
-            : currentPage == 3
-                ? const ContactsSearchPage()
-                : PanelLeftPage(),
+            : createDynamicWidget(currentWidget!.widgetType),
         // Tablet Sized Screen
-        tablet: currentPage == 0
+        tablet: currentWidget?.currentPage == 0
             ? Row(
                 children: [
                   Expanded(child: PanelLeftPage()),
@@ -63,14 +67,12 @@ class _WidgetTreeState extends State<WidgetTree> {
             : Row(
                 children: [
                   Expanded(
-                    child: currentPage == 3
-                        ? const ContactsSearchPage()
-                        : PanelLeftPage(),
+                    child: createDynamicWidget(currentWidget!.widgetType),
                   ),
                 ],
               ),
         // Large Tablet Sized Screen
-        largeTablet: currentPage == 0
+        largeTablet: currentWidget?.currentPage == 0
             ? Row(
                 children: [
                   Expanded(child: PanelLeftPage()),
@@ -81,14 +83,12 @@ class _WidgetTreeState extends State<WidgetTree> {
             : Row(
                 children: [
                   Expanded(
-                    child: currentPage == 3
-                        ? const ContactsSearchPage()
-                        : PanelLeftPage(),
+                    child: createDynamicWidget(currentWidget!.widgetType),
                   ),
                 ],
               ),
         // Computer Sized Screen
-        computer: currentPage == 0
+        computer: currentWidget?.currentPage == 0
             ? Row(
                 children: [
                   const Expanded(child: DrawerPage()),
@@ -97,32 +97,45 @@ class _WidgetTreeState extends State<WidgetTree> {
                   Expanded(child: PanelRightPage()),
                 ],
               )
-            : currentPage == 3
-                ? Row(
-                    children: const [
-                      Expanded(child: ContactsSearchPage()),
-                    ],
-                  )
-                : Row(
-                    children: [
-                      const Expanded(child: DrawerPage()),
-                      Expanded(child: PanelLeftPage()),
-                    ],
-                  ),
+            : Row(
+                children: [
+                  const Expanded(child: DrawerPage()),
+                  Expanded(
+                      child: createDynamicWidget(currentWidget!.widgetType)),
+                ],
+              ),
       ),
       drawer: const DrawerPage(),
-      bottomNavigationBar: ResponsiveLayout.isPhone(context) && currentPage == 0
-          ? CurvedNavigationBar(
-              index: currentIndex,
-              backgroundColor: Styling.purpleDark,
-              items: _icons,
-              onTap: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-            )
-          : const SizedBox(),
+      bottomNavigationBar:
+          ResponsiveLayout.isPhone(context) && currentWidget?.currentPage == 0
+              ? CurvedNavigationBar(
+                  index: currentIndexBottomNavigationBar,
+                  backgroundColor: Styling.purpleDark,
+                  items: _icons,
+                  onTap: (index) {
+                    setState(() {
+                      currentIndexBottomNavigationBar = index;
+                    });
+                  },
+                )
+              : const SizedBox(),
     );
+  }
+
+  Widget createDynamicWidget(String widgetName) {
+    final Map<String, Widget Function()> widgetMap = {
+      'PanelLeftPage': () => PanelLeftPage(),
+      'PanelCenterPage': () => PanelCenterPage(),
+      'PanelRightPage': () => PanelRightPage(),
+      'DataWidget': () => const DataWidget(),
+      // Add more widget mappings here
+    };
+
+    if (widgetMap.containsKey(widgetName)) {
+      return widgetMap[widgetName]!();
+    } else {
+      // Return a fallback widget or handle the case when the widget name is not found
+      return Container();
+    }
   }
 }

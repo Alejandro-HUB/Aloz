@@ -5,22 +5,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Assets/SelectedContent.dart';
+import 'package:projectcrm/Pages/Home/drawer_page.dart';
 import 'package:projectcrm/Helpers/ExportData/ExcelHelper.dart';
-import 'package:projectcrm/Pages/Contacts/ContactDetail.dart';
-import '../../Assets/app_bar_widget.dart';
-import '../../Assets/buttons.dart';
-import '../../Helpers/Constants/Styling.dart';
-import '../../Helpers/Constants/responsive_layout.dart';
-import '../../Helpers/Routing/route.dart';
-import '../../Models/ContactsModel.dart';
-import 'ContactEntryForm.dart';
+import 'package:projectcrm/Pages/Widgets/Data/DataDetail.dart';
+import '../../Home/app_bar_widget.dart';
+import '../../../Assets/buttons.dart';
+import '../../../Helpers/Constants/Styling.dart';
+import '../../../Helpers/Constants/responsive_layout.dart';
+import '../../../Helpers/Routing/route.dart';
+import '../../../Models/ContactsModel.dart';
+import 'DataEntryForm.dart';
 
-class ContactsSearchPage extends StatefulWidget {
-  const ContactsSearchPage({Key? key}) : super(key: key);
+class DataWidget extends StatefulWidget {
+  const DataWidget({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _ContactsSearchPageState createState() => _ContactsSearchPageState();
+  _DataWidgetState createState() => _DataWidgetState();
 }
 
 Contact selectedContact = Contact();
@@ -28,11 +29,11 @@ Contact selectedContact = Contact();
 //Firebase connection to collection in firestore
 String? query;
 CollectionReference contacts = FirebaseFirestore.instance
-    .collection("Contacts")
+    .collection("UserWidgetData")
     .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-    .collection("Contacts:${FirebaseAuth.instance.currentUser!.uid}");
+    .collection(currentWidget!.documentIdData);
 
-class _ContactsSearchPageState extends State<ContactsSearchPage> {
+class _DataWidgetState extends State<DataWidget> {
   final searchController = TextEditingController();
 
   //Shows Contact Menu Bar
@@ -61,9 +62,9 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
 
   // ignore: non_constant_identifier_names
   Stream<QuerySnapshot> Contacts = FirebaseFirestore.instance
-      .collection("Contacts")
+      .collection("UserWidgetData")
       .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection("Contacts:${FirebaseAuth.instance.currentUser!.uid}")
+      .collection(currentWidget!.documentIdData)
       .snapshots();
 
   @override
@@ -79,7 +80,7 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
           appBar: AppBar(
             // ignore: prefer_const_constructors
             title: Text(
-              "Contacts",
+              currentWidget!.title,
               style: const TextStyle(color: Colors.white),
             ),
             backgroundColor: Styling.purpleLight,
@@ -176,9 +177,9 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     // ignore: prefer_const_constructors
                                     builder: (context) => RoutePage(
-                                          appBar: AppBarWidget(),
-                                          page: const ContactEntryForm(),
-                                          showDrawer: false,
+                                          appBar: const AppBarWidget(),
+                                          page: const DataEntryForm(),
+                                          showDrawer: true,
                                         )));
                               },
                               borderRadius: BorderRadius.circular(10),
@@ -397,8 +398,8 @@ class _ContactsSearchPageState extends State<ContactsSearchPage> {
         // ignore: prefer_const_constructors
         builder: (context) => RoutePage(
               appBar: const AppBarWidget(),
-              page: ContactDetail(selectedContact: selectedContact),
-              showDrawer: false,
+              page: DataDetail(selectedContact: selectedContact),
+              showDrawer: true,
             )));
   }
 

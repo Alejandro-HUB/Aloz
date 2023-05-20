@@ -4,8 +4,8 @@ import 'package:projectcrm/Pages/Users/profile_page.dart';
 import 'package:projectcrm/Helpers/Routing/route.dart';
 import 'package:projectcrm/main.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
-import '../Helpers/Constants/Styling.dart';
-import '../Helpers/Firebase/storage_service.dart';
+import '../../Helpers/Constants/Styling.dart';
+import '../../Helpers/Firebase/storage_service.dart';
 
 List<String> _buttonNames = ["Overview", "Revenue", "Sales", "Control"];
 List<String> _menuItems = ["My Profile", "Logout"];
