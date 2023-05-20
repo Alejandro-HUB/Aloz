@@ -74,6 +74,7 @@ class _DrawerPageState extends State<DrawerPage> {
     'PanelCenterPage',
     'PanelRightPage',
     'DataWidget',
+    'HttpRequestWidget'
     // Add more page names as needed
   ];
 

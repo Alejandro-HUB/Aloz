@@ -9,6 +9,7 @@ import 'package:projectcrm/Pages/Widgets/GraphWidgets/panel_right_page.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
 import '../../Helpers/Constants/Styling.dart';
 import 'package:projectcrm/Pages/Home/drawer_page.dart';
+import '../Widgets/API/HttpRequestWidget.dart';
 import '../Widgets/Data/DataWidget.dart';
 
 // ignore: must_be_immutable
@@ -128,6 +129,7 @@ class _WidgetTreeState extends State<WidgetTree> {
       'PanelCenterPage': () => PanelCenterPage(),
       'PanelRightPage': () => PanelRightPage(),
       'DataWidget': () => const DataWidget(),
+      'HttpRequestWidget': () => const HttpRequestWidget(),
       // Add more widget mappings here
     };
 
