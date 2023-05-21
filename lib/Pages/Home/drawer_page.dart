@@ -1,8 +1,9 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_const_literals_to_create_immutables
+// ignore_for_file: library_private_types_in_public_api, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../Helpers/Constants/responsive_layout.dart';
 import '../../Helpers/Constants/Styling.dart';
 import '../../Helpers/Routing/route.dart';
@@ -46,28 +47,54 @@ class _DrawerPageState extends State<DrawerPage> {
 
   //Settings to create a new widget
   final TextEditingController _titleController = TextEditingController();
-  String? _selectedIcon;
-  String? _selectedPage;
+  final TextEditingController _iconController = TextEditingController();
+  final TextEditingController _pageController = TextEditingController();
 
   //Widget Tittle Controller
   @override
   void dispose() {
     _titleController.dispose();
+    _iconController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   //Icon Names
+  // Icon Names
   final List<String> _iconNames = [
+    'home',
     'settings',
     'notifications',
-    'contact_phone_rounded',
-    'sell',
-    'mark_email_read',
-    'verified_user',
-    'supervised_user_circle_rounded',
-    'person_pin'
+    'phone',
+    'email',
+    'person',
+    'account_balance',
+    'work',
+    'date_range',
+    'message',
+    'location_on',
+    'attach_file',
+    'cloud_upload',
+    'cloud_download',
+    'photo_camera',
+    'photo_library',
+    'check',
+    'close',
+    'search',
+    'edit',
+    'delete',
+    'star',
+    'favorite',
+    'bookmark',
+    'share',
+    'arrow_back',
+    'arrow_forward',
+    'play_arrow',
+    'pause',
+    'stop',
     // Add more icon names as needed
   ];
+
   //Widget Names
   final List<String> _pageNames = [
     'PanelLeftPage',
@@ -125,6 +152,15 @@ class _DrawerPageState extends State<DrawerPage> {
     });
   }
 
+  Widget _getIconPreview(String iconName) {
+    final iconData = IconsExtension.getIconData(iconName);
+    return Icon(
+      iconData,
+      size: 24,
+      color: Colors.white,
+    );
+  }
+
   CollectionReference widgets = FirebaseFirestore.instance
       .collection("UserWidgets")
       .doc(FirebaseAuth.instance.currentUser!.uid.toString())
@@ -153,123 +189,7 @@ class _DrawerPageState extends State<DrawerPage> {
               ),
               ListTile(
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text(
-                        "Add Widgets",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      content: SizedBox(
-                        width: double.maxFinite,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Title:",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            TextField(
-                              controller: _titleController,
-                              style: const TextStyle(
-                                  color: Colors
-                                      .white), // Set the input text color to white
-                              decoration: const InputDecoration(
-                                hintText: "Enter the widget title",
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            const Text(
-                              "Icon:",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            DropdownButtonFormField<String>(
-                              value: _selectedIcon,
-                              items: _iconNames
-                                  .map((iconName) => DropdownMenuItem<String>(
-                                        value: iconName,
-                                        child: Text(
-                                          iconName,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedIcon = value;
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                hintText: "Select an icon",
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            const Text(
-                              "Page:",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            DropdownButtonFormField<String>(
-                              value: _selectedPage,
-                              items: _pageNames
-                                  .map((pageName) => DropdownMenuItem<String>(
-                                        value: pageName,
-                                        child: Text(
-                                          pageName,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedPage = value;
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                hintText: "Select a page",
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: addWidgets,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Styling.redDark.withOpacity(0.9),
-                                  Styling.orangeDark.withOpacity(0.9),
-                                ],
-                              ),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 20,
-                            ),
-                            child: const Text(
-                              "Submit",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                      backgroundColor: Styling
-                          .purpleLight, // Modify the background color here
-                    ),
-                  );
+                  showAddWidgetDialog(false, defaultWidget, widgets);
                 },
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -354,53 +274,12 @@ class _DrawerPageState extends State<DrawerPage> {
                                   "Home" // Only show trash icon for non-home entries
                               ? IconButton(
                                   icon: const Icon(
-                                    Icons.delete,
+                                    Icons.edit,
                                     color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: const Text(
-                                          "Confirm Delete",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        content: const Text(
-                                          "Are you sure you wish to delete this widget?",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              deleteContact(widgetInfo);
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              "Confirm",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                        backgroundColor: Styling
-                                            .purpleLight, // Modify the background color here
-                                      ),
-                                    );
+                                    showAddWidgetDialog(
+                                        true, widgetInfo, widgets);
                                   },
                                 )
                               : null, // No trash icon for home entry
@@ -421,6 +300,237 @@ class _DrawerPageState extends State<DrawerPage> {
     );
   }
 
+  void showAddWidgetDialog(bool edit, WidgetsInfo widgetInfo,
+      CollectionReference collectionReference) {
+    String title = edit ? "Edit/Delete ${widgetInfo.title}" : "Add Widgets";
+    String buttonName = edit ? "Save" : "Submit";
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Title:",
+                style: TextStyle(color: Colors.white),
+              ),
+              TextField(
+                controller: _titleController,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: const InputDecoration(
+                  hintText: "Enter the widget title",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Icon:",
+                style: TextStyle(color: Colors.white),
+              ),
+              TypeAheadFormField<String>(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: _iconController,
+                  decoration: const InputDecoration(
+                    labelText: 'Select Icon',
+                    labelStyle: TextStyle(color: Colors.white),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                  ),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                suggestionsCallback: (pattern) async {
+                  return _iconNames
+                      .where((iconName) => iconName
+                          .toLowerCase()
+                          .contains(pattern.toLowerCase()))
+                      .toList();
+                },
+                itemBuilder: (context, String suggestion) {
+                  return ListTile(
+                    leading: _getIconPreview(suggestion),
+                    title: Text(
+                      suggestion,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  );
+                },
+                onSuggestionSelected: (String value) {
+                  setState(() {
+                    _iconController.text = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select an icon';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              //Do not show select page if edit
+              if (!edit)
+                const Text(
+                  "Page:",
+                  style: TextStyle(color: Colors.white),
+                ),
+              if (!edit)
+                TypeAheadFormField<String>(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: _pageController,
+                    decoration: const InputDecoration(
+                      labelText: 'Select Page',
+                      labelStyle: TextStyle(color: Colors.white),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      hintText: '',
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    return _pageNames
+                        .where((pageName) => pageName
+                            .toLowerCase()
+                            .contains(pattern.toLowerCase()))
+                        .toList();
+                  },
+                  itemBuilder: (context, String suggestion) {
+                    return ListTile(
+                      title: Text(
+                        suggestion,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
+                  },
+                  onSuggestionSelected: (String value) {
+                    setState(() {
+                      _pageController.text = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select a page';
+                    }
+                    return null;
+                  },
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          if (edit)
+            IconButton(
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                ShowDeleteDialog(widgetInfo);
+              },
+            ),
+          TextButton(
+            onPressed: () {
+              if (edit) {
+                saveWidgetToFireStore(collectionReference, widgetInfo);
+              } else {
+                addWidgets();
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: [
+                    Styling.redDark.withOpacity(0.9),
+                    Styling.orangeDark.withOpacity(0.9),
+                  ],
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 20,
+              ),
+              child: Text(
+                buttonName,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+        backgroundColor: Styling.purpleLight,
+      ),
+    );
+  }
+
+  void ShowDeleteDialog(WidgetsInfo widgetInfo) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          "Confirm Delete",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: const Text(
+          "Are you sure you wish to delete this widget?",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              deleteWidget(widgetInfo);
+              Navigator.of(context).pop();
+            },
+            child: const Text(
+              "Confirm",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text(
+              "Cancel",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+        backgroundColor:
+            Styling.purpleLight, // Modify the background color here
+      ),
+    );
+  }
+
   Future addWidgets() async {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -432,8 +542,8 @@ class _DrawerPageState extends State<DrawerPage> {
     WidgetsEntity widgetToAdd = WidgetsEntity(
         id: doc.id,
         title: _titleController.text,
-        icon: _selectedIcon.toString(),
-        widgetType: _selectedPage.toString(),
+        icon: _iconController.text.toString(),
+        widgetType: _pageController.text.toString(),
         documentIdData: _titleController.text + doc.id);
     await doc
         .set(widgetToAdd.toJson())
@@ -448,7 +558,32 @@ class _DrawerPageState extends State<DrawerPage> {
     ));
   }
 
-  Future deleteContact(WidgetsInfo widgetToDelete) async {
+  Future saveWidgetToFireStore(
+      CollectionReference collectionReference, WidgetsInfo widget) async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Sending Data to Cloud Firestore"),
+      ),
+    );
+
+    await collectionReference
+        .doc(widget.id.toString())
+        .update({
+          'id': widget.id,
+          'title': _titleController.text,
+          'icon': _iconController.text.toString(),
+          'widgetType': widget.widgetType,
+          'documentIdData': widget.documentIdData
+        })
+        .then((value) => //Return to contacts page
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => WidgetTree(currentWidget: currentWidget!),
+            )))
+        .catchError((error) => print('Failed to update widget: $error'));
+  }
+
+  Future deleteWidget(WidgetsInfo widgetToDelete) async {
     //Load collection for the widget's data
     CollectionReference widgetData = FirebaseFirestore.instance
         .collection("UserWidgetData")
@@ -497,18 +632,60 @@ extension IconsExtension on IconData {
         return Icons.settings;
       case 'notifications':
         return Icons.notifications;
-      case 'contact_phone_rounded':
-        return Icons.contact_phone_rounded;
-      case 'sell':
-        return Icons.sell;
-      case 'mark_email_read':
-        return Icons.mark_email_read;
-      case 'verified_user':
-        return Icons.verified_user;
-      case 'supervised_user_circle_rounded':
-        return Icons.supervised_user_circle_rounded;
-      case 'person_pin':
-        return Icons.person_pin;
+      case 'phone':
+        return Icons.phone;
+      case 'email':
+        return Icons.email;
+      case 'person':
+        return Icons.person;
+      case 'account_balance':
+        return Icons.account_balance;
+      case 'work':
+        return Icons.work;
+      case 'date_range':
+        return Icons.date_range;
+      case 'message':
+        return Icons.message;
+      case 'location_on':
+        return Icons.location_on;
+      case 'attach_file':
+        return Icons.attach_file;
+      case 'cloud_upload':
+        return Icons.cloud_upload;
+      case 'cloud_download':
+        return Icons.cloud_download;
+      case 'photo_camera':
+        return Icons.photo_camera;
+      case 'photo_library':
+        return Icons.photo_library;
+      case 'check':
+        return Icons.check;
+      case 'close':
+        return Icons.close;
+      case 'search':
+        return Icons.search;
+      case 'edit':
+        return Icons.edit;
+      case 'delete':
+        return Icons.delete;
+      case 'star':
+        return Icons.star;
+      case 'favorite':
+        return Icons.favorite;
+      case 'bookmark':
+        return Icons.bookmark;
+      case 'share':
+        return Icons.share;
+      case 'arrow_back':
+        return Icons.arrow_back;
+      case 'arrow_forward':
+        return Icons.arrow_forward;
+      case 'play_arrow':
+        return Icons.play_arrow;
+      case 'pause':
+        return Icons.pause;
+      case 'stop':
+        return Icons.stop;
       default:
         return Icons.error;
     }

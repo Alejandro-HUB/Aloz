@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +15,6 @@ class HttpRequestWidget extends StatefulWidget {
   const HttpRequestWidget({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _HttpRequestWidgetState createState() => _HttpRequestWidgetState();
 }
 
@@ -37,46 +38,80 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
   }
 
   Future<void> _sendRequest() async {
-    final uri = Uri.parse(_uriController.text);
-    final headers = _parseHeaders(_headersController.text);
-    final body = _bodyController.text;
+    try {
+      final uri = Uri.parse(_uriController.text);
+      final parameters = _parseParameters(_parametersController.text);
+      final headers = _parseHeaders(_headersController.text);
+      final body = _bodyController.text;
 
-    http.Response response;
-    switch (_selectedRequestMethod) {
-      case RequestMethod.get:
-        response = await http.get(uri, headers: headers);
-        break;
-      case RequestMethod.post:
-        response = await http.post(uri, headers: headers, body: body);
-        break;
-      case RequestMethod.put:
-        response = await http.put(uri, headers: headers, body: body);
-        break;
-    }
+      // Add custom headers for CORS
+      headers['Access-Control-Allow-Origin'] =
+          '*'; // Replace '*' with the allowed origin
+      headers['Access-Control-Allow-Methods'] =
+          'GET, POST, PUT'; // Add allowed methods
+      headers['Access-Control-Allow-Headers'] =
+          'Content-Type'; // Add allowed headers
 
-    setState(() {
-      // ignore: use_build_context_synchronously
+      // Append Query Parameters
+      final uriWithParameters = uri.replace(queryParameters: parameters);
+
+      http.Response response;
+      switch (_selectedRequestMethod) {
+        case RequestMethod.get:
+          response = await http.get(uriWithParameters, headers: headers);
+          break;
+        case RequestMethod.post:
+          response =
+              await http.post(uriWithParameters, headers: headers, body: body);
+          break;
+        case RequestMethod.put:
+          response =
+              await http.put(uriWithParameters, headers: headers, body: body);
+          break;
+      }
+
+      setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Request Sent!"),
+          ),
+        );
+        _responseController.text = response.body;
+      });
+    } catch (e) {
+      // Handle the exception here
+      print('Error occurred: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Request Sent!"),
+        SnackBar(
+          content: Text("Error occurred: $e"),
         ),
       );
-      _responseController.text = response.body;
-    });
+    }
+  }
+
+  Map<String, String> _parseParameters(String parametersText) {
+    final parametersMap = <String, String>{};
+    final keyValuePairs = parametersText.split('&');
+    for (final pair in keyValuePairs) {
+      final parts = pair.split('=');
+      if (parts.length == 2) {
+        final key = parts[0].trim();
+        final value = parts[1].trim();
+        parametersMap[key] = value;
+      }
+    }
+    return parametersMap;
   }
 
   Map<String, String> _parseHeaders(String headersText) {
     final headersMap = <String, String>{};
-    final lines = headersText.split('\n');
-    for (final line in lines) {
-      final keyValuePairs = line.split(',');
-      for (final pair in keyValuePairs) {
-        final parts = pair.split(':');
-        if (parts.length == 2) {
-          final key = parts[0].trim();
-          final value = parts[1].trim();
-          headersMap[key] = value;
-        }
+    final headers = headersText.split(',');
+    for (final header in headers) {
+      final parts = header.split(':');
+      if (parts.length == 2) {
+        final key = parts[0].trim();
+        final value = parts[1].trim();
+        headersMap[key] = value;
       }
     }
     return headersMap;
@@ -100,7 +135,6 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
 
       await collection.doc('data').set(data);
 
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Sending Data to Cloud Firestore"),
@@ -142,9 +176,9 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Styling.purpleLight,
-        title: const Text(
-          'HTTP Request Widget',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          currentWidget!.title,
+          style: const TextStyle(color: Colors.white),
         ),
       ),
       body: Padding(
@@ -170,7 +204,8 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
               },
               decoration: const InputDecoration(
                 labelText: 'Request Method',
-                labelStyle: TextStyle(color: Colors.white),
+                labelStyle:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                 ),
@@ -185,7 +220,8 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                     labelText: 'Request URI',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
@@ -204,7 +240,8 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                     labelText: 'Request Parameters (key=value)',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
@@ -223,7 +260,8 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                     labelText: 'Request Headers (key: value)',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
@@ -242,7 +280,8 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                     labelText: 'Request Body',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
@@ -283,7 +322,8 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                       labelText: 'Response',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
