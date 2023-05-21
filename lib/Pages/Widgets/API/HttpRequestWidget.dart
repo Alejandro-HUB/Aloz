@@ -183,8 +183,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: ListView(
           children: [
             DropdownButtonFormField<RequestMethod>(
               value: _selectedRequestMethod,
@@ -311,22 +310,20 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
               ),
             ),
             const SizedBox(height: 16.0),
-            Expanded(
+            SingleChildScrollView(
               child: SizedBox(
                 height: 100,
-                child: SingleChildScrollView(
-                  child: TextField(
-                    controller: _responseController,
-                    maxLines: null,
-                    readOnly: true,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                      labelText: 'Response',
-                      labelStyle: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
+                child: TextField(
+                  controller: _responseController,
+                  maxLines: null,
+                  readOnly: true,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Response',
+                    labelStyle: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
                     ),
                   ),
                 ),
