@@ -81,12 +81,12 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
       final body = _bodyController.text;
 
       // Add custom headers for CORS
-      headers['Access-Control-Allow-Origin'] =
-          '*'; // Replace '*' with the allowed origin
+      headers['Access-Control-Allow-Credentials'] = 'true';
+      headers['Access-Control-Allow-Origin'] = '*';
       headers['Access-Control-Allow-Methods'] =
-          'GET, POST, PUT'; // Add allowed methods
+          'GET,OPTIONS,PATCH,DELETE,POST,PUT';
       headers['Access-Control-Allow-Headers'] =
-          'Content-Type'; // Add allowed headers
+          'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version';
 
       //Add Authorization Headers
       headers.addAll(addAuthorizationHeaders(headers));
