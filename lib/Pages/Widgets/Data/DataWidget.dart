@@ -432,10 +432,25 @@ class _DataWidgetState extends State<DataWidget> {
       List<Contact> contactsList =
           contactMethod.convertJsonToContactList(_rawDataController.text);
 
-      for (var element in contactsList) {
-        if (element.id.isEmpty) {
-          // Add a new contact if the ID is empty
-          var contactToAdd = element;
+      // Get the current contacts in the collection
+      QuerySnapshot querySnapshot = await collectionRef.get();
+
+      // Create a set of existing contact IDs
+      Set<String> existingContactIds = {};
+      for (DocumentSnapshot docSnapshot in querySnapshot.docs) {
+        Contact existingContact =
+            Contact.fromJson(docSnapshot.data() as Map<String, dynamic>);
+        existingContactIds.add(existingContact.id);
+      }
+
+      // Update or delete existing contacts
+      for (Contact contact in contactsList) {
+        if (existingContactIds.contains(contact.id)) {
+          // Update the contact if it exists in the collection
+          await collectionRef.doc(contact.id).update(contact.toJson());
+        } else {
+          // Add the contact if it doesn't exist in the collection
+          var contactToAdd = contact;
           var doc = contacts.doc();
           contactToAdd.id = doc.id;
           await doc
@@ -444,20 +459,42 @@ class _DataWidgetState extends State<DataWidget> {
               .then((value) => print('Contact Added'))
               // ignore: avoid_print
               .catchError((error) => print('Failed to add contact: $error'));
-        } else {
-          // Update an existing contact
-          await collectionRef.doc(element.id).set({
-            "emailAddress": element.emailAddress,
-            "firstName": element.firstName,
-            "lastName": element.lastName,
-            "id": element.id,
-          });
+        }
+      }
+
+      // Delete contacts that are in the collection but not in the updated contacts list
+      for (DocumentSnapshot docSnapshot in querySnapshot.docs) {
+        Contact existingContact =
+            Contact.fromJson(docSnapshot.data() as Map<String, dynamic>);
+        if (!contactsList.any((contact) => contact.id == existingContact.id)) {
+          await collectionRef.doc(existingContact.id).delete();
         }
       }
 
       print("Data saved successfully!");
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Data saved successfully!"),
+        ),
+      );
+
+      //Refresh the Contacts Page
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).push(MaterialPageRoute(
+          // ignore: prefer_const_constructors
+          builder: (context) => RoutePage(
+                appBar: const AppBarWidget(),
+                page: const DataWidget(),
+                showDrawer: true,
+              )));
     } catch (error) {
       print("Error saving data: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error occurred: $error"),
+        ),
+      );
     }
   }
 
