@@ -60,7 +60,6 @@ class _DrawerPageState extends State<DrawerPage> {
   }
 
   //Icon Names
-  // Icon Names
   final List<String> _iconNames = [
     'home',
     'settings',
@@ -92,6 +91,11 @@ class _DrawerPageState extends State<DrawerPage> {
     'play_arrow',
     'pause',
     'stop',
+    'add',
+    'info',
+    'code',
+    'payment',
+    'list',
     // Add more icon names as needed
   ];
 
@@ -686,6 +690,16 @@ extension IconsExtension on IconData {
         return Icons.pause;
       case 'stop':
         return Icons.stop;
+      case 'add':
+        return Icons.add;
+      case 'info':
+        return Icons.info;
+      case 'code':
+        return Icons.code;
+      case 'payment':
+        return Icons.payment;
+      case 'list':
+        return Icons.list;
       default:
         return Icons.error;
     }

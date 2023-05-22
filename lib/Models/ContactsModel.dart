@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Contact {
   String id;
   String firstName;
@@ -11,7 +13,7 @@ class Contact {
     this.emailAddress = '',
   });
 
-   Contact.fromJson(Map<String, dynamic> json)
+  Contact.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         firstName = json['firstName'],
         lastName = json['lastName'],
@@ -39,5 +41,17 @@ class Contact {
       rowsData.add(newContact);
     }
     return rowsData;
+  }
+
+  List<Contact> convertJsonToContactList(String jsonStr) {
+    List<Contact> contacts = [];
+
+    List<dynamic> jsonData = jsonDecode(jsonStr);
+    for (var item in jsonData) {
+      Contact contact = Contact.fromJson(item);
+      contacts.add(contact);
+    }
+
+    return contacts;
   }
 }
