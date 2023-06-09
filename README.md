@@ -13,11 +13,29 @@ Aloz Admin Dashboard is a versatile Flutter-based project that provides a compre
 
 ## Usage
 
+Follow these steps to use Aloz Admin Dashboard:
+
 1. Clone the repository using the following command:
+    ```
+    git clone https://github.com/Alejandro-HUB/Aloz.git
+    ```
+
 2. Set up your Flutter development environment if not already done.
+
 3. Navigate to the project directory:
+    ```
+    cd Aloz
+    ```
+
 4. Install the required dependencies:
+    ```
+    flutter pub get
+    ```
+
 5. Launch the application:
+    ```
+    flutter run
+    ```
 
 
 Make sure to customize and extend the Aloz Admin Dashboard to meet your specific requirements. It serves as a foundation for building powerful and user-friendly admin panels.
