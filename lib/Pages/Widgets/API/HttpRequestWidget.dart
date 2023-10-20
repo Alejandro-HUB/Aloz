@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../Assets/buttons.dart';
 import '../../../Helpers/Constants/Styling.dart';
-import '../../Home/drawer_page.dart';
+import '../../Home/HomePage.dart';
 
 enum RequestMethod { get, post, put }
 

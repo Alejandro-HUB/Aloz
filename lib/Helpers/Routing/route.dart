@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../Constants/Styling.dart';
-import '../../Pages/Home/drawer_page.dart';
+import '../../Pages/Home/HomePage.dart';
 import '../Constants/responsive_layout.dart';
 
 class RoutePage extends StatelessWidget {
@@ -52,15 +51,15 @@ class RoutePage extends StatelessWidget {
           computer: Row(
             children: [
               if(showDrawer)
-                Expanded(
-                  child: DrawerPage(),
+                const Expanded(
+                  child: HomePage(),
                 ),
               Expanded(
                 child: page,
               ),
             ],
           )),
-      drawer: DrawerPage(),
+      drawer: const HomePage(),
     );
   }
 }

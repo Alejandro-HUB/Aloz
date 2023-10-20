@@ -6,8 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Assets/buttons.dart';
 import 'package:projectcrm/Helpers/Constants/Styling.dart';
-import '../../Home/app_bar_widget.dart';
-import '../../Home/drawer_page.dart';
+import '../../Home/TopAppBar.dart';
+import '../../Home/HomePage.dart';
 import '../../../Helpers/Routing/route.dart';
 import '../../../Models/ContactsModel.dart';
 import 'DataWidget.dart';
@@ -260,7 +260,7 @@ class _DataDetailPageState extends State<DataDetail> {
                 Navigator.of(context).push(MaterialPageRoute(
                     // ignore: prefer_const_constructors
                     builder: (context) => RoutePage(
-                          appBar: const AppBarWidget(),
+                          appBar: const TopAppBar(),
                           page: const DataWidget(),
                           showDrawer: true,
                         ))))

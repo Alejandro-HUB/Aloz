@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../Home/app_bar_widget.dart';
+import '../../Home/TopAppBar.dart';
 import '../../../Assets/buttons.dart';
-import '../../Home/drawer_page.dart';
+import '../../Home/HomePage.dart';
 import '../../../Helpers/Constants/Styling.dart';
 import '../../../Helpers/Routing/route.dart';
 import '../../../Models/ContactsModel.dart';
@@ -161,7 +161,7 @@ class DataEntryFormState extends State<DataEntryForm> {
       Navigator.of(context).push(MaterialPageRoute(
           // ignore: prefer_const_constructors
           builder: (context) => RoutePage(
-                appBar: const AppBarWidget(),
+                appBar: const TopAppBar(),
                 page: const DataWidget(),
                 showDrawer: true,
               )));

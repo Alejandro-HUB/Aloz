@@ -6,10 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Assets/SelectedContent.dart';
-import 'package:projectcrm/Pages/Home/drawer_page.dart';
+import 'package:projectcrm/Pages/Home/HomePage.dart';
 import 'package:projectcrm/Helpers/ExportData/ExcelHelper.dart';
 import 'package:projectcrm/Pages/Widgets/Data/DataDetail.dart';
-import '../../Home/app_bar_widget.dart';
+import '../../Home/TopAppBar.dart';
 import '../../../Assets/buttons.dart';
 import '../../../Helpers/Constants/Styling.dart';
 import '../../../Helpers/Constants/responsive_layout.dart';
@@ -244,7 +244,7 @@ class _DataWidgetState extends State<DataWidget> {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       // ignore: prefer_const_constructors
                                       builder: (context) => RoutePage(
-                                            appBar: const AppBarWidget(),
+                                            appBar: const TopAppBar(),
                                             page: const DataEntryForm(),
                                             showDrawer: true,
                                           )));
@@ -484,12 +484,13 @@ class _DataWidgetState extends State<DataWidget> {
       Navigator.of(context).push(MaterialPageRoute(
           // ignore: prefer_const_constructors
           builder: (context) => RoutePage(
-                appBar: const AppBarWidget(),
+                appBar: const TopAppBar(),
                 page: const DataWidget(),
                 showDrawer: true,
               )));
     } catch (error) {
       print("Error saving data: $error");
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Error occurred: $error"),
@@ -588,7 +589,7 @@ class _DataWidgetState extends State<DataWidget> {
     Navigator.of(context).push(MaterialPageRoute(
         // ignore: prefer_const_constructors
         builder: (context) => RoutePage(
-              appBar: const AppBarWidget(),
+              appBar: const TopAppBar(),
               page: DataDetail(selectedContact: _selectedContact),
               showDrawer: true,
             )));

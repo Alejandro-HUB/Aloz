@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../Home/widget_tree.dart';
+import '../../Home/AppRouter.dart';
 import '../../../Assets/buttons.dart';
 import '../../../Helpers/Constants/Styling.dart';
 
@@ -91,7 +91,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? WidgetTree() // If email is verified, navigate to the main widget tree
+      ? AppRouter() // If email is verified, navigate to the main widget tree
       : Scaffold(
           appBar: AppBar(
             title: const Text('Verify Email',

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projectcrm/Pages/Users/profile_page.dart';
 import 'package:projectcrm/Helpers/Routing/route.dart';
@@ -14,7 +13,13 @@ import '../Widgets/Data/DataWidget.dart';
 import '../Widgets/GraphWidgets/panel_center_page.dart';
 import '../Widgets/GraphWidgets/panel_left_page.dart';
 import '../Widgets/GraphWidgets/panel_right_page.dart';
-import 'drawer_page.dart';
+import 'HomePage.dart';
+
+// This Dart code defines a custom Flutter widget called TopAppBar, which serves as the top app bar for the application.
+// The TopAppBar includes features like navigation buttons, search functionality, user profile information, and a menu dropdown.
+// It also dynamically loads different widgets based on user selections and provides access to the user's profile and logout functionality.
+// The code is organized into classes and functions for better modularity and readability.
+// Note: Make sure to customize the widget's behavior as needed for your specific application.
 
 List<String> _buttonNames = ["Overview", "Revenue", "Sales", "Control"];
 List<String> _menuItems = ["My Profile", "Logout"];
@@ -22,16 +27,17 @@ String? index;
 String email = "user";
 int _currentSelectedButton = 0;
 
-class AppBarWidget extends StatefulWidget {
-  const AppBarWidget({Key? key}) : super(key: key);
+class TopAppBar extends StatefulWidget {
+  const TopAppBar({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _AppBarWidgetState createState() => _AppBarWidgetState();
+  _TopAppBarState createState() => _TopAppBarState();
 }
 
-class _AppBarWidgetState extends State<AppBarWidget> {
+class _TopAppBarState extends State<TopAppBar> {
   final TextEditingController _iconController = TextEditingController();
+  // ignore: prefer_final_fields
   late List<WidgetsInfo> _widgetNames = [];
 
   @override
@@ -268,7 +274,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     Navigator.of(context).push(MaterialPageRoute(
                         // ignore: prefer_const_constructors
                         builder: (context) => RoutePage(
-                              appBar: const AppBarWidget(),
+                              appBar: const TopAppBar(),
                               page: createDynamicWidget(
                                   currentWidget!.widgetType),
                               showDrawer: true,
@@ -335,7 +341,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               } else if (index == "My Profile") {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const RoutePage(
-                          appBar: AppBarWidget(),
+                          appBar: TopAppBar(),
                           page: ProfilePage(),
                           showDrawer: false,
                         )));
