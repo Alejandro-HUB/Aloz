@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import '../../../Assets/Charts/linear_graph.dart';
 import '../../../Helpers/Constants/Styling.dart';
@@ -9,12 +11,14 @@ class Person {
 }
 
 class PanelCenterPage extends StatefulWidget {
+  const PanelCenterPage({super.key});
+
   @override
   _PanelCenterPageState createState() => _PanelCenterPageState();
 }
 
 class _PanelCenterPageState extends State<PanelCenterPage> {
-  List<Person> _persons = [
+  final List<Person> _persons = [
     Person(name: "Alejandro Lopez", color: Styling.orangeLight),
     Person(name: "Fariha Odling", color: Styling.redLight),
     Person(name: "Viola Willis", color: Styling.blueLight),
@@ -44,7 +48,7 @@ class _PanelCenterPageState extends State<PanelCenterPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Container(
+                child: const SizedBox(
                   width: double.infinity,
                   child: ListTile(
                     title: Text(
@@ -65,7 +69,7 @@ class _PanelCenterPageState extends State<PanelCenterPage> {
                 ),
               ),
             ),
-            BarChartSample2(),
+            const BarChartSample2(),
             Padding(
               padding: const EdgeInsets.only(
                 top: Styling.kPadding,
@@ -85,19 +89,19 @@ class _PanelCenterPageState extends State<PanelCenterPage> {
                     (index) => ListTile(
                       leading: CircleAvatar(
                         radius: 15,
+                        backgroundColor: _persons[index].color,
                         child: Text(
                           _persons[index].name.substring(0, 1),
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        backgroundColor: _persons[index].color,
                       ),
                       title: Text(
                         _persons[index].name,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       trailing: IconButton(
                         onPressed: () {},
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.message,
                           color: Colors.white,
                         ),

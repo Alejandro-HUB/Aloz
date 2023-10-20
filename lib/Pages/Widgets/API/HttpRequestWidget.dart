@@ -24,7 +24,7 @@ enum AuthorizationMethod {
 }
 
 class HttpRequestWidget extends StatefulWidget {
-  const HttpRequestWidget({Key? key}) : super(key: key);
+  const HttpRequestWidget({super.key});
 
   @override
   _HttpRequestWidgetState createState() => _HttpRequestWidgetState();
@@ -449,6 +449,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           IconButton(
             onPressed: _saveData,
             icon: const Icon(Icons.save),
+            color: Colors.white,
           ),
         ],
       ),
@@ -513,7 +514,10 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                             ]),
                       label: "Parameters",
                       width: 150,
-                      icon: const Icon(Icons.question_mark),
+                      icon: const Icon(
+                        Icons.question_mark,
+                        color: Colors.white,
+                      ),
                       onPressed: () {
                         setState(() {
                           _currentTab = HttpRequestWidgetTab.Parameters;
@@ -535,7 +539,10 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                             ]),
                       label: "Headers",
                       width: 150,
-                      icon: const Icon(Icons.edit_document),
+                      icon: const Icon(
+                        Icons.edit_document,
+                        color: Colors.white,
+                      ),
                       onPressed: () {
                         setState(() {
                           _currentTab = HttpRequestWidgetTab.Headers;
@@ -558,7 +565,10 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                                 ]),
                       label: "Authorization",
                       width: 150,
-                      icon: const Icon(Icons.lock),
+                      icon: const Icon(
+                        Icons.lock,
+                        color: Colors.white,
+                      ),
                       onPressed: () {
                         setState(() {
                           _currentTab = HttpRequestWidgetTab.Authorization;
@@ -580,7 +590,10 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                             ]),
                       label: "Body",
                       width: 150,
-                      icon: const Icon(Icons.content_copy),
+                      icon: const Icon(
+                        Icons.content_copy,
+                        color: Colors.white,
+                      ),
                       onPressed: () {
                         setState(() {
                           _currentTab = HttpRequestWidgetTab.Body;
@@ -692,7 +705,10 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
             MyElevatedButton(
               label: "Send",
               width: double.infinity,
-              icon: const Icon(Icons.send),
+              icon: const Icon(
+                Icons.send,
+                color: Colors.white,
+              ),
               onPressed: _sendRequest,
               borderRadius: BorderRadius.circular(10),
               child: const Text('Send'),

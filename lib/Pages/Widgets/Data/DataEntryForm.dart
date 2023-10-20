@@ -13,7 +13,7 @@ import '../../../Models/ContactsModel.dart';
 import 'DataWidget.dart';
 
 class DataEntryForm extends StatefulWidget {
-  const DataEntryForm({Key? key}) : super(key: key);
+  const DataEntryForm({super.key});
 
   @override
   DataEntryFormState createState() {
@@ -124,7 +124,10 @@ class DataEntryFormState extends State<DataEntryForm> {
                         child: MyElevatedButton(
                           label: 'Add Contact',
                           width: double.infinity,
-                          icon: const Icon(Icons.person_add),
+                          icon: const Icon(
+                            Icons.person_add,
+                            color: Colors.white,
+                          ),
                           onPressed: addContacts,
                           borderRadius: BorderRadius.circular(10),
                           child: const Text('Add Contact'),

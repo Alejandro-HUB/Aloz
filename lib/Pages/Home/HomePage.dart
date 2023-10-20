@@ -17,7 +17,7 @@ import 'AppRouter.dart';
 // Additionally, there are functions for adding, editing, and deleting widgets, with Firestore integration.
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -178,132 +178,135 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(Styling.kPadding),
-          child: Column(
-            children: [
-              const ListTile(
-                title: Row(
-                  children: [
-                    Text(
-                      "Admin Menu",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                onTap: () {
-                  showAddWidgetDialog(false, defaultWidget, widgets);
-                },
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Add Widgets",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          colors: [
-                            Styling.redDark.withOpacity(0.9),
-                            Styling.orangeDark.withOpacity(0.9),
-                          ],
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // List of Widgets
-              ...List.generate(
-                _widgetNames.length,
-                (index) {
-                  final WidgetsInfo widgetInfo = _widgetNames[index];
-                  return Column(
+    return Container(
+      color: Styling.purpleLight,
+      child: Drawer(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(Styling.kPadding),
+            child: Column(
+              children: [
+                const ListTile(
+                  title: Row(
                     children: [
-                      Container(
-                        decoration: index == currentWidget?.currentPage
-                            ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Styling.redDark.withOpacity(0.9),
-                                    Styling.orangeDark.withOpacity(0.9),
-                                  ],
-                                ),
-                              )
-                            : null,
-                        child: ListTile(
-                          onTap: () {
-                            setState(() {
-                              currentWidget = WidgetsInfo(
-                                  id: widgetInfo.id,
-                                  title: widgetInfo.title,
-                                  icon: widgetInfo.icon,
-                                  widgetType: widgetInfo.widgetType,
-                                  currentPage: index,
-                                  documentIdData: widgetInfo.documentIdData);
-                            });
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  AppRouter(currentWidget: currentWidget!),
-                            ));
-                          },
-                          title: Text(
-                            widgetInfo.title,
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          leading: Padding(
-                            padding: const EdgeInsets.all(Styling.kPadding),
-                            child: Icon(
-                              widgetInfo.icon,
-                              color: Colors.white,
-                            ),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          trailing: widgetInfo.title !=
-                                  "Home" // Only show trash icon for non-home entries
-                              ? IconButton(
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    showAddWidgetDialog(
-                                        true, widgetInfo, widgets);
-                                  },
-                                )
-                              : null, // No trash icon for home entry
+                      Text(
+                        "Admin Menu",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      const Divider(
-                        color: Styling.purpleBorder,
-                        thickness: 0.1,
                       ),
                     ],
-                  );
-                },
-              ),
-            ],
+                  ),
+                ),
+                ListTile(
+                  onTap: () {
+                    showAddWidgetDialog(false, defaultWidget, widgets);
+                  },
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Add Widgets",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            colors: [
+                              Styling.redDark.withOpacity(0.9),
+                              Styling.orangeDark.withOpacity(0.9),
+                            ],
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // List of Widgets
+                ...List.generate(
+                  _widgetNames.length,
+                  (index) {
+                    final WidgetsInfo widgetInfo = _widgetNames[index];
+                    return Column(
+                      children: [
+                        Container(
+                          decoration: index == currentWidget?.currentPage
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Styling.redDark.withOpacity(0.9),
+                                      Styling.orangeDark.withOpacity(0.9),
+                                    ],
+                                  ),
+                                )
+                              : null,
+                          child: ListTile(
+                            onTap: () {
+                              setState(() {
+                                currentWidget = WidgetsInfo(
+                                    id: widgetInfo.id,
+                                    title: widgetInfo.title,
+                                    icon: widgetInfo.icon,
+                                    widgetType: widgetInfo.widgetType,
+                                    currentPage: index,
+                                    documentIdData: widgetInfo.documentIdData);
+                              });
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    AppRouter(currentWidget: currentWidget!),
+                              ));
+                            },
+                            title: Text(
+                              widgetInfo.title,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            leading: Padding(
+                              padding: const EdgeInsets.all(Styling.kPadding),
+                              child: Icon(
+                                widgetInfo.icon,
+                                color: Colors.white,
+                              ),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            trailing: widgetInfo.title !=
+                                    "Home" // Only show trash icon for non-home entries
+                                ? IconButton(
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      showAddWidgetDialog(
+                                          true, widgetInfo, widgets);
+                                    },
+                                  )
+                                : null, // No trash icon for home entry
+                          ),
+                        ),
+                        const Divider(
+                          color: Styling.purpleBorder,
+                          thickness: 0.1,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -590,6 +593,7 @@ class _HomePageState extends State<HomePage> {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AppRouter(currentWidget: currentWidget!),
             )))
+        // ignore: avoid_print
         .catchError((error) => print('Failed to update widget: $error'));
   }
 

@@ -1,4 +1,5 @@
-import 'package:fl_chart/fl_chart.dart';
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
 import '../../../Assets/Charts/circle_graph.dart';
@@ -12,12 +13,14 @@ class Todo {
 }
 
 class PanelLeftPage extends StatefulWidget {
+  const PanelLeftPage({super.key});
+
   @override
   _PanelLeftPageState createState() => _PanelLeftPageState();
 }
 
 class _PanelLeftPageState extends State<PanelLeftPage> {
-  List<Todo> _toDo = [
+  final List<Todo> _toDo = [
     Todo(name: "Purchase Paper", enable: true),
     Todo(name: "Refill the inventory of speakers", enable: true),
     Todo(name: "Hire someone", enable: true),
@@ -35,7 +38,7 @@ class _PanelLeftPageState extends State<PanelLeftPage> {
               color: Styling.purpleLight,
               width: 50,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Styling.purpleDark,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(50),
@@ -58,7 +61,7 @@ class _PanelLeftPageState extends State<PanelLeftPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Container(
+                    child: const SizedBox(
                       width: double.infinity,
                       child: ListTile(
                         title: Text(
@@ -79,8 +82,8 @@ class _PanelLeftPageState extends State<PanelLeftPage> {
                     ),
                   ),
                 ),
-                LineChartSample2(),
-                PieChartSample2(),
+                const LineChartSample2(),
+                const PieChartSample2(),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: Styling.kPadding / 2,
@@ -100,7 +103,7 @@ class _PanelLeftPageState extends State<PanelLeftPage> {
                         (index) => CheckboxListTile(
                           title: Text(
                             _toDo[index].name,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           value: _toDo[index].enable,
                           onChanged: (newValue) {

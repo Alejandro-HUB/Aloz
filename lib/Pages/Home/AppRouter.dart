@@ -27,7 +27,7 @@ class AppRouter extends StatefulWidget {
       widgetType: "",
       currentPage: 0,
       documentIdData: "");
-  AppRouter({Key? key, this.currentWidget}) : super(key: key);
+  AppRouter({super.key, this.currentWidget});
 
   @override
   _AppRouterState createState() => _AppRouterState();
@@ -58,7 +58,7 @@ class _AppRouterState extends State<AppRouter> {
         // Phone Sized Screen
         phone: currentWidget?.currentPage == 0
             ? currentIndexBottomNavigationBar == 0
-                ? PanelLeftPage()
+                ? const PanelLeftPage()
                 : currentIndexBottomNavigationBar == 1
                     ? PanelCenterPage()
                     : PanelRightPage()
@@ -67,7 +67,7 @@ class _AppRouterState extends State<AppRouter> {
         tablet: currentWidget?.currentPage == 0
             ? Row(
                 children: [
-                  Expanded(child: PanelLeftPage()),
+                  const Expanded(child: PanelLeftPage()),
                   Expanded(child: PanelCenterPage()),
                 ],
               )
@@ -82,7 +82,7 @@ class _AppRouterState extends State<AppRouter> {
         largeTablet: currentWidget?.currentPage == 0
             ? Row(
                 children: [
-                  Expanded(child: PanelLeftPage()),
+                  const Expanded(child: PanelLeftPage()),
                   Expanded(child: PanelCenterPage()),
                   Expanded(child: PanelRightPage()),
                 ],
@@ -99,7 +99,7 @@ class _AppRouterState extends State<AppRouter> {
             ? Row(
                 children: [
                   const Expanded(child: HomePage()),
-                  Expanded(child: PanelLeftPage()),
+                  const Expanded(child: PanelLeftPage()),
                   Expanded(child: PanelCenterPage()),
                   Expanded(child: PanelRightPage()),
                 ],
@@ -131,7 +131,7 @@ class _AppRouterState extends State<AppRouter> {
 
   Widget createDynamicWidget(String widgetName) {
     final Map<String, Widget Function()> widgetMap = {
-      'PanelLeftPage': () => PanelLeftPage(),
+      'PanelLeftPage': () => const PanelLeftPage(),
       'PanelCenterPage': () => PanelCenterPage(),
       'PanelRightPage': () => PanelRightPage(),
       'DataWidget': () => const DataWidget(),

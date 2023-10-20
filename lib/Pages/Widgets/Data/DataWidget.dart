@@ -18,7 +18,7 @@ import '../../../Models/ContactsModel.dart';
 import 'DataEntryForm.dart';
 
 class DataWidget extends StatefulWidget {
-  const DataWidget({Key? key}) : super(key: key);
+  const DataWidget({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -116,7 +116,10 @@ class _DataWidgetState extends State<DataWidget> {
                                   ]),
                             label: "Data Table",
                             width: 150,
-                            icon: const Icon(Icons.table_chart),
+                            icon: const Icon(
+                              Icons.table_chart,
+                              color: Colors.white,
+                            ),
                             onPressed: () {
                               setState(() {
                                 _currentTab = DataWidgetTab.dataTable;
@@ -140,7 +143,10 @@ class _DataWidgetState extends State<DataWidget> {
                                   ]),
                             label: "Raw Data",
                             width: 150,
-                            icon: const Icon(Icons.data_object),
+                            icon: const Icon(
+                              Icons.data_object,
+                              color: Colors.white,
+                            ),
                             onPressed: () {
                               setState(() {
                                 _currentTab = DataWidgetTab.rawData;
@@ -168,7 +174,10 @@ class _DataWidgetState extends State<DataWidget> {
                             MyElevatedButton(
                               label: "Export Data",
                               width: 150,
-                              icon: const Icon(Icons.download),
+                              icon: const Icon(
+                                Icons.download,
+                                color: Colors.white,
+                              ),
                               onPressed: () {
                                 excelHelper.exportToExcel(contactRows,
                                     contactColumns, 'Contacts', true);
@@ -227,7 +236,10 @@ class _DataWidgetState extends State<DataWidget> {
                                 MyElevatedButton(
                                   label: "Export Data",
                                   width: 150,
-                                  icon: const Icon(Icons.download),
+                                  icon: const Icon(
+                                    Icons.download,
+                                    color: Colors.white,
+                                  ),
                                   onPressed: () {
                                     excelHelper.exportToExcel(contactRows,
                                         contactColumns, 'Contacts', true);
@@ -239,7 +251,10 @@ class _DataWidgetState extends State<DataWidget> {
                               MyElevatedButton(
                                 label: "Import Data",
                                 width: 150,
-                                icon: const Icon(Icons.import_export),
+                                icon: const Icon(
+                                  Icons.import_export,
+                                  color: Colors.white,
+                                ),
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       // ignore: prefer_const_constructors
@@ -291,6 +306,7 @@ class _DataWidgetState extends State<DataWidget> {
                                 columnsData, Colors.white, TextAlign.center);
 
                             //Fill the list of Contacts from Firebase
+                            // ignore: unnecessary_null_comparison
                             if (data != null &&
                                 contactRows.length < data.size) {
                               if (query == null || query == "") {
@@ -373,7 +389,10 @@ class _DataWidgetState extends State<DataWidget> {
                           MyElevatedButton(
                             label: "Save",
                             width: 150,
-                            icon: const Icon(Icons.save),
+                            icon: const Icon(
+                              Icons.save,
+                              color: Colors.white,
+                            ),
                             onPressed: saveRawData,
                             borderRadius: BorderRadius.circular(10),
                             child: const Text('Save'),

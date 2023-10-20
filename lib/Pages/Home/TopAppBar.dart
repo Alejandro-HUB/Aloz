@@ -28,7 +28,7 @@ String email = "user";
 int _currentSelectedButton = 0;
 
 class TopAppBar extends StatefulWidget {
-  const TopAppBar({Key? key}) : super(key: key);
+  const TopAppBar({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -54,7 +54,7 @@ class _TopAppBarState extends State<TopAppBar> {
 
     Widget createDynamicWidget(String widgetName) {
       final Map<String, Widget Function()> widgetMap = {
-        'PanelLeftPage': () => PanelLeftPage(),
+        'PanelLeftPage': () => const PanelLeftPage(),
         'PanelCenterPage': () => PanelCenterPage(),
         'PanelRightPage': () => PanelRightPage(),
         'DataWidget': () => const DataWidget(),
@@ -102,7 +102,10 @@ class _TopAppBarState extends State<TopAppBar> {
               },
               iconSize: 30,
               color: Colors.white,
-              icon: const Icon(Icons.menu),
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
             ),
           const SizedBox(
             width: Styling.kPadding,
@@ -185,7 +188,10 @@ class _TopAppBarState extends State<TopAppBar> {
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: TextEditingController(),
                   decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
                     prefixIconColor: Colors.white,
                     labelText: 'Search',
                     labelStyle: TextStyle(color: Colors.white),
@@ -296,7 +302,10 @@ class _TopAppBarState extends State<TopAppBar> {
                   color: Colors.white,
                   iconSize: 30,
                   onPressed: () {},
-                  icon: const Icon(Icons.notifications_none_outlined),
+                  icon: const Icon(
+                    Icons.notifications_none_outlined,
+                    color: Colors.white,
+                  ),
                 ),
                 const Positioned(
                   right: 6,

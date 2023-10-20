@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, unnecessary_null_comparison, use_build_context_synchronously, duplicate_ignore, avoid_init_to_null, prefer_typing_uninitialized_variables
+// ignore_for_file: library_private_types_in_public_api, unnecessary_null_comparison, use_build_context_synchronously, duplicate_ignore, avoid_init_to_null, prefer_typing_uninitialized_variables, use_super_parameters
 
 import 'dart:io';
 import 'package:email_validator/email_validator.dart';
@@ -101,7 +101,10 @@ class _ProfilePageState extends State<ProfilePage> {
               MyElevatedButton(
                 label: 'Submit Changes',
                 width: 150,
-                icon: const Icon(Icons.update),
+                icon: const Icon(
+                  Icons.update,
+                  color: Colors.white,
+                ),
                 onPressed: () async {
                   updateUserDetails(emailController.text.toString(),
                       passwordController.text.toString());
@@ -133,7 +136,10 @@ class _ProfilePageState extends State<ProfilePage> {
               MyElevatedButton(
                 label: 'Upload File',
                 width: 150,
-                icon: const Icon(Icons.cloud),
+                icon: const Icon(
+                  Icons.cloud,
+                  color: Colors.white,
+                ),
                 onPressed: uploadFile,
                 borderRadius: BorderRadius.circular(10),
                 child: const Text('Upload File'),

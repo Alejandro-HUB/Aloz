@@ -1,5 +1,6 @@
-import 'package:email_validator/email_validator.dart';
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:email_validator/email_validator.dart';
 import '../../../Assets/buttons.dart';
 import '../../../Helpers/Constants/Styling.dart';
 import '../../../main.dart';
@@ -7,6 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
+
   @override
   _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
@@ -27,32 +30,32 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         appBar: AppBar(
           backgroundColor: Styling.purpleLight,
           elevation: 0,
-          title: Text(
+          title: const Text(
             'Reset Password',
             style: TextStyle(color: Colors.white),
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Form(
               key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Receive an email to\n reset your password.',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 24, color: Colors.white),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     controller: emailController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Email",
                       labelStyle: TextStyle(color: Colors.white),
                       icon: Icon(Icons.mail, color: Colors.white),
@@ -65,16 +68,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             ? 'Enter a valid email'
                             : null,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   MyElevatedButton(
                     label: 'Reset Password',
                     width: double.infinity,
-                    icon: Icon(Icons.restart_alt_outlined),
+                    icon: const Icon(
+                      Icons.restart_alt_outlined,
+                      color: Colors.white,
+                    ),
                     onPressed: verifyEmail,
                     borderRadius: BorderRadius.circular(10),
-                    child: Text('Reset Password'),
+                    child: const Text('Reset Password'),
                   ),
                 ],
               )),
@@ -88,7 +94,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(
+        builder: (context) => const Center(
               child: CircularProgressIndicator(),
             ));
     try {
@@ -96,13 +102,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         email: emailController.text.trim(),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Password Reset Email Sent.'),
         ),
       );
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MainPage(),
+        builder: (context) => const MainPage(),
       ));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

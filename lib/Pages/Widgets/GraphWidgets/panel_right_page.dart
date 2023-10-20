@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import '../../../Assets/Charts/wiggle_graph.dart';
 import '../../../Helpers/Constants/Styling.dart';
@@ -9,12 +11,14 @@ class Product {
 }
 
 class PanelRightPage extends StatefulWidget {
+  const PanelRightPage({super.key});
+
   @override
   _PanelRightPageState createState() => _PanelRightPageState();
 }
 
 class _PanelRightPageState extends State<PanelRightPage> {
-  List<Product> _products = [
+  final List<Product> _products = [
     Product(name: "LED Submersible Lights", enable: true),
     Product(name: "Portable Projector", enable: true),
     Product(name: "Bluetooth Speaker", enable: true),
@@ -46,7 +50,7 @@ class _PanelRightPageState extends State<PanelRightPage> {
                 ),
                 child: Container(
                   width: double.infinity,
-                  child: ListTile(
+                  child: const ListTile(
                     title: Text(
                       "Net Revenue",
                       style: TextStyle(color: Colors.white),
@@ -65,7 +69,7 @@ class _PanelRightPageState extends State<PanelRightPage> {
                 ),
               ),
             ),
-            LineChartSample1(),
+            const LineChartSample1(),
             Padding(
               padding: const EdgeInsets.only(
                 left: Styling.kPadding / 2,
@@ -84,7 +88,7 @@ class _PanelRightPageState extends State<PanelRightPage> {
                     (index) => SwitchListTile.adaptive(
                       title: Text(
                         _products[index].name,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       value: _products[index].enable,
                       onChanged: (newValue) {

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../main.dart';
@@ -10,9 +12,9 @@ class LoginWidget extends StatefulWidget {
   final VoidCallback onClickedSignUp;
 
   const LoginWidget({
-    Key? key,
+    super.key,
     required this.onClickedSignUp,
-  }) : super(key: key);
+  });
 
   @override
   _LoginWidgetState createState() => _LoginWidgetState();
@@ -33,7 +35,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: formKey,
           child: Column(
@@ -44,10 +46,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                 radius: 100,
                 child: Image.asset("images/mapp.png"),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text(
+              const Text(
                 'Hey There,\n Welcome Back',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -55,16 +57,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               TextFormField(
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: emailController,
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Email",
                   labelStyle: TextStyle(color: Colors.white),
                   icon: Icon(Icons.mail, color: Colors.white),
@@ -77,12 +79,12 @@ class _LoginWidgetState extends State<LoginWidget> {
                         ? 'Enter a valid email'
                         : null,
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               TextFormField(
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: passwordController,
                 textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Password",
                   labelStyle: TextStyle(color: Colors.white),
                   icon: Icon(Icons.password, color: Colors.white),
@@ -91,16 +93,19 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               MyElevatedButton(
                 label: 'Sign In',
                 width: double.infinity,
-                icon: Icon(Icons.lock),
+                icon: const Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
                 onPressed: signIn,
                 borderRadius: BorderRadius.circular(10),
-                child: Text('Sign In'),
+                child: const Text('Sign In'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               GestureDetector(
@@ -113,15 +118,15 @@ class _LoginWidgetState extends State<LoginWidget> {
                   ),
                 ),
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ForgotPasswordPage(),
+                  builder: (context) => const ForgotPasswordPage(),
                 )),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               RichText(
                 text: TextSpan(
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   text: 'No account?  ',
                   children: [
                     TextSpan(
@@ -147,7 +152,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(
+        builder: (context) => const Center(
               child: CircularProgressIndicator(),
             ));
     try {
@@ -157,7 +162,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       );
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MainPage(),
+        builder: (context) => const MainPage(),
       ));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

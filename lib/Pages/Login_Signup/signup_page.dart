@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +11,9 @@ class SignUpWidget extends StatefulWidget {
   final Function() onClickedSignIn;
 
   const SignUpWidget({
-    Key? key,
+    super.key,
     required this.onClickedSignIn,
-  }) : super(key: key);
+  });
 
   @override
   _SignUpWidgetState createState() => _SignUpWidgetState();
@@ -104,7 +104,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               MyElevatedButton(
                 label: 'Sign Up',
                 width: double.infinity,
-                icon: const Icon(Icons.arrow_upward),
+                icon: const Icon(
+                  Icons.arrow_upward,
+                  color: Colors.white,
+                ),
                 onPressed: signUp,
                 borderRadius: BorderRadius.circular(10),
                 child: const Text('Sign Up'),

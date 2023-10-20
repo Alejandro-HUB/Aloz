@@ -15,7 +15,7 @@ import 'DataWidget.dart';
 class DataDetail extends StatefulWidget {
   final Contact selectedContact;
 
-  const DataDetail({Key? key, required this.selectedContact}) : super(key: key);
+  const DataDetail({super.key, required this.selectedContact});
 
   @override
   _DataDetailPageState createState() => _DataDetailPageState();
@@ -184,7 +184,10 @@ class _DataDetailPageState extends State<DataDetail> {
                 child: MyElevatedButton(
                   onPressed: () {},
                   label: "Upload Image",
-                  icon: const Icon(Icons.image),
+                  icon: const Icon(
+                    Icons.image,
+                    color: Colors.white,
+                  ),
                   borderRadius: BorderRadius.circular(10),
                   child: const Text("Upload Image"),
                 ),
@@ -200,7 +203,7 @@ class _DataDetailPageState extends State<DataDetail> {
                     });
                   },
                   label: "Save",
-                  icon: const Icon(Icons.arrow_forward),
+                  icon: const Icon(Icons.arrow_forward, color: Colors.white),
                   borderRadius: BorderRadius.circular(10),
                   child: const Text("Save"),
                 ),

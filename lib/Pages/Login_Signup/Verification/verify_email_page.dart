@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print
+// ignore_for_file: library_private_types_in_public_api, avoid_print, use_build_context_synchronously
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +9,7 @@ import '../../../Assets/buttons.dart';
 import '../../../Helpers/Constants/Styling.dart';
 
 class VerifyEmailPage extends StatefulWidget {
-  const VerifyEmailPage({Key? key}) : super(key: key);
+  const VerifyEmailPage({super.key});
 
   @override
   _VerifyEmailPageState createState() => _VerifyEmailPageState();
@@ -112,7 +112,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 MyElevatedButton(
                   label: 'Resend Email',
                   width: double.infinity,
-                  icon: const Icon(Icons.mail),
+                  icon: const Icon(
+                    Icons.mail,
+                    color: Colors.white,
+                  ),
                   onPressed: canResendEmail ? sendVerificationEmail : null,
                   borderRadius: BorderRadius.circular(10),
                   child: const Text('Resend Email'),
