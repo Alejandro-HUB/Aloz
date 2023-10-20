@@ -1,10 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../../Helpers/Charts/indicator.dart';
-import '../../Helpers/Constants/Styling.dart';
+import 'package:projectcrm/Assets/Charts/ChartDependencies/chart_colors.dart';
+import 'package:projectcrm/Helpers/Charts/indicator.dart';
+import 'package:projectcrm/Helpers/Constants/Styling.dart';
 
 class PieChartSample2 extends StatefulWidget {
-  const PieChartSample2({Key? key}) : super(key: key);
+  const PieChartSample2({super.key});
 
   @override
   State<StatefulWidget> createState() => PieChart2State();
@@ -15,13 +16,8 @@ class PieChart2State extends State {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: Styling.kPadding / 2,
-        right: Styling.kPadding / 2,
-        top: Styling.kPadding / 2,
-        bottom: Styling.kPadding,
-      ),
+    return AspectRatio(
+      aspectRatio: 1.3,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -38,8 +34,8 @@ class PieChart2State extends State {
                 aspectRatio: 1,
                 child: PieChart(
                   PieChartData(
-                      pieTouchData: PieTouchData(touchCallback:
-                          (FlTouchEvent event, pieTouchResponse) {
+                    pieTouchData: PieTouchData(
+                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
                         setState(() {
                           if (!event.isInterestedForInteractions ||
                               pieTouchResponse == null ||
@@ -50,23 +46,24 @@ class PieChart2State extends State {
                           touchedIndex = pieTouchResponse
                               .touchedSection!.touchedSectionIndex;
                         });
-                      }),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 50,
-                      sections: showingSections()),
+                      },
+                    ),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 40,
+                    sections: showingSections(),
+                  ),
                 ),
               ),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
+            const Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
+              children: <Widget>[
                 Indicator(
-                  color: Color(0xff0293ee),
+                  color: ChartColors.contentColorBlue,
                   text: 'First',
                   isSquare: true,
                 ),
@@ -74,7 +71,7 @@ class PieChart2State extends State {
                   height: 4,
                 ),
                 Indicator(
-                  color: Color(0xfff8b250),
+                  color: ChartColors.contentColorYellow,
                   text: 'Second',
                   isSquare: true,
                 ),
@@ -82,7 +79,7 @@ class PieChart2State extends State {
                   height: 4,
                 ),
                 Indicator(
-                  color: Color(0xff845bef),
+                  color: ChartColors.contentColorPurple,
                   text: 'Third',
                   isSquare: true,
                 ),
@@ -90,7 +87,7 @@ class PieChart2State extends State {
                   height: 4,
                 ),
                 Indicator(
-                  color: Color(0xff13d38e),
+                  color: ChartColors.contentColorGreen,
                   text: 'Fourth',
                   isSquare: true,
                 ),
@@ -113,50 +110,59 @@ class PieChart2State extends State {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       switch (i) {
         case 0:
           return PieChartSectionData(
-            color: const Color(0xff0293ee),
+            color: ChartColors.contentColorBlue,
             value: 40,
             title: '40%',
             radius: radius,
             titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: ChartColors.mainTextColor1,
+              shadows: shadows,
+            ),
           );
         case 1:
           return PieChartSectionData(
-            color: const Color(0xfff8b250),
+            color: ChartColors.contentColorYellow,
             value: 30,
             title: '30%',
             radius: radius,
             titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: ChartColors.mainTextColor1,
+              shadows: shadows,
+            ),
           );
         case 2:
           return PieChartSectionData(
-            color: const Color(0xff845bef),
+            color: ChartColors.contentColorPurple,
             value: 15,
             title: '15%',
             radius: radius,
             titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: ChartColors.mainTextColor1,
+              shadows: shadows,
+            ),
           );
         case 3:
           return PieChartSectionData(
-            color: const Color(0xff13d38e),
+            color: ChartColors.contentColorGreen,
             value: 15,
             title: '15%',
             radius: radius,
             titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: ChartColors.mainTextColor1,
+              shadows: shadows,
+            ),
           );
         default:
           throw Error();
