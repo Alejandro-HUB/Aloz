@@ -178,9 +178,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Styling.purpleLight,
-      child: Drawer(
+    return Drawer(
+      child: Container(
+        color: Styling.purpleLight,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(Styling.kPadding),

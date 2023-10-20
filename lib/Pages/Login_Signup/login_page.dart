@@ -2,6 +2,7 @@
 
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:projectcrm/Helpers/Constants/Styling.dart';
 import '../../main.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -109,11 +110,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                 height: 24,
               ),
               GestureDetector(
-                child: Text(
+                child: const Text(
                   'Forgot Password?',
                   style: TextStyle(
                     decoration: TextDecoration.underline,
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Styling.blueLight,
                     fontSize: 20,
                   ),
                 ),
@@ -133,10 +134,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                       recognizer: TapGestureRecognizer()
                         ..onTap = widget.onClickedSignUp,
                       text: 'Sign Up',
-                      style: TextStyle(
+                      style: const TextStyle(
                           decoration: TextDecoration.underline,
-                          color: Theme.of(context).colorScheme.secondary),
-                    ),
+                          color: Styling.blueLight),
+                    )
                   ],
                 ),
               ),

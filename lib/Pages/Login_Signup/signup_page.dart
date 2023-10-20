@@ -4,6 +4,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:projectcrm/Helpers/Constants/Styling.dart';
 import '../../Assets/buttons.dart';
 import '../../main.dart';
 
@@ -124,10 +125,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       recognizer: TapGestureRecognizer()
                         ..onTap = widget.onClickedSignIn,
                       text: 'Log In',
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Theme.of(context).colorScheme.secondary),
-                    ),
+                      style: const TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Styling.blueLight,
+                      ),
+                    )
                   ],
                 ),
               ),
