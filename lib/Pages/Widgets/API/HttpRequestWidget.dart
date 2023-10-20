@@ -441,6 +441,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Styling.purpleLight,
+        foregroundColor: Colors.white,
         title: Text(
           currentWidget!.title,
           style: const TextStyle(color: Colors.white),

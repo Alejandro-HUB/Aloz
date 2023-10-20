@@ -93,6 +93,7 @@ class _DataWidgetState extends State<DataWidget> {
               style: const TextStyle(color: Colors.white),
             ),
             backgroundColor: Styling.purpleLight,
+            foregroundColor: Colors.white,
           ),
           body: SingleChildScrollView(
             child: Center(

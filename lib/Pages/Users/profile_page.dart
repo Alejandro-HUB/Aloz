@@ -38,6 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Styling.purpleLight,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Center(

@@ -19,12 +19,12 @@ class SideTitleWidget extends StatelessWidget {
   final double angle;
 
   const SideTitleWidget({
-    Key? key,
+    super.key,
     required this.child,
     required this.axisSide,
     this.space = 8.0,
     this.angle = 0.0,
-  }) : super(key: key);
+  });
 
   Alignment _getAlignment() {
     switch (axisSide) {

@@ -9,12 +9,12 @@ class SelectedContent extends StatelessWidget {
   final String label;
 
   const SelectedContent({
-    Key? key,
+    super.key,
     required this.onPressedOpen,
     required this.onPressedExport,
     required this.onPressedDelete,
     required this.label,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +28,7 @@ class SelectedContent extends StatelessWidget {
             title: Text(label),
             automaticallyImplyLeading: false,
             backgroundColor: Styling.purpleDark,
+            foregroundColor: Colors.white,
           ),
           body: Container(
             decoration: const BoxDecoration(
@@ -45,7 +46,10 @@ class SelectedContent extends StatelessWidget {
                     child: MyElevatedButton(
                       onPressed: onPressedOpen,
                       label: "Open",
-                      icon: const Icon(Icons.open_in_new),
+                      icon: const Icon(
+                        Icons.open_in_new,
+                        color: Colors.white,
+                      ),
                       borderRadius: BorderRadius.circular(10),
                       child: const Text("Open"),
                     ),
@@ -54,7 +58,10 @@ class SelectedContent extends StatelessWidget {
                   MyElevatedButton(
                     onPressed: onPressedExport,
                     label: "Export",
-                    icon: const Icon(Icons.import_export),
+                    icon: const Icon(
+                      Icons.import_export,
+                      color: Colors.white,
+                    ),
                     borderRadius: BorderRadius.circular(10),
                     child: const Text("Export"),
                   ),
@@ -64,7 +71,10 @@ class SelectedContent extends StatelessWidget {
                     child: MyElevatedButton(
                       onPressed: onPressedDelete,
                       label: "Delete",
-                      icon: const Icon(Icons.delete),
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
                       borderRadius: BorderRadius.circular(10),
                       child: const Text("Delete"),
                     ),

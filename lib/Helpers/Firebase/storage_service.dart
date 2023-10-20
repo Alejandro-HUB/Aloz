@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, duplicate_ignore, prefer_typing_uninitialized_variables, camel_case_types
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -143,7 +145,7 @@ class listImages extends StatelessWidget {
   final profilePicture;
 
   const listImages({
-    Key? key,
+    super.key,
     required this.collectionName,
     required this.documentName,
     required this.fieldName,
@@ -153,77 +155,76 @@ class listImages extends StatelessWidget {
     this.radius = 60.0,
     this.width = 500.0,
     this.height = 500.0,
-  }) : super(key: key);
+  });
 
+  @override
   Widget build(BuildContext context) {
     final Storage storage = Storage();
     var collection = FirebaseFirestore.instance.collection(collectionName);
     String bucketName = "";
 
-    return Container(
-      child: Column(
-        children: [
-          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            stream: collection.doc(documentName).snapshots(),
-            builder: (_, snapshot) {
-              if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+    return Column(
+      children: [
+        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: collection.doc(documentName).snapshots(),
+          builder: (_, snapshot) {
+            if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
-              if (snapshot.hasData) {
-                var output = snapshot.data!.data();
-                if (output.toString().contains(fieldName)) {
-                  bucketName = output![fieldName];
-                }
-                // <-- Your value
-                return FutureBuilder(
-                    future: storage.downloadURL(bucketName),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      if (snapshot.hasData &&
-                          snapshot.connectionState == ConnectionState.done &&
-                          bucketName != "") {
-                        if (circleAvatar) {
-                          return CircleAvatar(
-                            backgroundColor: backgroundColor,
-                            radius: radius,
-                            backgroundImage: NetworkImage(snapshot.data!),
-                          );
-                        } else {
-                          return Container(
-                            width: width,
-                            height: height,
-                            child: Image.network(snapshot.data!,
-                                fit: BoxFit.cover),
-                          );
-                        }
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (!snapshot.hasData || bucketName == "") {
-                        if (profilePicture) {
-                          return CircleAvatar(
-                            backgroundColor: backgroundColor,
-                            radius: radius,
-                            child: Image.asset("images/profile.png"),
-                          );
-                        } else {
-                          return const CircularProgressIndicator();
-                        }
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Something went wrong'),
-                          ),
-                        );
-                        return Container();
-                      }
-                    });
+            if (snapshot.hasData) {
+              var output = snapshot.data!.data();
+              if (output.toString().contains(fieldName)) {
+                bucketName = output![fieldName];
               }
+              // <-- Your value
+              return FutureBuilder(
+                  future: storage.downloadURL(bucketName),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.hasData &&
+                        snapshot.connectionState == ConnectionState.done &&
+                        bucketName != "") {
+                      if (circleAvatar) {
+                        return CircleAvatar(
+                          backgroundColor: backgroundColor,
+                          radius: radius,
+                          backgroundImage: NetworkImage(snapshot.data!),
+                        );
+                      } else {
+                        return Container(
+                          width: width,
+                          height: height,
+                          child: Image.network(snapshot.data!,
+                              fit: BoxFit.cover),
+                        );
+                      }
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (!snapshot.hasData || bucketName == "") {
+                      if (profilePicture) {
+                        return CircleAvatar(
+                          backgroundColor: backgroundColor,
+                          radius: radius,
+                          child: Image.asset("images/profile.png"),
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Something went wrong'),
+                        ),
+                      );
+                      return Container();
+                    }
+                  });
+            }
 
-              return const Center(child: CircularProgressIndicator());
-            },
-          ),
-        ],
-      ),
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
+      ],
     );
   }
 }
@@ -234,10 +235,11 @@ class listImageNames extends StatelessWidget {
   final bucketName;
 
   const listImageNames({
-    Key? key,
+    super.key,
     required this.bucketName,
-  }) : super(key: key);
+  });
 
+  @override
   Widget build(BuildContext context) {
     final Storage storage = Storage();
     return FutureBuilder(

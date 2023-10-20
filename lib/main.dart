@@ -44,7 +44,7 @@ class MainPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData && !snapshot.hasError) {
-              return VerifyEmailPage();
+              return const VerifyEmailPage();
             } else if (snapshot.hasError) {
               return const Center(
                 child: Text(
@@ -57,7 +57,7 @@ class MainPage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else {
-              return AuthPage();
+              return const AuthPage();
             }
           },
         ),

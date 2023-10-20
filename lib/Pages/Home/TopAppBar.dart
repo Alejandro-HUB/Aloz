@@ -55,8 +55,8 @@ class _TopAppBarState extends State<TopAppBar> {
     Widget createDynamicWidget(String widgetName) {
       final Map<String, Widget Function()> widgetMap = {
         'PanelLeftPage': () => const PanelLeftPage(),
-        'PanelCenterPage': () => PanelCenterPage(),
-        'PanelRightPage': () => PanelRightPage(),
+        'PanelCenterPage': () => const PanelCenterPage(),
+        'PanelRightPage': () => const PanelRightPage(),
         'DataWidget': () => const DataWidget(),
         'HttpRequestWidget': () => const HttpRequestWidget(),
         // Add more widget mappings here

@@ -60,14 +60,14 @@ class _AppRouterState extends State<AppRouter> {
             ? currentIndexBottomNavigationBar == 0
                 ? const PanelLeftPage()
                 : currentIndexBottomNavigationBar == 1
-                    ? PanelCenterPage()
-                    : PanelRightPage()
+                    ? const PanelCenterPage()
+                    : const PanelRightPage()
             : createDynamicWidget(currentWidget!.widgetType),
         // Tablet Sized Screen
         tablet: currentWidget?.currentPage == 0
-            ? Row(
+            ? const Row(
                 children: [
-                  const Expanded(child: PanelLeftPage()),
+                  Expanded(child: PanelLeftPage()),
                   Expanded(child: PanelCenterPage()),
                 ],
               )
@@ -80,9 +80,9 @@ class _AppRouterState extends State<AppRouter> {
               ),
         // Large Tablet Sized Screen
         largeTablet: currentWidget?.currentPage == 0
-            ? Row(
+            ? const Row(
                 children: [
-                  const Expanded(child: PanelLeftPage()),
+                  Expanded(child: PanelLeftPage()),
                   Expanded(child: PanelCenterPage()),
                   Expanded(child: PanelRightPage()),
                 ],
@@ -96,10 +96,10 @@ class _AppRouterState extends State<AppRouter> {
               ),
         // Computer Sized Screen
         computer: currentWidget?.currentPage == 0
-            ? Row(
+            ? const Row(
                 children: [
-                  const Expanded(child: HomePage()),
-                  const Expanded(child: PanelLeftPage()),
+                  Expanded(child: HomePage()),
+                  Expanded(child: PanelLeftPage()),
                   Expanded(child: PanelCenterPage()),
                   Expanded(child: PanelRightPage()),
                 ],
@@ -132,8 +132,8 @@ class _AppRouterState extends State<AppRouter> {
   Widget createDynamicWidget(String widgetName) {
     final Map<String, Widget Function()> widgetMap = {
       'PanelLeftPage': () => const PanelLeftPage(),
-      'PanelCenterPage': () => PanelCenterPage(),
-      'PanelRightPage': () => PanelRightPage(),
+      'PanelCenterPage': () => const PanelCenterPage(),
+      'PanelRightPage': () => const PanelRightPage(),
       'DataWidget': () => const DataWidget(),
       'HttpRequestWidget': () => const HttpRequestWidget(),
       // Add more widget mappings here

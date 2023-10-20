@@ -35,6 +35,7 @@ class DataEntryFormState extends State<DataEntryForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         // ignore: prefer_const_constructors
         title: Text(
           "Import Data",

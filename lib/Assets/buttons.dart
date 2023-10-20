@@ -13,7 +13,7 @@ class MyElevatedButton extends StatelessWidget {
   final String label;
 
   const MyElevatedButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.child,
     required this.label,
@@ -22,7 +22,7 @@ class MyElevatedButton extends StatelessWidget {
     this.height = 44.0,
     this.gradient = const LinearGradient(colors: [Styling.redDark, Styling.orangeDark]),
     this.icon = const Icon(Icons.lock),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +35,11 @@ class MyElevatedButton extends StatelessWidget {
         borderRadius: borderRadius,
       ),
       child: ElevatedButton.icon(
-        label: Text(label, style: TextStyle(color: Colors.white)),
+        label: Text(label, style: const TextStyle(color: Colors.white)),
         icon: icon,
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          primary: ResponsiveLayout.isPhone(context) ? Colors.white.withOpacity(0.05) : Colors.transparent,
+          backgroundColor: ResponsiveLayout.isPhone(context) ? Colors.white.withOpacity(0.05) : Colors.transparent,
           shadowColor: ResponsiveLayout.isPhone(context) ? Colors.white.withOpacity(0.05) : Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
         ),

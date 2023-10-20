@@ -8,11 +8,11 @@ class RoutePage extends StatelessWidget {
   final bool showDrawer;
 
   const RoutePage({
-    Key? key,
+    super.key,
     required this.appBar,
     required this.page,
     required this.showDrawer,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

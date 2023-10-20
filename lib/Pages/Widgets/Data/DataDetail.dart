@@ -58,6 +58,7 @@ class _DataDetailPageState extends State<DataDetail> {
       appBar: AppBar(
         centerTitle: false,
         backgroundColor: Styling.purpleLight,
+        foregroundColor: Colors.white,
         title: Text(
           "${widget.selectedContact.firstName} ${widget.selectedContact.lastName} - Details",
           style: const TextStyle(
