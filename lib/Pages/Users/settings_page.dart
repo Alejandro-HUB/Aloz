@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projectcrm/Assets/buttons.dart';
 import 'package:projectcrm/Helpers/Constants/Styling.dart';
 import 'package:projectcrm/Helpers/Firebase/user_service.dart';
+import 'package:projectcrm/main.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -22,7 +23,8 @@ class _SettingsPageState extends State<SettingsPage> {
     if (user != null) {
       // Update the theme in Firestore
       _userService.updateTheme(theme);
-      Styling.theme = theme;
+      // Access the AlozState and trigger a rebuild of the whole app
+      alozKey.currentState?.rebuildApp(theme);
     }
   }
 
@@ -30,7 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Styling.background,
+        backgroundColor: Styling.foreground,
         foregroundColor: Styling.primaryColor,
         title: Text(
           'Settings',

@@ -2,16 +2,17 @@
 import 'package:flutter/material.dart';
 
 class Styling{
+
   static const double kPadding = 10.0;
   static const Color purpleLight = Color(0XFF1e224c);
   static const Color purpleDark = Color(0XFF0d193e);
-  static const Color purpleBorder = Color(0xFF575C9E);
   static const Color orangeLight = Color(0xfff8b250);
   static const Color orangeDark = Color(0xffec8d2f);
   static const Color redLight = Color(0xffff5182);
   static const Color redDark = Color(0xfff44336);
   static const Color blueLight = Color(0xff0293ee);
   static const Color greenLight = Color(0xff13d38e);
+  static const Color purpleBorder = Color(0xFF575C9E);
   static const Color logoColor = Color.fromARGB(255 , 0, 210, 255);
 
   // Theme
@@ -24,6 +25,7 @@ class Styling{
   static Color gradient2 = theme == "light" ? lightGradient2 : theme == "dark" ? darkGradient2 : alozGradient2;
   static Color foreground = theme == "light" ? lightForeground : theme == "dark" ? darkForeground : alozForeground;
   static Color background = theme == "light" ? lightBackground : theme == "dark" ? darkBackground : alozBackground;
+  static Color homeBorder = theme == "light" ? lightHomeBorder : theme == "dark" ? darkHomeBorder : alozHomeBorder;
 
   // Aloz Theme
   static const String alozLogo = "logo_dark.png";
@@ -32,6 +34,7 @@ class Styling{
   static const Color alozGradient2 = orangeDark;
   static const Color alozForeground = purpleLight;
   static const Color alozBackground = purpleDark;
+  static const Color alozHomeBorder = purpleBorder;
 
   // Light Theme
   static const String lightLogo = "logo_light.png";
@@ -40,6 +43,7 @@ class Styling{
   static const Color lightGradient2 = logoColor;
   static const Color lightForeground = Colors.white;
   static const Color lightBackground = Color.fromARGB(243, 236, 235, 235);
+  static const Color lightHomeBorder = logoColor;
 
   // Dark Theme
   static const String darkLogo = "logo_dark.png";
@@ -48,4 +52,15 @@ class Styling{
   static const Color darkGradient2 = logoColor;
   static const Color darkForeground = Colors.black;
   static const Color darkBackground = Color.fromARGB(243, 41, 41, 41);
+  static const Color darkHomeBorder = logoColor;
+
+  static void updateThemeValues () {
+    logo = theme == "light" ? lightLogo : theme == "dark" ? darkLogo : alozLogo;
+    primaryColor = theme == "light" ? lightPrimaryColor : theme == "dark" ? darkPrimaryColor : alozPrimaryColor;
+    gradient1 = theme == "light" ? lightGradient1 : theme == "dark" ? darkGradient1 : alozGradient1;
+    gradient2 = theme == "light" ? lightGradient2 : theme == "dark" ? darkGradient2 : alozGradient2;
+    foreground = theme == "light" ? lightForeground : theme == "dark" ? darkForeground : alozForeground;
+    background = theme == "light" ? lightBackground : theme == "dark" ? darkBackground : alozBackground;
+    homeBorder = theme == "light" ? lightHomeBorder : theme == "dark" ? darkHomeBorder : alozHomeBorder;
+  }
 }

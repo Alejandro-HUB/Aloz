@@ -298,8 +298,8 @@ class _HomePageState extends State<HomePage> {
                                 : null, // No trash icon for home entry
                           ),
                         ),
-                        const Divider(
-                          color: Styling.purpleBorder,
+                        Divider(
+                          color: Styling.homeBorder,
                           thickness: 0.1,
                         ),
                       ],

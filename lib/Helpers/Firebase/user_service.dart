@@ -5,19 +5,15 @@ class UserService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Stream<String?> getUserThemeStream() {
-    final user = _auth.currentUser;
-    if (user == null) {
-      return Stream.value(null);
+  Future<String> getUserTheme() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      final userDoc = await _firestore.collection('Users').doc(user.uid).get();
+      if (userDoc.exists) {
+        return userDoc.get('theme') ?? 'aloz';
+      }
     }
-
-    final Stream<String> themeStream = _firestore
-        .collection('Users')
-        .doc(user.uid)
-        .snapshots()
-        .map((doc) => doc.get('theme'));
-
-    return themeStream;
+    return 'aloz'; // Default theme if not found
   }
 
   void updateTheme(String theme) async {

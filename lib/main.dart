@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:projectcrm/Helpers/Firebase/user_service.dart';
 import 'Pages/Login_Signup/Verification/auth_page.dart';
 import 'Helpers/Constants/Styling.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,13 +12,46 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const Aloz());
+  runApp(Aloz(key: alozKey)); // Use alozKey here
 }
 
-final navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<AlozState> alozKey =
+    GlobalKey<AlozState>(); // Define the GlobalKey
 
-class Aloz extends StatelessWidget {
+class Aloz extends StatefulWidget {
   const Aloz({super.key});
+
+  @override
+  AlozState createState() => AlozState();
+}
+
+class AlozState extends State<Aloz> {
+// Default theme
+
+  @override
+  void initState() {
+    super.initState();
+    _updateTheme(); // Retrieve the theme during initialization
+  }
+
+  // Method to retrieve and update the theme
+  Future<void> _updateTheme() async {
+    final userService = UserService();
+    String theme = await userService.getUserTheme();
+    setState(() {
+      Styling.theme = theme;
+      Styling.updateThemeValues();
+    });
+  }
+
+  // Method to rebuild the entire app
+  void rebuildApp(String theme) {
+    setState(() {
+      Styling.theme = theme;
+      Styling.updateThemeValues();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

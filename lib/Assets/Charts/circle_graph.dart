@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Assets/Charts/ChartDependencies/chart_colors.dart';
-import 'package:projectcrm/Helpers/Charts/indicator.dart';
+import 'package:projectcrm/Assets/Charts/ChartDependencies/indicator.dart';
 import 'package:projectcrm/Helpers/Constants/Styling.dart';
 
 class PieChartSample2 extends StatefulWidget {

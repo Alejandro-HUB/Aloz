@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
 class Indicator extends StatelessWidget {
+  final Color color;
+  final String text;
+  final bool isSquare;
+  final double size;
+  final Color textColor;
+
   const Indicator({
     super.key,
     required this.color,
     required this.text,
     required this.isSquare,
     this.size = 16,
-    this.textColor,
+    this.textColor = const Color(0xff505050),
   });
-  final Color color;
-  final String text;
-  final bool isSquare;
-  final double size;
-  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +34,7 @@ class Indicator extends StatelessWidget {
         Text(
           text,
           style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
+              fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
         )
       ],
     );

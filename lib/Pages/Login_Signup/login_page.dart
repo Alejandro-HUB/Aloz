@@ -1,9 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projectcrm/Helpers/Constants/Styling.dart';
+import 'package:projectcrm/Helpers/Firebase/user_service.dart';
 import '../../main.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +97,8 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
               const SizedBox(height: 10),
               GradientButton(
-                gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
+                gradient: LinearGradient(
+                    colors: [Styling.gradient1, Styling.gradient2]),
                 label: 'Sign In',
                 width: double.infinity,
                 icon: Icon(
@@ -161,33 +162,15 @@ class _LoginWidgetState extends State<LoginWidget> {
     );
 
     try {
-      final userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
 
-      // Get the authenticated user
-      final user = userCredential.user;
-
-      if (user != null) {
-        // User is authenticated, now retrieve the "theme" property from Firestore
-        final userDoc = await FirebaseFirestore.instance
-            .collection("Users")
-            .doc(user.uid)
-            .get();
-
-        if (userDoc.exists) {
-          final theme = userDoc.get("theme");
-
-          if(theme != null) {
-            Styling.theme = theme;
-          }
-          else {
-            Styling.theme = "aloz";
-          }
-        }
-      }
+      // Get user theme
+      final userService = UserService();
+      String theme = await userService.getUserTheme();
+      alozKey.currentState?.rebuildApp(theme);
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const MainPage(),
