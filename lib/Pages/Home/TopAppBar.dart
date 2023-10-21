@@ -1,18 +1,22 @@
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:projectcrm/Assets/Charts/circle_graph.dart';
+import 'package:projectcrm/Assets/Charts/curved_chart.dart';
+import 'package:projectcrm/Assets/Charts/linear_graph.dart';
+import 'package:projectcrm/Assets/Charts/wiggle_graph.dart';
 import 'package:projectcrm/Pages/Users/profile_page.dart';
 import 'package:projectcrm/Helpers/Routing/route.dart';
+import 'package:projectcrm/Pages/Users/settings_page.dart';
 import 'package:projectcrm/main.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
 import '../../Helpers/Constants/Styling.dart';
 import '../../Helpers/Firebase/storage_service.dart';
 import '../Widgets/API/HttpRequestWidget.dart';
 import '../Widgets/Data/DataWidget.dart';
-import '../Widgets/GraphWidgets/panel_center_page.dart';
-import '../Widgets/GraphWidgets/panel_left_page.dart';
-import '../Widgets/GraphWidgets/panel_right_page.dart';
 import 'HomePage.dart';
 
 // This Dart code defines a custom Flutter widget called TopAppBar, which serves as the top app bar for the application.
@@ -22,7 +26,7 @@ import 'HomePage.dart';
 // Note: Make sure to customize the widget's behavior as needed for your specific application.
 
 List<String> _buttonNames = ["Overview", "Revenue", "Sales", "Control"];
-List<String> _menuItems = ["My Profile", "Logout"];
+List<String> _menuItems = ["My Profile", "Settings", "Logout"];
 String? index;
 String email = "user";
 int _currentSelectedButton = 0;
@@ -54,9 +58,10 @@ class _TopAppBarState extends State<TopAppBar> {
 
     Widget createDynamicWidget(String widgetName) {
       final Map<String, Widget Function()> widgetMap = {
-        'PanelLeftPage': () => const PanelLeftPage(),
-        'PanelCenterPage': () => const PanelCenterPage(),
-        'PanelRightPage': () => const PanelRightPage(),
+        'CircleGraph': () => const PieChartSample2(),
+        'LineChart1': () => const LineChartSample1(),
+        'LineChart2': () => const LineChartSample2(),
+        'BarChart': () => BarChartSample2(),
         'DataWidget': () => const DataWidget(),
         'HttpRequestWidget': () => const HttpRequestWidget(),
         // Add more widget mappings here
@@ -71,19 +76,19 @@ class _TopAppBarState extends State<TopAppBar> {
     }
 
     return Container(
-      color: Styling.purpleLight,
+      color: Styling.foreground,
       child: Row(
         children: [
           if (ResponsiveLayout.isComputer(context))
             Container(
               margin: const EdgeInsets.all(Styling.kPadding),
               height: double.infinity,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 boxShadow: [
                   // ignore: unnecessary_const
-                  const BoxShadow(
-                      color: Styling.purpleLight,
-                      offset: Offset(0, 0),
+                  BoxShadow(
+                      color: Styling.foreground,
+                      offset: const Offset(0, 0),
                       spreadRadius: 1,
                       blurRadius: 0),
                 ],
@@ -92,7 +97,7 @@ class _TopAppBarState extends State<TopAppBar> {
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 60,
-                child: Image.asset("images/mapp.png"),
+                child: Image.asset("images/${Styling.logo}"),
               ),
             )
           else
@@ -101,10 +106,10 @@ class _TopAppBarState extends State<TopAppBar> {
                 Scaffold.of(context).openDrawer();
               },
               iconSize: 30,
-              color: Colors.white,
-              icon: const Icon(
+              color: Styling.primaryColor,
+              icon: Icon(
                 Icons.menu,
-                color: Colors.white,
+                color: Styling.primaryColor,
               ),
             ),
           const SizedBox(
@@ -130,8 +135,8 @@ class _TopAppBarState extends State<TopAppBar> {
                         _buttonNames[index],
                         style: TextStyle(
                             color: _currentSelectedButton == index
-                                ? Colors.white
-                                : Colors.white70),
+                                ? Styling.primaryColor
+                                : Styling.primaryColor),
                       ),
                       Container(
                         margin: const EdgeInsets.all(Styling.kPadding / 2),
@@ -139,10 +144,10 @@ class _TopAppBarState extends State<TopAppBar> {
                         height: 2,
                         decoration: BoxDecoration(
                           gradient: _currentSelectedButton == index
-                              ? const LinearGradient(
+                              ? LinearGradient(
                                   colors: [
-                                    Styling.redDark,
-                                    Styling.orangeDark,
+                                    Styling.gradient1,
+                                    Styling.gradient2,
                                   ],
                                 )
                               : null,
@@ -162,17 +167,17 @@ class _TopAppBarState extends State<TopAppBar> {
                 children: [
                   Text(
                     _buttonNames[_currentSelectedButton],
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: Styling.primaryColor),
                   ),
                   Container(
                     margin: const EdgeInsets.all(Styling.kPadding / 2),
                     width: 60,
                     height: 2,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          Styling.redDark,
-                          Styling.orangeDark,
+                          Styling.gradient1,
+                          Styling.gradient2,
                         ],
                       ),
                     ),
@@ -187,22 +192,22 @@ class _TopAppBarState extends State<TopAppBar> {
               child: TypeAheadFormField<Map<String, String>>(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: TextEditingController(),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.search,
-                      color: Colors.white,
+                      color: Styling.primaryColor,
                     ),
-                    prefixIconColor: Colors.white,
+                    prefixIconColor: Styling.primaryColor,
                     labelText: 'Search',
-                    labelStyle: TextStyle(color: Colors.white),
-                    enabledBorder: UnderlineInputBorder(
+                    labelStyle: TextStyle(color: Styling.primaryColor),
+                    enabledBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
-                    focusedBorder: UnderlineInputBorder(
+                    focusedBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Styling.primaryColor),
                 ),
                 suggestionsCallback: (pattern) async {
                   // Fetch data from the collection and return suggestions based on the pattern
@@ -249,12 +254,12 @@ class _TopAppBarState extends State<TopAppBar> {
                   return ListTile(
                     title: Text(
                       title,
-                      style: const TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Styling.primaryColor, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                       'Type: $widgetType',
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(color: Styling.primaryColor),
                     ),
                   );
                 },
@@ -299,26 +304,26 @@ class _TopAppBarState extends State<TopAppBar> {
             Stack(
               children: [
                 IconButton(
-                  color: Colors.white,
+                  color: Styling.primaryColor,
                   iconSize: 30,
                   onPressed: () {},
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.notifications_none_outlined,
-                    color: Colors.white,
+                    color: Styling.primaryColor,
                   ),
                 ),
-                const Positioned(
+                Positioned(
                   right: 6,
                   top: 6,
                   // ignore: unnecessary_const
-                  child: const CircleAvatar(
-                    backgroundColor: Colors.pink,
+                  child: CircleAvatar(
+                    backgroundColor: Styling.gradient1,
                     radius: 8,
                     child: Text(
                       "3",
                       style: TextStyle(
                         fontSize: 10,
-                        color: Colors.white,
+                        color: Styling.primaryColor,
                       ),
                     ),
                   ),
@@ -329,15 +334,15 @@ class _TopAppBarState extends State<TopAppBar> {
             hint: Text(
               email,
               style: TextStyle(
-                  color: Colors.white,
+                  color: Styling.primaryColor,
                   fontSize: ResponsiveLayout.isPhone(context) ? 9 : 15),
             ),
             autofocus: true,
             isDense: true,
             borderRadius: BorderRadius.circular(20),
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_drop_down,
-              color: Colors.white,
+              color: Styling.primaryColor,
             ),
             items: _menuItems.map(buildMenuItem).toList(),
             onChanged: (value) => setState(() {
@@ -355,6 +360,14 @@ class _TopAppBarState extends State<TopAppBar> {
                           showDrawer: false,
                         )));
               }
+              else if (index == "Settings") {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const RoutePage(
+                          appBar: TopAppBar(),
+                          page: SettingsPage(),
+                          showDrawer: false,
+                        )));
+              }
             }),
             style: const TextStyle(fontSize: 15),
           ),
@@ -365,6 +378,7 @@ class _TopAppBarState extends State<TopAppBar> {
               shape: BoxShape.circle,
             ),
             child: listImages(
+              backgroundColor: Styling.gradient2,
               collectionName: "Users",
               documentName: FirebaseAuth.instance.currentUser?.uid == null
                   ? ""
@@ -384,7 +398,7 @@ class _TopAppBarState extends State<TopAppBar> {
         value: item,
         child: Text(
           item,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: Styling.primaryColor),
         ),
       );
 }

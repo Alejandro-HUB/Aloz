@@ -33,12 +33,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Profile Page",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Styling.primaryColor),
         ),
-        backgroundColor: Styling.purpleLight,
-        foregroundColor: Colors.white,
+        backgroundColor: Styling.foreground,
+        foregroundColor: Styling.primaryColor,
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -47,32 +47,32 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(
                 height: 20,
               ),
-              const Text(
+              Text(
                 'Update your information:',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Styling.primaryColor),
               ),
               const SizedBox(height: 40),
               SizedBox(
                 width: 300,
                 child: TextFormField(
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: Styling.primaryColor,
                   ),
                   controller: emailController,
-                  cursorColor: Colors.white,
+                  cursorColor: Styling.primaryColor,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     labelText: "Change Email",
                     hintText:
                         FirebaseAuth.instance.currentUser!.email.toString(),
-                    labelStyle: const TextStyle(color: Colors.white),
-                    icon: const Icon(Icons.mail, color: Colors.white),
-                    hintStyle: const TextStyle(color: Colors.white),
-                    helperStyle: const TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(color: Styling.primaryColor),
+                    icon: Icon(Icons.mail, color: Styling.primaryColor),
+                    hintStyle: TextStyle(color: Styling.primaryColor),
+                    helperStyle: TextStyle(color: Styling.primaryColor),
                   ),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (email) =>
@@ -85,26 +85,27 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 width: 300,
                 child: TextFormField(
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Styling.primaryColor),
                   controller: passwordController,
                   textInputAction: TextInputAction.done,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Change Password",
-                    labelStyle: TextStyle(color: Colors.white),
-                    icon: Icon(Icons.password, color: Colors.white),
-                    hintStyle: TextStyle(color: Colors.white),
-                    helperStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(color: Styling.primaryColor),
+                    icon: Icon(Icons.password, color: Styling.primaryColor),
+                    hintStyle: TextStyle(color: Styling.primaryColor),
+                    helperStyle: TextStyle(color: Styling.primaryColor),
                   ),
                   obscureText: true,
                 ),
               ),
               const SizedBox(height: 20),
-              MyElevatedButton(
+              GradientButton(
+                gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                 label: 'Submit Changes',
                 width: 150,
-                icon: const Icon(
+                icon: Icon(
                   Icons.update,
-                  color: Colors.white,
+                  color: Styling.primaryColor,
                 ),
                 onPressed: () async {
                   updateUserDetails(emailController.text.toString(),
@@ -114,16 +115,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: const Text('Upload File'),
               ),
               const SizedBox(height: 40),
-              const Text(
+              Text(
                 'Update your Profile Picture:',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Styling.primaryColor),
               ),
               const SizedBox(height: 20),
               listImages(
+                backgroundColor: Styling.gradient2,
                 collectionName: "Users",
                 // ignore: prefer_if_null_operators
                 documentName: FirebaseAuth.instance.currentUser!.uid == null
@@ -134,12 +136,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 profilePicture: true,
               ),
               const SizedBox(height: 20),
-              MyElevatedButton(
+              GradientButton(
+                gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                 label: 'Upload File',
                 width: 150,
-                icon: const Icon(
+                icon: Icon(
                   Icons.cloud,
-                  color: Colors.white,
+                  color: Styling.primaryColor,
                 ),
                 onPressed: uploadFile,
                 borderRadius: BorderRadius.circular(10),

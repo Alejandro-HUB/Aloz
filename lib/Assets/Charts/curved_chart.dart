@@ -21,7 +21,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Styling.purpleLight,
+      color: Styling.foreground,
         elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -55,7 +55,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 'avg',
                 style: TextStyle(
                   fontSize: 12,
-                  color: showAvg ? Colors.white.withOpacity(0.5) : Colors.white,
+                  color: showAvg ? Styling.primaryColor.withOpacity(0.5) : Styling.primaryColor,
                 ),
               ),
             ),
@@ -125,13 +125,13 @@ class _LineChartSample2State extends State<LineChartSample2> {
         horizontalInterval: 1,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
-          return const FlLine(
+          return FlLine(
             color: ChartColors.mainGridLineColor,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
-          return const FlLine(
+          return FlLine(
             color: ChartColors.mainGridLineColor,
             strokeWidth: 1,
           );

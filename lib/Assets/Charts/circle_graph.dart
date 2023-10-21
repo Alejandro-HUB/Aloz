@@ -23,7 +23,7 @@ class PieChart2State extends State {
           borderRadius: BorderRadius.circular(20),
         ),
         elevation: 3,
-        color: Styling.purpleLight,
+        color: Styling.foreground,
         child: Row(
           children: <Widget>[
             const SizedBox(

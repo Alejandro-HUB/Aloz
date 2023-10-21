@@ -11,13 +11,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const Aloz());
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Aloz extends StatelessWidget {
+  const Aloz({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
       title: 'Aloz',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Styling.purpleDark,
-        canvasColor: Styling.purpleLight,
+        scaffoldBackgroundColor: Styling.background,
+        canvasColor: Styling.foreground,
       ),
       home: const MainPage(),
     );
@@ -39,27 +39,28 @@ class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    return Scaffold(
         body: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData && !snapshot.hasError) {
-              return const VerifyEmailPage();
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Text(
-                  'Something went wrong',
-                  style: TextStyle(color: Colors.white),
-                ),
-              );
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return const AuthPage();
-            }
-          },
-        ),
-      );
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData && !snapshot.hasError) {
+          return const VerifyEmailPage();
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              'Something went wrong',
+              style: TextStyle(color: Styling.primaryColor),
+            ),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return const AuthPage();
+        }
+      },
+    ));
+  }
 }

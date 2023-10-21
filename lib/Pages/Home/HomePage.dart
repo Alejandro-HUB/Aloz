@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_const_literals_to_create_immutables, non_constant_identifier_names
+// ignore_for_file: library_private_types_in_public_api, prefer_const_literals_to_create_immutables, non_constant_identifier_names, file_names
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,12 +8,12 @@ import '../../Helpers/Constants/Styling.dart';
 import '../../Models/WidgetsEntity.dart';
 import 'AppRouter.dart';
 
-// This Dart code defines a Flutter application's HomePage, which is a part of a widget management system. 
-// The HomePage presents a drawer with an admin menu for adding, editing, and deleting widgets. 
-// Users can create custom widgets with titles, icons, and associated pages. 
-// Widgets are stored in Firebase Firestore, and the application provides a user-friendly interface for managing them. 
-// Icons are chosen using a typeahead input, and there's a preview of selected icons. 
-// When a widget is selected, users can navigate to its associated page. 
+// This Dart code defines a Flutter application's HomePage, which is a part of a widget management system.
+// The HomePage presents a drawer with an admin menu for adding, editing, and deleting widgets.
+// Users can create custom widgets with titles, icons, and associated pages.
+// Widgets are stored in Firebase Firestore, and the application provides a user-friendly interface for managing them.
+// Icons are chosen using a typeahead input, and there's a preview of selected icons.
+// When a widget is selected, users can navigate to its associated page.
 // Additionally, there are functions for adding, editing, and deleting widgets, with Firestore integration.
 
 class HomePage extends StatefulWidget {
@@ -107,9 +107,10 @@ class _HomePageState extends State<HomePage> {
 
   //Widget Names
   final List<String> _pageNames = [
-    'PanelLeftPage',
-    'PanelCenterPage',
-    'PanelRightPage',
+    'CircleGraph',
+    'LineChart1',
+    'LineChart2',
+    'BarChart',
     'DataWidget',
     'HttpRequestWidget'
     // Add more page names as needed
@@ -167,7 +168,7 @@ class _HomePageState extends State<HomePage> {
     return Icon(
       iconData,
       size: 24,
-      color: Colors.white,
+      color: Styling.primaryColor,
     );
   }
 
@@ -180,19 +181,19 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Styling.purpleLight,
+        color: Styling.foreground,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(Styling.kPadding),
             child: Column(
               children: [
-                const ListTile(
+                ListTile(
                   title: Row(
                     children: [
                       Text(
                         "Admin Menu",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Styling.primaryColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -206,10 +207,10 @@ class _HomePageState extends State<HomePage> {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "Add Widgets",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Styling.primaryColor,
                         ),
                       ),
                       Container(
@@ -218,14 +219,14 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
                             colors: [
-                              Styling.redDark.withOpacity(0.9),
-                              Styling.orangeDark.withOpacity(0.9),
+                              Styling.gradient1.withOpacity(0.9),
+                              Styling.gradient2.withOpacity(0.9),
                             ],
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.add,
-                          color: Colors.white,
+                          color: Styling.primaryColor,
                         ),
                       ),
                     ],
@@ -244,8 +245,8 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius: BorderRadius.circular(20),
                                   gradient: LinearGradient(
                                     colors: [
-                                      Styling.redDark.withOpacity(0.9),
-                                      Styling.orangeDark.withOpacity(0.9),
+                                      Styling.gradient1.withOpacity(0.9),
+                                      Styling.gradient2.withOpacity(0.9),
                                     ],
                                   ),
                                 )
@@ -268,15 +269,15 @@ class _HomePageState extends State<HomePage> {
                             },
                             title: Text(
                               widgetInfo.title,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: Styling.primaryColor,
                               ),
                             ),
                             leading: Padding(
                               padding: const EdgeInsets.all(Styling.kPadding),
                               child: Icon(
                                 widgetInfo.icon,
-                                color: Colors.white,
+                                color: Styling.primaryColor,
                               ),
                             ),
                             shape: RoundedRectangleBorder(
@@ -285,9 +286,9 @@ class _HomePageState extends State<HomePage> {
                             trailing: widgetInfo.title !=
                                     "Home" // Only show trash icon for non-home entries
                                 ? IconButton(
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.edit,
-                                      color: Colors.white,
+                                      color: Styling.primaryColor,
                                     ),
                                     onPressed: () {
                                       showAddWidgetDialog(
@@ -323,8 +324,8 @@ class _HomePageState extends State<HomePage> {
       builder: (context) => AlertDialog(
         title: Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Styling.primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -334,39 +335,39 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Title:",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Styling.primaryColor),
               ),
               TextField(
                 controller: _titleController,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: Styling.primaryColor,
                 ),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: "Enter the widget title",
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Styling.primaryColor),
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 "Icon:",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Styling.primaryColor),
               ),
               TypeAheadFormField<String>(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: _iconController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Select Icon',
-                    labelStyle: TextStyle(color: Colors.white),
-                    enabledBorder: UnderlineInputBorder(
+                    labelStyle: TextStyle(color: Styling.primaryColor),
+                    enabledBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
-                    focusedBorder: UnderlineInputBorder(
+                    focusedBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Styling.primaryColor),
                 ),
                 suggestionsCallback: (pattern) async {
                   return _iconNames
@@ -380,7 +381,7 @@ class _HomePageState extends State<HomePage> {
                     leading: _getIconPreview(suggestion),
                     title: Text(
                       suggestion,
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(color: Styling.primaryColor),
                     ),
                   );
                 },
@@ -399,27 +400,27 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16),
               //Do not show select page if edit
               if (!edit)
-                const Text(
+                Text(
                   "Page:",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Styling.primaryColor),
                 ),
               if (!edit)
                 TypeAheadFormField<String>(
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: _pageController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Select Page',
-                      labelStyle: TextStyle(color: Colors.white),
-                      enabledBorder: UnderlineInputBorder(
+                      labelStyle: TextStyle(color: Styling.primaryColor),
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
                       hintText: '',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Styling.primaryColor),
                     ),
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: Styling.primaryColor),
                   ),
                   suggestionsCallback: (pattern) async {
                     return _pageNames
@@ -432,7 +433,7 @@ class _HomePageState extends State<HomePage> {
                     return ListTile(
                       title: Text(
                         suggestion,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: Styling.primaryColor),
                       ),
                     );
                   },
@@ -454,9 +455,9 @@ class _HomePageState extends State<HomePage> {
         actions: [
           if (edit)
             IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.delete,
-                color: Colors.white,
+                color: Styling.primaryColor,
               ),
               onPressed: () {
                 ShowDeleteDialog(widgetInfo);
@@ -475,8 +476,8 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
                   colors: [
-                    Styling.redDark.withOpacity(0.9),
-                    Styling.orangeDark.withOpacity(0.9),
+                    Styling.gradient1.withOpacity(0.9),
+                    Styling.gradient2.withOpacity(0.9),
                   ],
                 ),
               ),
@@ -486,14 +487,14 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Text(
                 buttonName,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: Styling.primaryColor,
                 ),
               ),
             ),
           ),
         ],
-        backgroundColor: Styling.purpleLight,
+        backgroundColor: Styling.foreground,
       ),
     );
   }
@@ -502,16 +503,16 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text(
+        title: Text(
           "Confirm Delete",
           style: TextStyle(
-            color: Colors.white,
+            color: Styling.primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: const Text(
+        content: Text(
           "Are you sure you wish to delete this widget?",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Styling.primaryColor),
         ),
         actions: [
           TextButton(
@@ -519,10 +520,10 @@ class _HomePageState extends State<HomePage> {
               deleteWidget(widgetInfo);
               Navigator.of(context).pop();
             },
-            child: const Text(
+            child: Text(
               "Confirm",
               style: TextStyle(
-                color: Colors.white,
+                color: Styling.primaryColor,
               ),
             ),
           ),
@@ -530,16 +531,15 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text(
+            child: Text(
               "Cancel",
               style: TextStyle(
-                color: Colors.white,
+                color: Styling.primaryColor,
               ),
             ),
           ),
         ],
-        backgroundColor:
-            Styling.purpleLight, // Modify the background color here
+        backgroundColor: Styling.foreground, // Modify the background color here
       ),
     );
   }

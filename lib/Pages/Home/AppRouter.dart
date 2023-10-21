@@ -1,11 +1,15 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, file_names
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:projectcrm/Assets/Charts/circle_graph.dart';
+import 'package:projectcrm/Assets/Charts/curved_chart.dart';
+import 'package:projectcrm/Assets/Charts/linear_graph.dart';
+import 'package:projectcrm/Assets/Charts/wiggle_graph.dart';
 import 'package:projectcrm/Pages/Home/TopAppBar.dart';
-import 'package:projectcrm/Pages/Widgets/GraphWidgets/panel_center_page.dart';
-import 'package:projectcrm/Pages/Widgets/GraphWidgets/panel_left_page.dart';
-import 'package:projectcrm/Pages/Widgets/GraphWidgets/panel_right_page.dart';
+import 'package:projectcrm/Pages/Widgets/Presets/panel_center_page.dart';
+import 'package:projectcrm/Pages/Widgets/Presets/panel_left_page.dart';
+import 'package:projectcrm/Pages/Widgets/Presets/panel_right_page.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
 import '../../Helpers/Constants/Styling.dart';
 import 'package:projectcrm/Pages/Home/HomePage.dart';
@@ -117,7 +121,7 @@ class _AppRouterState extends State<AppRouter> {
           ResponsiveLayout.isPhone(context) && currentWidget?.currentPage == 0
               ? CurvedNavigationBar(
                   index: currentIndexBottomNavigationBar,
-                  backgroundColor: Styling.purpleDark,
+                  backgroundColor: Styling.background,
                   items: _icons,
                   onTap: (index) {
                     setState(() {
@@ -131,9 +135,10 @@ class _AppRouterState extends State<AppRouter> {
 
   Widget createDynamicWidget(String widgetName) {
     final Map<String, Widget Function()> widgetMap = {
-      'PanelLeftPage': () => const PanelLeftPage(),
-      'PanelCenterPage': () => const PanelCenterPage(),
-      'PanelRightPage': () => const PanelRightPage(),
+      'CircleGraph': () => const PieChartSample2(),
+      'LineChart1': () => const LineChartSample1(),
+      'LineChart2': () => const LineChartSample2(),
+      'BarChart': () => BarChartSample2(),
       'DataWidget': () => const DataWidget(),
       'HttpRequestWidget': () => const HttpRequestWidget(),
       // Add more widget mappings here

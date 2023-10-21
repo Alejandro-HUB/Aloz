@@ -28,12 +28,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          backgroundColor: Styling.purpleLight,
-          foregroundColor: Colors.white,
+          backgroundColor: Styling.foreground,
+          foregroundColor: Styling.primaryColor,
           elevation: 0,
-          title: const Text(
+          title: Text(
             'Reset Password',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
           ),
         ),
         body: Padding(
@@ -43,25 +43,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Receive an email to\n reset your password.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 24, color: Colors.white),
+                    style: TextStyle(fontSize: 24, color: Styling.primaryColor),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: Styling.primaryColor),
                     controller: emailController,
-                    cursorColor: Colors.white,
+                    cursorColor: Styling.primaryColor,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: "Email",
-                      labelStyle: TextStyle(color: Colors.white),
-                      icon: Icon(Icons.mail, color: Colors.white),
-                      hintStyle: TextStyle(color: Colors.white),
-                      helperStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Styling.primaryColor),
+                      icon: Icon(Icons.mail, color: Styling.primaryColor),
+                      hintStyle: TextStyle(color: Styling.primaryColor),
+                      helperStyle: TextStyle(color: Styling.primaryColor),
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (email) =>
@@ -72,12 +72,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  MyElevatedButton(
+                  GradientButton(
+                    gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                     label: 'Reset Password',
                     width: double.infinity,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.restart_alt_outlined,
-                      color: Colors.white,
+                      color: Styling.primaryColor,
                     ),
                     onPressed: verifyEmail,
                     borderRadius: BorderRadius.circular(10),

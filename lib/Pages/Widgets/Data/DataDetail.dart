@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print, unnecessary_null_comparison
+// ignore_for_file: library_private_types_in_public_api, avoid_print, unnecessary_null_comparison, file_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
@@ -57,12 +57,12 @@ class _DataDetailPageState extends State<DataDetail> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        backgroundColor: Styling.purpleLight,
-        foregroundColor: Colors.white,
+        backgroundColor: Styling.foreground,
+        foregroundColor: Styling.primaryColor,
         title: Text(
           "${widget.selectedContact.firstName} ${widget.selectedContact.lastName} - Details",
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Styling.primaryColor,
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
@@ -95,10 +95,10 @@ class _DataDetailPageState extends State<DataDetail> {
                             //The name of the contact
                             Text(
                               "${widget.selectedContact.firstName} ${widget.selectedContact.lastName}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30,
-                                color: Colors.white,
+                                color: Styling.primaryColor,
                               ),
                             ),
                           ],
@@ -108,10 +108,10 @@ class _DataDetailPageState extends State<DataDetail> {
                             //The email of the contact
                             Text(
                               widget.selectedContact.emailAddress,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
-                                color: Colors.white,
+                                color: Styling.primaryColor,
                               ),
                             ),
                           ],
@@ -123,17 +123,17 @@ class _DataDetailPageState extends State<DataDetail> {
               ),
               //Form to update contact data
               TextFormField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Styling.primaryColor),
                 controller: firstNameController,
                 textInputAction: TextInputAction.next,
                 // ignore: prefer_const_constructors
                 decoration: InputDecoration(
                   labelText: "First Name",
                   // ignore: prefer_const_constructors
-                  labelStyle: TextStyle(color: Colors.white),
-                  icon: const Icon(Icons.person_pin, color: Colors.white),
-                  hintStyle: const TextStyle(color: Colors.white),
-                  helperStyle: const TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Styling.primaryColor),
+                  icon: Icon(Icons.person_pin, color: Styling.primaryColor),
+                  hintStyle: TextStyle(color: Styling.primaryColor),
+                  helperStyle: TextStyle(color: Styling.primaryColor),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -143,17 +143,17 @@ class _DataDetailPageState extends State<DataDetail> {
                 },
               ),
               TextFormField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Styling.primaryColor),
                 controller: lastNameController,
                 textInputAction: TextInputAction.next,
                 // ignore: prefer_const_constructors
                 decoration: InputDecoration(
                   labelText: "Last Name",
-                  labelStyle: const TextStyle(color: Colors.white),
-                  icon: const Icon(Icons.person_pin, color: Colors.white),
-                  hintStyle: const TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Styling.primaryColor),
+                  icon: Icon(Icons.person_pin, color: Styling.primaryColor),
+                  hintStyle: TextStyle(color: Styling.primaryColor),
                   // ignore: prefer_const_constructors
-                  helperStyle: TextStyle(color: Colors.white),
+                  helperStyle: TextStyle(color: Styling.primaryColor),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -163,15 +163,15 @@ class _DataDetailPageState extends State<DataDetail> {
                 },
               ),
               TextFormField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Styling.primaryColor),
                 controller: emailController,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Email",
-                  labelStyle: TextStyle(color: Colors.white),
-                  icon: Icon(Icons.email, color: Colors.white),
-                  hintStyle: TextStyle(color: Colors.white),
-                  helperStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Styling.primaryColor),
+                  icon: Icon(Icons.email, color: Styling.primaryColor),
+                  hintStyle: TextStyle(color: Styling.primaryColor),
+                  helperStyle: TextStyle(color: Styling.primaryColor),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (email) =>
@@ -182,12 +182,13 @@ class _DataDetailPageState extends State<DataDetail> {
               const SizedBox(height: 20.0),
               Align(
                 alignment: Alignment.centerLeft,
-                child: MyElevatedButton(
+                child: GradientButton(
+                  gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                   onPressed: () {},
                   label: "Upload Image",
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.image,
-                    color: Colors.white,
+                    color: Styling.primaryColor,
                   ),
                   borderRadius: BorderRadius.circular(10),
                   child: const Text("Upload Image"),
@@ -196,7 +197,8 @@ class _DataDetailPageState extends State<DataDetail> {
               const SizedBox(height: 20.0),
               Align(
                 alignment: Alignment.centerRight,
-                child: MyElevatedButton(
+                child: GradientButton(
+                  gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                   onPressed: () {
                     setState(() {
                       saveContactToFireStore(contacts, firstNameController.text,
@@ -204,7 +206,7 @@ class _DataDetailPageState extends State<DataDetail> {
                     });
                   },
                   label: "Save",
-                  icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                  icon: Icon(Icons.arrow_forward, color: Styling.primaryColor),
                   borderRadius: BorderRadius.circular(10),
                   child: const Text("Save"),
                 ),

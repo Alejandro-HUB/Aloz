@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import '../Constants/Styling.dart';
 
 class Storage {
   final FirebaseStorage storage = FirebaseStorage.instance;
@@ -151,7 +150,7 @@ class listImages extends StatelessWidget {
     required this.fieldName,
     required this.circleAvatar,
     required this.profilePicture,
-    this.backgroundColor = Styling.orangeDark,
+    required this.backgroundColor,
     this.radius = 60.0,
     this.width = 500.0,
     this.height = 500.0,
@@ -190,7 +189,7 @@ class listImages extends StatelessWidget {
                           backgroundImage: NetworkImage(snapshot.data!),
                         );
                       } else {
-                        return Container(
+                        return SizedBox(
                           width: width,
                           height: height,
                           child: Image.network(snapshot.data!,

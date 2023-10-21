@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Assets/buttons.dart';
 import '../Helpers/Constants/Styling.dart';
@@ -43,7 +45,8 @@ class SelectedContent extends StatelessWidget {
                   // Open Button
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: MyElevatedButton(
+                    child: GradientButton(
+                      gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                       onPressed: onPressedOpen,
                       label: "Open",
                       icon: const Icon(
@@ -55,7 +58,8 @@ class SelectedContent extends StatelessWidget {
                     ),
                   ),
                   // Export Button
-                  MyElevatedButton(
+                  GradientButton(
+                    gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                     onPressed: onPressedExport,
                     label: "Export",
                     icon: const Icon(
@@ -68,7 +72,8 @@ class SelectedContent extends StatelessWidget {
                   // Delete Button
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
-                    child: MyElevatedButton(
+                    child: GradientButton(
+                      gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                       onPressed: onPressedDelete,
                       label: "Delete",
                       icon: const Icon(

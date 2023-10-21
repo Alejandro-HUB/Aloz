@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../Helpers/Constants/Styling.dart';
 import '../Helpers/Constants/responsive_layout.dart';
 
-class MyElevatedButton extends StatelessWidget {
+class GradientButton extends StatelessWidget {
   final BorderRadiusGeometry? borderRadius;
   final double? width;
   final double height;
@@ -12,15 +12,15 @@ class MyElevatedButton extends StatelessWidget {
   final Icon icon;
   final String label;
 
-  const MyElevatedButton({
+  const GradientButton({
     super.key,
     required this.onPressed,
     required this.child,
     required this.label,
+    required this.gradient,
     this.borderRadius,
     this.width,
     this.height = 44.0,
-    this.gradient = const LinearGradient(colors: [Styling.redDark, Styling.orangeDark]),
     this.icon = const Icon(Icons.lock),
   });
 
@@ -35,12 +35,12 @@ class MyElevatedButton extends StatelessWidget {
         borderRadius: borderRadius,
       ),
       child: ElevatedButton.icon(
-        label: Text(label, style: const TextStyle(color: Colors.white)),
+        label: Text(label, style: TextStyle(color: Styling.primaryColor)),
         icon: icon,
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: ResponsiveLayout.isPhone(context) ? Colors.white.withOpacity(0.05) : Colors.transparent,
-          shadowColor: ResponsiveLayout.isPhone(context) ? Colors.white.withOpacity(0.05) : Colors.transparent,
+          backgroundColor: ResponsiveLayout.isPhone(context) ? Styling.primaryColor.withOpacity(0.05) : Colors.transparent,
+          shadowColor: ResponsiveLayout.isPhone(context) ? Styling.primaryColor.withOpacity(0.05) : Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
         ),
       ),

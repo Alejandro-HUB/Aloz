@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:projectcrm/Helpers/Constants/Styling.dart';
 
 class BarChartSample2 extends StatefulWidget {
-  const BarChartSample2({super.key});
+  BarChartSample2({super.key});
   final Color leftBarColor = Styling.greenLight;
-  final Color rightBarColor = Styling.redLight;
+  final Color rightBarColor = Styling.gradient1;
   final Color avgColor = Styling.greenLight;
   @override
   State<StatefulWidget> createState() => BarChartSample2State();
@@ -52,7 +52,7 @@ class BarChartSample2State extends State<BarChartSample2> {
       child: Card(
         elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: Styling.purpleLight,
+        color: Styling.foreground,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -65,9 +65,9 @@ class BarChartSample2State extends State<BarChartSample2> {
                   const SizedBox(
                     width: 38,
                   ),
-                  const Text(
+                  Text(
                     'Transactions',
-                    style: TextStyle(color: Colors.white, fontSize: 22),
+                    style: TextStyle(color: Styling.primaryColor, fontSize: 22),
                   ),
                   const SizedBox(
                     width: 4,
@@ -244,7 +244,7 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 10,
-          color: Colors.white.withOpacity(0.4),
+          color: Styling.primaryColor.withOpacity(0.4),
         ),
         const SizedBox(
           width: space,
@@ -252,7 +252,7 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 28,
-          color: Colors.white.withOpacity(0.8),
+          color: Styling.primaryColor.withOpacity(0.8),
         ),
         const SizedBox(
           width: space,
@@ -260,7 +260,7 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 42,
-          color: Colors.white.withOpacity(1),
+          color: Styling.primaryColor.withOpacity(1),
         ),
         const SizedBox(
           width: space,
@@ -268,7 +268,7 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 28,
-          color: Colors.white.withOpacity(0.8),
+          color: Styling.primaryColor.withOpacity(0.8),
         ),
         const SizedBox(
           width: space,
@@ -276,7 +276,7 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 10,
-          color: Colors.white.withOpacity(0.4),
+          color: Styling.primaryColor.withOpacity(0.4),
         ),
       ],
     );

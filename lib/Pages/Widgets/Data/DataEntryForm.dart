@@ -35,13 +35,13 @@ class DataEntryFormState extends State<DataEntryForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
+        foregroundColor: Styling.primaryColor,
         // ignore: prefer_const_constructors
         title: Text(
           "Import Data",
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: Styling.primaryColor),
         ),
-        backgroundColor: Styling.purpleLight,
+        backgroundColor: Styling.foreground,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -54,7 +54,7 @@ class DataEntryFormState extends State<DataEntryForm> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: Styling.primaryColor),
                         onChanged: (value) {
                           contactToAdd.firstName = value;
                         },
@@ -63,11 +63,11 @@ class DataEntryFormState extends State<DataEntryForm> {
                         decoration: InputDecoration(
                           labelText: "First Name",
                           // ignore: prefer_const_constructors
-                          labelStyle: TextStyle(color: Colors.white),
+                          labelStyle: TextStyle(color: Styling.primaryColor),
                           icon:
-                              const Icon(Icons.person_pin, color: Colors.white),
-                          hintStyle: const TextStyle(color: Colors.white),
-                          helperStyle: const TextStyle(color: Colors.white),
+                              Icon(Icons.person_pin, color: Styling.primaryColor),
+                          hintStyle: TextStyle(color: Styling.primaryColor),
+                          helperStyle: TextStyle(color: Styling.primaryColor),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -78,7 +78,7 @@ class DataEntryFormState extends State<DataEntryForm> {
                       ),
                       const SizedBox(height: 4),
                       TextFormField(
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: Styling.primaryColor),
                         onChanged: (value) {
                           contactToAdd.lastName = value;
                         },
@@ -86,12 +86,12 @@ class DataEntryFormState extends State<DataEntryForm> {
                         // ignore: prefer_const_constructors
                         decoration: InputDecoration(
                           labelText: "Last Name",
-                          labelStyle: const TextStyle(color: Colors.white),
+                          labelStyle: TextStyle(color: Styling.primaryColor),
                           icon:
-                              const Icon(Icons.person_pin, color: Colors.white),
-                          hintStyle: const TextStyle(color: Colors.white),
+                              Icon(Icons.person_pin, color: Styling.primaryColor),
+                          hintStyle: TextStyle(color: Styling.primaryColor),
                           // ignore: prefer_const_constructors
-                          helperStyle: TextStyle(color: Colors.white),
+                          helperStyle: TextStyle(color: Styling.primaryColor),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -102,17 +102,17 @@ class DataEntryFormState extends State<DataEntryForm> {
                       ),
                       const SizedBox(height: 4),
                       TextFormField(
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: Styling.primaryColor),
                         onChanged: (value) {
                           contactToAdd.emailAddress = value;
                         },
                         textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: "Email",
-                          labelStyle: TextStyle(color: Colors.white),
-                          icon: Icon(Icons.email, color: Colors.white),
-                          hintStyle: TextStyle(color: Colors.white),
-                          helperStyle: TextStyle(color: Colors.white),
+                          labelStyle: TextStyle(color: Styling.primaryColor),
+                          icon: Icon(Icons.email, color: Styling.primaryColor),
+                          hintStyle: TextStyle(color: Styling.primaryColor),
+                          helperStyle: TextStyle(color: Styling.primaryColor),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (email) =>
@@ -122,12 +122,13 @@ class DataEntryFormState extends State<DataEntryForm> {
                       ),
                       const SizedBox(height: 10),
                       Center(
-                        child: MyElevatedButton(
+                        child: GradientButton(
+                          gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                           label: 'Add Contact',
                           width: double.infinity,
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.person_add,
-                            color: Colors.white,
+                            color: Styling.primaryColor,
                           ),
                           onPressed: addContacts,
                           borderRadius: BorderRadius.circular(10),

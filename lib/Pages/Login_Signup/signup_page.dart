@@ -47,33 +47,33 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 100,
-                child: Image.asset("images/mapp.png"),
+                child: Image.asset("images/${Styling.logo}"),
               ),
               const SizedBox(
                 height: 20,
               ),
-              const Text(
+              Text(
                 'Create account',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Styling.primaryColor),
               ),
               const SizedBox(
                 height: 40,
               ),
               TextFormField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Styling.primaryColor),
                 controller: emailController,
-                cursorColor: Colors.white,
+                cursorColor: Styling.primaryColor,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Email",
-                  labelStyle: TextStyle(color: Colors.white),
-                  icon: Icon(Icons.mail, color: Colors.white),
-                  hintStyle: TextStyle(color: Colors.white),
-                  helperStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Styling.primaryColor),
+                  icon: Icon(Icons.mail, color: Styling.primaryColor),
+                  hintStyle: TextStyle(color: Styling.primaryColor),
+                  helperStyle: TextStyle(color: Styling.primaryColor),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (email) =>
@@ -85,15 +85,15 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 height: 4,
               ),
               TextFormField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Styling.primaryColor),
                 controller: passwordController,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Password",
-                  labelStyle: TextStyle(color: Colors.white),
-                  icon: Icon(Icons.password, color: Colors.white),
-                  hintStyle: TextStyle(color: Colors.white),
-                  helperStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Styling.primaryColor),
+                  icon: Icon(Icons.password, color: Styling.primaryColor),
+                  hintStyle: TextStyle(color: Styling.primaryColor),
+                  helperStyle: TextStyle(color: Styling.primaryColor),
                 ),
                 obscureText: true,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -102,12 +102,13 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     : null,
               ),
               const SizedBox(height: 20),
-              MyElevatedButton(
+              GradientButton(
+                gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                 label: 'Sign Up',
                 width: double.infinity,
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_upward,
-                  color: Colors.white,
+                  color: Styling.primaryColor,
                 ),
                 onPressed: signUp,
                 borderRadius: BorderRadius.circular(10),
@@ -118,7 +119,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               ),
               RichText(
                 text: TextSpan(
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Styling.primaryColor),
                   text: 'Already have an account?  ',
                   children: [
                     TextSpan(

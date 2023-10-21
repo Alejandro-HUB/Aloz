@@ -311,7 +311,7 @@ class LineChartSample1State extends State<LineChartSample1> {
     return AspectRatio(
       aspectRatio: 1.23,
       child: Card(
-        color: Styling.purpleLight,
+        color: Styling.foreground,
         shape: 
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           elevation: 5,
@@ -323,10 +323,10 @@ class LineChartSample1State extends State<LineChartSample1> {
                 const SizedBox(
                   height: 37,
                 ),
-                const Text(
+                Text(
                   'Monthly Sales',
                   style: TextStyle(
-                    color: ChartColors.primary,
+                    color: Styling.primaryColor,
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2,
@@ -350,7 +350,7 @@ class LineChartSample1State extends State<LineChartSample1> {
             IconButton(
               icon: Icon(
                 Icons.refresh,
-                color: Colors.white.withOpacity(isShowingMainData ? 1.0 : 0.5),
+                color: Styling.primaryColor.withOpacity(isShowingMainData ? 1.0 : 0.5),
               ),
               onPressed: () {
                 setState(() {

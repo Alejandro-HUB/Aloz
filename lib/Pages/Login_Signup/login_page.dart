@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projectcrm/Helpers/Constants/Styling.dart';
@@ -45,34 +46,34 @@ class _LoginWidgetState extends State<LoginWidget> {
               CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 100,
-                child: Image.asset("images/mapp.png"),
+                child: Image.asset("images/${Styling.logo}"),
               ),
               const SizedBox(
                 height: 20,
               ),
-              const Text(
+              Text(
                 'Hey There,\n Welcome Back',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Styling.primaryColor),
               ),
               const SizedBox(
                 height: 40,
               ),
               const SizedBox(height: 40),
               TextFormField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Styling.primaryColor),
                 controller: emailController,
-                cursorColor: Colors.white,
+                cursorColor: Styling.primaryColor,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Email",
-                  labelStyle: TextStyle(color: Colors.white),
-                  icon: Icon(Icons.mail, color: Colors.white),
-                  hintStyle: TextStyle(color: Colors.white),
-                  helperStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Styling.primaryColor),
+                  icon: Icon(Icons.mail, color: Styling.primaryColor),
+                  hintStyle: TextStyle(color: Styling.primaryColor),
+                  helperStyle: TextStyle(color: Styling.primaryColor),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (email) =>
@@ -82,25 +83,26 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
               const SizedBox(height: 4),
               TextFormField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Styling.primaryColor),
                 controller: passwordController,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Password",
-                  labelStyle: TextStyle(color: Colors.white),
-                  icon: Icon(Icons.password, color: Colors.white),
-                  hintStyle: TextStyle(color: Colors.white),
-                  helperStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Styling.primaryColor),
+                  icon: Icon(Icons.password, color: Styling.primaryColor),
+                  hintStyle: TextStyle(color: Styling.primaryColor),
+                  helperStyle: TextStyle(color: Styling.primaryColor),
                 ),
                 obscureText: true,
               ),
               const SizedBox(height: 10),
-              MyElevatedButton(
+              GradientButton(
+                gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                 label: 'Sign In',
                 width: double.infinity,
-                icon: const Icon(
+                icon: Icon(
                   Icons.lock,
-                  color: Colors.white,
+                  color: Styling.primaryColor,
                 ),
                 onPressed: signIn,
                 borderRadius: BorderRadius.circular(10),
@@ -127,7 +129,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
               RichText(
                 text: TextSpan(
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Styling.primaryColor),
                   text: 'No account?  ',
                   children: [
                     TextSpan(
@@ -151,16 +153,41 @@ class _LoginWidgetState extends State<LoginWidget> {
     if (!isValid) return;
 
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(
-              child: CircularProgressIndicator(),
-            ));
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
+
+      // Get the authenticated user
+      final user = userCredential.user;
+
+      if (user != null) {
+        // User is authenticated, now retrieve the "theme" property from Firestore
+        final userDoc = await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(user.uid)
+            .get();
+
+        if (userDoc.exists) {
+          final theme = userDoc.get("theme");
+
+          if(theme != null) {
+            Styling.theme = theme;
+          }
+          else {
+            Styling.theme = "aloz";
+          }
+        }
+      }
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const MainPage(),

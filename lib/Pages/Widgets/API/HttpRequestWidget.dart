@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, use_build_context_synchronously, deprecated_member_use
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, use_build_context_synchronously, deprecated_member_use, file_names, avoid_print
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -38,8 +38,8 @@ HttpRequestWidgetTab _currentTab = HttpRequestWidgetTab.Parameters;
 
 class _HttpRequestWidgetState extends State<HttpRequestWidget> {
   //Label Style
-  final _labelStyle = const TextStyle(
-      color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20);
+  final _labelStyle = TextStyle(
+      color: Styling.primaryColor, fontWeight: FontWeight.bold, fontSize: 20);
 
   //Request Controllers
   final TextEditingController _uriController = TextEditingController();
@@ -307,7 +307,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           const SizedBox(height: 8.0),
           TextField(
             controller: _authController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
             decoration: InputDecoration(
               labelText: 'API Key',
               labelStyle: _labelStyle,
@@ -322,7 +322,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           const SizedBox(height: 8.0),
           TextField(
             controller: _authController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
             decoration: InputDecoration(
               labelText: 'Bearer Token',
               labelStyle: _labelStyle,
@@ -337,7 +337,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           const SizedBox(height: 8.0),
           TextField(
             controller: _authController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
             decoration: InputDecoration(
               labelText: 'JWT Bearer',
               labelStyle: _labelStyle,
@@ -352,7 +352,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           const SizedBox(height: 8.0),
           TextField(
             controller: _authController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
             decoration: InputDecoration(
               labelText: 'Username',
               labelStyle: _labelStyle,
@@ -364,7 +364,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           const SizedBox(height: 8.0),
           TextField(
             controller: _passwordController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
             decoration: InputDecoration(
               labelText: 'Password',
               labelStyle: _labelStyle,
@@ -379,7 +379,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           const SizedBox(height: 8.0),
           TextField(
             controller: _authController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
             decoration: InputDecoration(
               labelText: 'Username',
               labelStyle: _labelStyle,
@@ -391,7 +391,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           const SizedBox(height: 8.0),
           TextField(
             controller: _passwordController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
             decoration: InputDecoration(
               labelText: 'Password',
               labelStyle: _labelStyle,
@@ -406,7 +406,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           const SizedBox(height: 8.0),
           TextField(
             controller: _authController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
             decoration: InputDecoration(
               labelText: 'OAuth 1.0',
               labelStyle: _labelStyle,
@@ -421,7 +421,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
           const SizedBox(height: 8.0),
           TextField(
             controller: _authController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Styling.primaryColor),
             decoration: InputDecoration(
               labelText: 'OAuth 2.0',
               labelStyle: _labelStyle,
@@ -440,17 +440,17 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Styling.purpleLight,
-        foregroundColor: Colors.white,
+        backgroundColor: Styling.foreground,
+        foregroundColor: Styling.primaryColor,
         title: Text(
           currentWidget!.title,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: Styling.primaryColor),
         ),
         actions: [
           IconButton(
             onPressed: _saveData,
             icon: const Icon(Icons.save),
-            color: Colors.white,
+            color: Styling.primaryColor,
           ),
         ],
       ),
@@ -465,7 +465,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                   value: value,
                   child: Text(
                     value.toString().split('.').last.toUpperCase(),
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: Styling.primaryColor),
                   ),
                 );
               }).toList(),
@@ -488,7 +488,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
               child: SingleChildScrollView(
                 child: TextField(
                   controller: _uriController,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Styling.primaryColor),
                   decoration: InputDecoration(
                     labelText: 'Request URI',
                     labelStyle: _labelStyle,
@@ -505,19 +505,19 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
               child: Row(
                 children: [
                   Expanded(
-                    child: MyElevatedButton(
+                    child: GradientButton(
                       gradient: _currentTab == HttpRequestWidgetTab.Parameters
-                          ? const LinearGradient(
-                              colors: [Styling.redDark, Styling.orangeDark])
-                          : const LinearGradient(colors: [
-                              Styling.purpleLight,
-                              Styling.purpleLight
+                          ? LinearGradient(
+                              colors: [Styling.gradient1, Styling.gradient2])
+                          : LinearGradient(colors: [
+                              Styling.foreground,
+                              Styling.foreground
                             ]),
                       label: "Parameters",
                       width: 150,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.question_mark,
-                        color: Colors.white,
+                        color: Styling.primaryColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -530,19 +530,19 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: MyElevatedButton(
+                    child: GradientButton(
                       gradient: _currentTab == HttpRequestWidgetTab.Headers
-                          ? const LinearGradient(
-                              colors: [Styling.redDark, Styling.orangeDark])
-                          : const LinearGradient(colors: [
-                              Styling.purpleLight,
-                              Styling.purpleLight
+                          ? LinearGradient(
+                              colors: [Styling.gradient1, Styling.gradient2])
+                          : LinearGradient(colors: [
+                              Styling.foreground,
+                              Styling.foreground
                             ]),
                       label: "Headers",
                       width: 150,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.edit_document,
-                        color: Colors.white,
+                        color: Styling.primaryColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -555,20 +555,20 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: MyElevatedButton(
+                    child: GradientButton(
                       gradient:
                           _currentTab == HttpRequestWidgetTab.Authorization
-                              ? const LinearGradient(
-                                  colors: [Styling.redDark, Styling.orangeDark])
-                              : const LinearGradient(colors: [
-                                  Styling.purpleLight,
-                                  Styling.purpleLight
+                              ? LinearGradient(
+                                  colors: [Styling.gradient1, Styling.gradient2])
+                              : LinearGradient(colors: [
+                                  Styling.foreground,
+                                  Styling.foreground
                                 ]),
                       label: "Authorization",
                       width: 150,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.lock,
-                        color: Colors.white,
+                        color: Styling.primaryColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -581,19 +581,19 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: MyElevatedButton(
+                    child: GradientButton(
                       gradient: _currentTab == HttpRequestWidgetTab.Body
-                          ? const LinearGradient(
-                              colors: [Styling.redDark, Styling.orangeDark])
-                          : const LinearGradient(colors: [
-                              Styling.purpleLight,
-                              Styling.purpleLight
+                          ? LinearGradient(
+                              colors: [Styling.gradient1, Styling.gradient2])
+                          : LinearGradient(colors: [
+                              Styling.foreground,
+                              Styling.foreground
                             ]),
                       label: "Body",
                       width: 150,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.content_copy,
-                        color: Colors.white,
+                        color: Styling.primaryColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -616,12 +616,12 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                     controller: _parametersController,
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: Styling.primaryColor),
                     decoration: InputDecoration(
                       labelText: 'Request Parameters',
                       labelStyle: _labelStyle,
                       hintText: 'key1=value1&key2=value2...',
-                      hintStyle: const TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Styling.primaryColor),
                       enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
@@ -638,12 +638,12 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                     controller: _headersController,
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: Styling.primaryColor),
                     decoration: InputDecoration(
                       labelText: 'Request Headers',
                       labelStyle: _labelStyle,
                       hintText: 'key1:value1,key2:value2...',
-                      hintStyle: const TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Styling.primaryColor),
                       enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
@@ -661,7 +661,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                       controller: _bodyController,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(color: Styling.primaryColor),
                       decoration: InputDecoration(
                         labelText: 'Request Body',
                         labelStyle: _labelStyle,
@@ -682,7 +682,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                     value: value,
                     child: Text(
                       value.toString().split('.').last.toUpperCase(),
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(color: Styling.primaryColor),
                     ),
                   );
                 }).toList(),
@@ -703,12 +703,13 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
             if (_currentTab == HttpRequestWidgetTab.Authorization)
               ..._buildAuthorizationInputs(),
             const SizedBox(height: 16.0),
-            MyElevatedButton(
+            GradientButton(
+              gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
               label: "Send",
               width: double.infinity,
-              icon: const Icon(
+              icon: Icon(
                 Icons.send,
-                color: Colors.white,
+                color: Styling.primaryColor,
               ),
               onPressed: _sendRequest,
               borderRadius: BorderRadius.circular(10),
@@ -722,7 +723,7 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                   controller: _responseController,
                   maxLines: null,
                   readOnly: true,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Styling.primaryColor),
                   decoration: InputDecoration(
                     labelText: 'Response$_responseStatusCode',
                     labelStyle: _labelStyle,

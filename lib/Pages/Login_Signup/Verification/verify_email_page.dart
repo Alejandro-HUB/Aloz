@@ -94,28 +94,29 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       ? AppRouter() // If email is verified, navigate to the main widget tree
       : Scaffold(
           appBar: AppBar(
-            title: const Text('Verify Email',
-                style: TextStyle(color: Colors.white)),
-            backgroundColor: Styling.purpleLight,
-            foregroundColor: Colors.white,
+            title: Text('Verify Email',
+                style: TextStyle(color: Styling.primaryColor)),
+            backgroundColor: Styling.foreground,
+            foregroundColor: Styling.primaryColor,
           ),
           body: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   'A verification email has been sent.',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+                  style: TextStyle(fontSize: 20, color: Styling.primaryColor),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
-                MyElevatedButton(
+                GradientButton(
+                  gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                   label: 'Resend Email',
                   width: double.infinity,
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.mail,
-                    color: Colors.white,
+                    color: Styling.primaryColor,
                   ),
                   onPressed: canResendEmail ? sendVerificationEmail : null,
                   borderRadius: BorderRadius.circular(10),

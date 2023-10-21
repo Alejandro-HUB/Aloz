@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, invalid_return_type_for_catch_error, duplicate_ignore, deprecated_member_use
+// ignore_for_file: avoid_print, invalid_return_type_for_catch_error, duplicate_ignore, deprecated_member_use, file_names
 
 import 'dart:async';
 import 'dart:convert';
@@ -90,10 +90,10 @@ class _DataWidgetState extends State<DataWidget> {
             // ignore: prefer_const_constructors
             title: Text(
               currentWidget!.title,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Styling.primaryColor),
             ),
-            backgroundColor: Styling.purpleLight,
-            foregroundColor: Colors.white,
+            backgroundColor: Styling.foreground,
+            foregroundColor: Styling.primaryColor,
           ),
           body: SingleChildScrollView(
             child: Center(
@@ -105,21 +105,21 @@ class _DataWidgetState extends State<DataWidget> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: MyElevatedButton(
+                          child: GradientButton(
                             gradient: _currentTab == DataWidgetTab.dataTable
-                                ? const LinearGradient(colors: [
-                                    Styling.redDark,
-                                    Styling.orangeDark
+                                ? LinearGradient(colors: [
+                                    Styling.gradient1,
+                                    Styling.gradient2
                                   ])
-                                : const LinearGradient(colors: [
-                                    Styling.purpleLight,
-                                    Styling.purpleLight
+                                : LinearGradient(colors: [
+                                    Styling.foreground,
+                                    Styling.foreground
                                   ]),
                             label: "Data Table",
                             width: 150,
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.table_chart,
-                              color: Colors.white,
+                              color: Styling.primaryColor,
                             ),
                             onPressed: () {
                               setState(() {
@@ -132,21 +132,21 @@ class _DataWidgetState extends State<DataWidget> {
                         ),
                         const SizedBox(width: 8),
                         Expanded(
-                          child: MyElevatedButton(
+                          child: GradientButton(
                             gradient: _currentTab == DataWidgetTab.rawData
-                                ? const LinearGradient(colors: [
-                                    Styling.redDark,
-                                    Styling.orangeDark
+                                ? LinearGradient(colors: [
+                                    Styling.gradient1,
+                                    Styling.gradient2
                                   ])
-                                : const LinearGradient(colors: [
-                                    Styling.purpleLight,
-                                    Styling.purpleLight
+                                : LinearGradient(colors: [
+                                    Styling.foreground,
+                                    Styling.foreground
                                   ]),
                             label: "Raw Data",
                             width: 150,
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.data_object,
-                              color: Colors.white,
+                              color: Styling.primaryColor,
                             ),
                             onPressed: () {
                               setState(() {
@@ -172,12 +172,13 @@ class _DataWidgetState extends State<DataWidget> {
                         children: [
                           //Button for exporting data
                           if (!ResponsiveLayout.isPhone(context))
-                            MyElevatedButton(
+                            GradientButton(
+                              gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                               label: "Export Data",
                               width: 150,
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.download,
-                                color: Colors.white,
+                                color: Styling.primaryColor,
                               ),
                               onPressed: () {
                                 excelHelper.exportToExcel(contactRows,
@@ -190,7 +191,7 @@ class _DataWidgetState extends State<DataWidget> {
                           SizedBox(
                             width: 200,
                             child: TextFormField(
-                              style: const TextStyle(color: Colors.white),
+                              style: TextStyle(color: Styling.primaryColor),
                               controller: _searchController,
                               onChanged: (value) {
                                 setState(() {
@@ -213,7 +214,7 @@ class _DataWidgetState extends State<DataWidget> {
                                   contactRows = buildContactListOfDataRows(
                                       context,
                                       rowsData,
-                                      Colors.white,
+                                      Styling.primaryColor,
                                       TextAlign.center);
                                 });
                               },
@@ -221,11 +222,11 @@ class _DataWidgetState extends State<DataWidget> {
                               // ignore: prefer_const_constructors
                               decoration: InputDecoration(
                                 hintText: 'Search for Contacts',
-                                icon: const Icon(Icons.search,
-                                    color: Colors.white),
-                                hintStyle: const TextStyle(color: Colors.white),
+                                icon: Icon(Icons.search,
+                                    color: Styling.primaryColor),
+                                hintStyle: TextStyle(color: Styling.primaryColor),
                                 helperStyle:
-                                    const TextStyle(color: Colors.white),
+                                    TextStyle(color: Styling.primaryColor),
                               ),
                             ),
                           ),
@@ -234,12 +235,13 @@ class _DataWidgetState extends State<DataWidget> {
                           Column(
                             children: [
                               if (ResponsiveLayout.isPhone(context))
-                                MyElevatedButton(
+                                GradientButton(
+                                  gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                                   label: "Export Data",
                                   width: 150,
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.download,
-                                    color: Colors.white,
+                                    color: Styling.primaryColor,
                                   ),
                                   onPressed: () {
                                     excelHelper.exportToExcel(contactRows,
@@ -249,12 +251,13 @@ class _DataWidgetState extends State<DataWidget> {
                                   child: const Text('Export Data'),
                                 ),
                               const SizedBox(height: 10),
-                              MyElevatedButton(
+                              GradientButton(
+                                gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                                 label: "Import Data",
                                 width: 150,
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.import_export,
-                                  color: Colors.white,
+                                  color: Styling.primaryColor,
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -289,14 +292,14 @@ class _DataWidgetState extends State<DataWidget> {
                               // ignore: prefer_const_constructors
                               return Text(
                                 "Something went wrong",
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: Styling.primaryColor),
                               );
                             }
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return (const Text(
+                              return (Text(
                                 "Loading",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Styling.primaryColor),
                               ));
                             }
 
@@ -304,7 +307,7 @@ class _DataWidgetState extends State<DataWidget> {
 
                             //Fill the list of Columns
                             contactColumns = buildListOfDataColumns(
-                                columnsData, Colors.white, TextAlign.center);
+                                columnsData, Styling.primaryColor, TextAlign.center);
 
                             //Fill the list of Contacts from Firebase
                             // ignore: unnecessary_null_comparison
@@ -325,7 +328,7 @@ class _DataWidgetState extends State<DataWidget> {
                                 contactRows = buildContactListOfDataRows(
                                     context,
                                     rowsData,
-                                    Colors.white,
+                                    Styling.primaryColor,
                                     TextAlign.center);
                               }
                             }
@@ -341,17 +344,17 @@ class _DataWidgetState extends State<DataWidget> {
                                     child: DataTable(
                                         // ignore: prefer_const_constructors
                                         headingTextStyle: TextStyle(
-                                          color: Colors.white,
+                                          color: Styling.primaryColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                         ),
                                         // ignore: prefer_const_constructors
                                         decoration: BoxDecoration(
-                                          color: Styling.purpleLight,
+                                          color: Styling.foreground,
                                         ),
                                         border: TableBorder.all(
                                           width: 1.5,
-                                          color: Colors.white,
+                                          color: Styling.primaryColor,
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(10)),
                                         ),
@@ -377,22 +380,23 @@ class _DataWidgetState extends State<DataWidget> {
                               _rawDataController.text = value;
                               _rawDataController.selection = previousSelection;
                             },
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
+                            style: TextStyle(color: Styling.primaryColor),
+                            decoration: InputDecoration(
                               hintText: 'Raw JSON Data',
-                              hintStyle: TextStyle(color: Colors.white),
-                              enabledBorder: OutlineInputBorder(
+                              hintStyle: TextStyle(color: Styling.primaryColor),
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                               ),
                             ),
                           ),
                           const SizedBox(height: 10),
-                          MyElevatedButton(
+                          GradientButton(
+                            gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                             label: "Save",
                             width: 150,
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.save,
-                              color: Colors.white,
+                              color: Styling.primaryColor,
                             ),
                             onPressed: saveRawData,
                             borderRadius: BorderRadius.circular(10),
@@ -553,9 +557,9 @@ class _DataWidgetState extends State<DataWidget> {
                     isContactSelected = true;
                   });
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.pending,
-                  color: Colors.white,
+                  color: Styling.primaryColor,
                 )),
           ),
           DataCell(Text(
@@ -627,7 +631,7 @@ class _DataWidgetState extends State<DataWidget> {
                       "Contact Deleted: ${_selectedContact.firstName} ${_selectedContact.lastName}");
                   rowsData.remove(_selectedContact);
                   contactRows = buildContactListOfDataRows(
-                      context, rowsData, Colors.white, TextAlign.center);
+                      context, rowsData, Styling.primaryColor, TextAlign.center);
                 },
               )
             })
