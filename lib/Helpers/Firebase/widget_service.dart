@@ -107,7 +107,7 @@ class WidgetService {
     return widgetsResponse;
   }
 
-  Future addWidgets(BuildContext context, String title, String icon,
+  Future addWidgets(CollectionReference widgetsCollection, BuildContext context, String title, String icon,
       String widgetType) async {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -115,7 +115,7 @@ class WidgetService {
       ),
     );
 
-    var doc = _firestore.collection("UserWidgets").doc();
+    var doc = widgetsCollection.doc();
     WidgetsEntity widgetToAdd = WidgetsEntity(
         id: doc.id,
         title: title,

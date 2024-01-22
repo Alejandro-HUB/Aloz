@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  CollectionReference widgets = FirebaseFirestore.instance
+  CollectionReference widgetsCollection = FirebaseFirestore.instance
       .collection("UserWidgets")
       .doc(FirebaseAuth.instance.currentUser!.uid.toString())
       .collection("UserWidgets:${FirebaseAuth.instance.currentUser!.uid}");
@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     onPressed: () {
                                       showAddWidgetDialog(
-                                          true, widgetInfo, widgets);
+                                          true, widgetInfo, widgetsCollection);
                                     },
                                   )
                                 : null, // No trash icon for home entry
@@ -372,8 +372,12 @@ class _HomePageState extends State<HomePage> {
                     _titleController.text,
                     _iconController.text);
               } else {
-                _widgetService.addWidgets(context, _titleController.text,
-                    _iconController.text, _pageController.text);
+                _widgetService.addWidgets(
+                    widgetsCollection,
+                    context,
+                    _titleController.text,
+                    _iconController.text,
+                    _pageController.text);
               }
             },
             child: Container(
@@ -456,7 +460,7 @@ class _HomePageState extends State<HomePage> {
         .doc(FirebaseAuth.instance.currentUser!.uid.toString())
         .collection(widgetToDelete.documentIdData);
 
-    await widgets
+    await widgetsCollection
         .doc(widgetToDelete.id)
         .delete()
         .then((value) => {

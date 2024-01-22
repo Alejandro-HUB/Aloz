@@ -404,8 +404,12 @@ class _ViewAllWidgetsState extends State<ViewAllWidgets> {
                     _titleController.text,
                     _iconController.text);
               } else {
-                _widgetsService.addWidgets(context, _titleController.text,
-                    _iconController.text, _pageController.text);
+                _widgetsService.addWidgets(
+                    widgetsCollection,
+                    context,
+                    _titleController.text,
+                    _iconController.text,
+                    _pageController.text);
               }
             },
             child: Container(
