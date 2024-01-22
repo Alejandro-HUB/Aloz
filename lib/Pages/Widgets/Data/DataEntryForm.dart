@@ -132,7 +132,6 @@ class DataEntryFormState extends State<DataEntryForm> {
                           ),
                           onPressed: addContacts,
                           borderRadius: BorderRadius.circular(10),
-                          child: const Text('Add Contact'),
                         ),
                       ),
                     ],

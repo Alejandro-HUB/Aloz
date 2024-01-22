@@ -29,12 +29,12 @@ class SelectedContent extends StatelessWidget {
           appBar: AppBar(
             title: Text(label),
             automaticallyImplyLeading: false,
-            backgroundColor: Styling.purpleDark,
-            foregroundColor: Colors.white,
+            backgroundColor: Styling.foreground,
+            foregroundColor: Styling.primaryColor,
           ),
           body: Container(
-            decoration: const BoxDecoration(
-              color: Styling.purpleDark,
+            decoration: BoxDecoration(
+              color: Styling.foreground,
             ),
             child: Padding(
               padding: const EdgeInsets.only(top: 20),
@@ -49,12 +49,11 @@ class SelectedContent extends StatelessWidget {
                       gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                       onPressed: onPressedOpen,
                       label: "Open",
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.open_in_new,
-                        color: Colors.white,
+                        color: Styling.primaryColor,
                       ),
                       borderRadius: BorderRadius.circular(10),
-                      child: const Text("Open"),
                     ),
                   ),
                   // Export Button
@@ -62,12 +61,11 @@ class SelectedContent extends StatelessWidget {
                     gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                     onPressed: onPressedExport,
                     label: "Export",
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.import_export,
-                      color: Colors.white,
+                      color: Styling.primaryColor,
                     ),
                     borderRadius: BorderRadius.circular(10),
-                    child: const Text("Export"),
                   ),
                   // Delete Button
                   Padding(
@@ -76,12 +74,11 @@ class SelectedContent extends StatelessWidget {
                       gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
                       onPressed: onPressedDelete,
                       label: "Delete",
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.delete,
-                        color: Colors.white,
+                        color: Styling.primaryColor,
                       ),
                       borderRadius: BorderRadius.circular(10),
-                      child: const Text("Delete"),
                     ),
                   ),
                 ],

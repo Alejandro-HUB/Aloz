@@ -112,7 +112,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
                 onPressed: signUp,
                 borderRadius: BorderRadius.circular(10),
-                child: const Text('Sign Up'),
               ),
               const SizedBox(
                 height: 24,

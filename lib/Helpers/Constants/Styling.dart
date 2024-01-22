@@ -1,8 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 
-class Styling{
-
+class Styling {
   static const double kPadding = 10.0;
   static const Color purpleLight = Color(0XFF1e224c);
   static const Color purpleDark = Color(0XFF0d193e);
@@ -13,19 +12,47 @@ class Styling{
   static const Color blueLight = Color(0xff0293ee);
   static const Color greenLight = Color(0xff13d38e);
   static const Color purpleBorder = Color(0xFF575C9E);
-  static const Color logoColor = Color.fromARGB(255 , 0, 210, 255);
+  static const Color logoColor = Color.fromARGB(255, 0, 210, 255);
 
   // Theme
   static String theme = "aloz";
 
   // Theme colors
-  static String logo = theme == "light" ? lightLogo : theme == "dark" ? darkLogo : alozLogo;
-  static Color primaryColor = theme == "light" ? lightPrimaryColor : theme == "dark" ? darkPrimaryColor : alozPrimaryColor;
-  static Color gradient1 = theme == "light" ? lightGradient1 : theme == "dark" ? darkGradient1 : alozGradient1;
-  static Color gradient2 = theme == "light" ? lightGradient2 : theme == "dark" ? darkGradient2 : alozGradient2;
-  static Color foreground = theme == "light" ? lightForeground : theme == "dark" ? darkForeground : alozForeground;
-  static Color background = theme == "light" ? lightBackground : theme == "dark" ? darkBackground : alozBackground;
-  static Color homeBorder = theme == "light" ? lightHomeBorder : theme == "dark" ? darkHomeBorder : alozHomeBorder;
+  static String logo = theme == "light"
+      ? lightLogo
+      : theme == "dark"
+          ? darkLogo
+          : alozLogo;
+  static Color primaryColor = theme == "light"
+      ? lightPrimaryColor
+      : theme == "dark"
+          ? darkPrimaryColor
+          : alozPrimaryColor;
+  static Color gradient1 = theme == "light"
+      ? lightGradient1
+      : theme == "dark"
+          ? darkGradient1
+          : alozGradient1;
+  static Color gradient2 = theme == "light"
+      ? lightGradient2
+      : theme == "dark"
+          ? darkGradient2
+          : alozGradient2;
+  static Color foreground = theme == "light"
+      ? lightForeground
+      : theme == "dark"
+          ? darkForeground
+          : alozForeground;
+  static Color background = theme == "light"
+      ? lightBackground
+      : theme == "dark"
+          ? darkBackground
+          : alozBackground;
+  static Color homeBorder = theme == "light"
+      ? lightHomeBorder
+      : theme == "dark"
+          ? darkHomeBorder
+          : alozHomeBorder;
 
   // Aloz Theme
   static const String alozLogo = "logo_dark.png";
@@ -54,13 +81,41 @@ class Styling{
   static const Color darkBackground = Color.fromARGB(243, 41, 41, 41);
   static const Color darkHomeBorder = logoColor;
 
-  static void updateThemeValues () {
-    logo = theme == "light" ? lightLogo : theme == "dark" ? darkLogo : alozLogo;
-    primaryColor = theme == "light" ? lightPrimaryColor : theme == "dark" ? darkPrimaryColor : alozPrimaryColor;
-    gradient1 = theme == "light" ? lightGradient1 : theme == "dark" ? darkGradient1 : alozGradient1;
-    gradient2 = theme == "light" ? lightGradient2 : theme == "dark" ? darkGradient2 : alozGradient2;
-    foreground = theme == "light" ? lightForeground : theme == "dark" ? darkForeground : alozForeground;
-    background = theme == "light" ? lightBackground : theme == "dark" ? darkBackground : alozBackground;
-    homeBorder = theme == "light" ? lightHomeBorder : theme == "dark" ? darkHomeBorder : alozHomeBorder;
+  static void updateThemeValues() {
+    logo = theme == "light"
+        ? lightLogo
+        : theme == "dark"
+            ? darkLogo
+            : alozLogo;
+    primaryColor = theme == "light"
+        ? lightPrimaryColor
+        : theme == "dark"
+            ? darkPrimaryColor
+            : alozPrimaryColor;
+    gradient1 = theme == "light"
+        ? lightGradient1
+        : theme == "dark"
+            ? darkGradient1
+            : alozGradient1;
+    gradient2 = theme == "light"
+        ? lightGradient2
+        : theme == "dark"
+            ? darkGradient2
+            : alozGradient2;
+    foreground = theme == "light"
+        ? lightForeground
+        : theme == "dark"
+            ? darkForeground
+            : alozForeground;
+    background = theme == "light"
+        ? lightBackground
+        : theme == "dark"
+            ? darkBackground
+            : alozBackground;
+    homeBorder = theme == "light"
+        ? lightHomeBorder
+        : theme == "dark"
+            ? darkHomeBorder
+            : alozHomeBorder;
   }
 }

@@ -82,7 +82,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                     onPressed: verifyEmail,
                     borderRadius: BorderRadius.circular(10),
-                    child: const Text('Reset Password'),
                   ),
                 ],
               )),

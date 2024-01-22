@@ -11,14 +11,14 @@ import 'package:projectcrm/Pages/Widgets/Presets/panel_center_page.dart';
 import 'package:projectcrm/Pages/Widgets/Presets/panel_left_page.dart';
 import 'package:projectcrm/Pages/Widgets/Presets/panel_right_page.dart';
 import 'package:projectcrm/Helpers/Constants/responsive_layout.dart';
-import '../../Helpers/Constants/Styling.dart';
+import '../Constants/Styling.dart';
 import 'package:projectcrm/Pages/Home/HomePage.dart';
-import '../Widgets/API/HttpRequestWidget.dart';
-import '../Widgets/Data/DataWidget.dart';
+import '../../Pages/Widgets/API/HttpRequestWidget.dart';
+import '../../Pages/Widgets/Data/DataWidget.dart';
 
-/// This Flutter code defines the `AppRouter` widget, which serves as the central navigation component for the application. 
-/// It includes a dynamic user interface that adapts to different screen sizes and user interactions. 
-/// The `AppRouter` widget allows users to navigate between various app screens and widgets, including `PanelLeftPage`, `PanelCenterPage`, `PanelRightPage`, `DataWidget`, and `HttpRequestWidget`. 
+/// This Flutter code defines the `AppRouter` widget, which serves as the central navigation component for the application.
+/// It includes a dynamic user interface that adapts to different screen sizes and user interactions.
+/// The `AppRouter` widget allows users to navigate between various app screens and widgets, including `PanelLeftPage`, `PanelCenterPage`, `PanelRightPage`, `DataWidget`, and `HttpRequestWidget`.
 /// It also features a responsive design that adjusts its layout based on the available screen real estate. This code provides a flexible and user-friendly way to manage the application's navigation and content display.
 /// NOTE: Ensure to customize and expand the `widgetMap` with additional widget mappings as needed for your application.
 

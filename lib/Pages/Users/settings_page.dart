@@ -71,7 +71,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   _updateTheme('light');
                 },
                 borderRadius: BorderRadius.circular(10),
-                child: const Text('Light Theme'),
               ),
               const SizedBox(height: 40),
               // Dark theme
@@ -89,7 +88,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   _updateTheme('dark');
                 },
                 borderRadius: BorderRadius.circular(10),
-                child: const Text('Dark Theme'),
               ),
               const SizedBox(height: 40),
               // Aloz theme
@@ -107,7 +105,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   _updateTheme('aloz');
                 },
                 borderRadius: BorderRadius.circular(10),
-                child: const Text('Aloz Theme'),
               ),
             ],
           ),

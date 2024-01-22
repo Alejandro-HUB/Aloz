@@ -40,8 +40,7 @@ class AlozState extends State<Aloz> {
     final userService = UserService();
     String theme = await userService.getUserTheme();
     setState(() {
-      Styling.theme = theme;
-      Styling.updateThemeValues();
+      rebuildApp(theme);
     });
   }
 
@@ -50,7 +49,18 @@ class AlozState extends State<Aloz> {
     setState(() {
       Styling.theme = theme;
       Styling.updateThemeValues();
+      rebuildAllChildren(context);
     });
+  }
+
+  // Visit all children and mark them as needing to rebuild
+  void rebuildAllChildren(BuildContext context) {
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+
+    (context as Element).visitChildren(rebuild);
   }
 
   @override

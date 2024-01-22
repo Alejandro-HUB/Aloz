@@ -1,107 +1,124 @@
-// ignore_for_file: use_build_context_synchronously, duplicate_ignore, prefer_typing_uninitialized_variables, camel_case_types
+// ignore_for_file: use_build_context_synchronously, duplicate_ignore, prefer_typing_uninitialized_variables, camel_case_types, unused_local_variable, avoid_init_to_null
+
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-class Storage {
+class StorageService {
   final FirebaseStorage storage = FirebaseStorage.instance;
-  CollectionReference users = FirebaseFirestore.instance.collection("Users");
 
-  Future<void> uploadFile(String fileName, var uploadfile, BuildContext context,
-      Widget currenPage) async {
+  Future<String?> uploadFileToFireStorage(BuildContext context,
+      List<String> allowedExtensions, String? folderPath) async {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => const Center(
               child: CircularProgressIndicator(),
             ));
+
+    var result = null;
+    String? stringToReturn = null;
+
+    // Select file
     try {
-      await storage.ref(fileName).putFile(uploadfile);
-
-      //Delete the old profile picture
-      await deleteFile('Users',
-          FirebaseAuth.instance.currentUser!.uid.toString(), "profile_picture");
-
-      //Put the path of the file into firestore
-      // ignore: use_build_context_synchronously
-      addImageToFireStore(context, fileName);
-
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("File Uploaded."),
-        ),
+      result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: allowedExtensions,
+        allowMultiple: false,
       );
     } catch (e) {
-      try {
-        await storage.ref(fileName).putData(uploadfile);
-
-        //Delete the old profile picture
-        await deleteFile(
-            'Users',
-            FirebaseAuth.instance.currentUser!.uid.toString(),
-            "profile_picture");
-
-        //Put the path of the file into firestore
-        // ignore: use_build_context_synchronously
-        addImageToFireStore(context, fileName);
-
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("File Uploaded."),
-          ),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-          ),
-        );
-      }
-    }
-
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context);
-  }
-
-  Future addImageToFireStore(BuildContext context, String imagePath) async {
-    //Put the path of the file into firestore
-    try {
-      users
-          .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-          .set({
-            'id': FirebaseAuth.instance.currentUser!.uid,
-            'email': FirebaseAuth.instance.currentUser!.email,
-            'profile_picture': imagePath,
-          })
-          // ignore: avoid_print
-          .then((value) => print('Image Added'))
-          // ignore: avoid_print
-          .catchError((error) => print('Failed to add Image: $error'));
-          
-      //Add profile picture to FirebaseAuth as well
-      if (imagePath.isNotEmpty) {
-        FirebaseAuth.instance.currentUser!.updatePhotoURL(imagePath);
-      }
-    } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.toString()),
         ),
       );
     }
+
+    if (result != null) {
+      var fileToUpload;
+
+      //Use path for all other platforms except Web
+      try {
+        fileToUpload = File(result.files.single.path);
+      }
+      //Web does not support the use of path, instead we need to use bytes
+      catch (e) {
+        fileToUpload = result.files.single.bytes;
+      }
+
+      if (fileToUpload != null) {
+        // Upload file to fire storage
+        var fileName = folderPath != null
+            ? "$folderPath${result.files.first.name}"
+            : result.files.first.name;
+
+        try {
+          await storage.ref(fileName).putFile(fileToUpload);
+
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("File Uploaded."),
+            ),
+          );
+
+          stringToReturn = fileName;
+        } catch (e) {
+          try {
+            await storage.ref(fileName).putData(fileToUpload);
+
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("File Uploaded."),
+              ),
+            );
+
+            stringToReturn = fileName;
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          }
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("No file found."),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("No file selected."),
+        ),
+      );
+    }
+
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
+
+    return stringToReturn;
   }
 
   Future deleteFile(
       String collectionName, String documentName, String fieldName) async {
+    // The file path is stored on a document inside a collection
     var collection = FirebaseFirestore.instance.collection(collectionName);
+
+    // Try to find the document
     var docSnapshot = await collection.doc(documentName).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
-      var value = data?[fieldName]; // <-- The value you want to retrieve.
+
+      // Get the file path using the field name
+      var value = data?[fieldName];
       // Call setState if needed.
       if (value != null) {
         await storage.ref().child(value).delete();
@@ -126,7 +143,8 @@ class Storage {
   Future<String> downloadURL(String imageName) async {
     String downloadURL = "";
 
-    downloadURL = imageName != "" ? await storage.ref(imageName).getDownloadURL() : "";
+    downloadURL =
+        imageName != "" ? await storage.ref(imageName).getDownloadURL() : "";
 
     return downloadURL;
   }
@@ -158,7 +176,7 @@ class listImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Storage storage = Storage();
+    final StorageService storage = StorageService();
     var collection = FirebaseFirestore.instance.collection(collectionName);
     String bucketName = "";
 
@@ -192,8 +210,8 @@ class listImages extends StatelessWidget {
                         return SizedBox(
                           width: width,
                           height: height,
-                          child: Image.network(snapshot.data!,
-                              fit: BoxFit.cover),
+                          child:
+                              Image.network(snapshot.data!, fit: BoxFit.cover),
                         );
                       }
                     }
@@ -240,7 +258,7 @@ class listImageNames extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Storage storage = Storage();
+    final StorageService storage = StorageService();
     return FutureBuilder(
         future: storage.listFiles(bucketName, context),
         builder: (BuildContext context, AsyncSnapshot<ListResult> snapshot) {

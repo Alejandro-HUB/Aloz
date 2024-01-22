@@ -525,7 +525,6 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                         });
                       },
                       borderRadius: BorderRadius.circular(10),
-                      child: const Text('Parameters'),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -550,7 +549,6 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                         });
                       },
                       borderRadius: BorderRadius.circular(10),
-                      child: const Text('Headers'),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -576,7 +574,6 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                         });
                       },
                       borderRadius: BorderRadius.circular(10),
-                      child: const Text('Authorization'),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -601,7 +598,6 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
                         });
                       },
                       borderRadius: BorderRadius.circular(10),
-                      child: const Text('Body'),
                     ),
                   ),
                 ],
@@ -713,7 +709,6 @@ class _HttpRequestWidgetState extends State<HttpRequestWidget> {
               ),
               onPressed: _sendRequest,
               borderRadius: BorderRadius.circular(10),
-              child: const Text('Send'),
             ),
             const SizedBox(height: 16.0),
             SingleChildScrollView(

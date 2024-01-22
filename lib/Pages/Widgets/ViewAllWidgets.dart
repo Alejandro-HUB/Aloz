@@ -1,49 +1,31 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_const_literals_to_create_immutables, non_constant_identifier_names, file_names
+// ignore_for_file: file_names, non_constant_identifier_names
 
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projectcrm/Assets/SideBarEntry.dart';
+import 'package:projectcrm/Assets/buttons.dart';
 import 'package:projectcrm/Helpers/Constants/IconHelper.dart';
 import 'package:projectcrm/Helpers/Constants/RoutingConstants.dart';
+import 'package:projectcrm/Helpers/Constants/Styling.dart';
 import 'package:projectcrm/Helpers/Firebase/widget_service.dart';
-import 'package:projectcrm/Helpers/Routing/route.dart';
-import 'package:projectcrm/Pages/Home/TopAppBar.dart';
-import 'package:projectcrm/Pages/Widgets/ViewAllWidgets.dart';
-import '../../Helpers/Constants/Styling.dart';
-import '../../Helpers/Routing/AppRouter.dart';
+import 'package:projectcrm/Helpers/Routing/AppRouter.dart';
+import '../Home/HomePage.dart';
 
-// This Dart code defines a Flutter application's HomePage, which is a part of a widget management system.
-// The HomePage presents a drawer with an admin menu for adding, editing, and deleting widgets.
-// Users can create custom widgets with titles, icons, and associated pages.
-// Widgets are stored in Firebase Firestore, and the application provides a user-friendly interface for managing them.
-// Icons are chosen using a typeahead input, and there's a preview of selected icons.
-// When a widget is selected, users can navigate to its associated page.
-// Additionally, there are functions for adding, editing, and deleting widgets, with Firestore integration.
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class ViewAllWidgets extends StatefulWidget {
+  const ViewAllWidgets({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  // ignore: library_private_types_in_public_api
+  _ViewAllWidgetsState createState() => _ViewAllWidgetsState();
 }
 
-class WidgetsInfo {
-  String id;
-  String title;
-  IconData icon;
-  String widgetType;
-  int currentPage;
-  String documentIdData;
-  WidgetsInfo(
-      {required this.id,
-      required this.title,
-      required this.icon,
-      required this.widgetType,
-      required this.currentPage,
-      required this.documentIdData});
-}
+// Widgets collection
+CollectionReference widgetsCollection = FirebaseFirestore.instance
+    .collection("UserWidgets")
+    .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+    .collection("UserWidgets:${FirebaseAuth.instance.currentUser!.uid}");
 
 // Home page widget
 WidgetsInfo _defaultWidget = WidgetsInfo(
@@ -53,18 +35,21 @@ WidgetsInfo _defaultWidget = WidgetsInfo(
     widgetType: "Home",
     currentPage: 0,
     documentIdData: "0");
-WidgetsInfo? currentWidget = _defaultWidget;
 
-class _HomePageState extends State<HomePage> {
-  late List<WidgetsInfo> _widgetNames = [];
-  final WidgetService _widgetService = WidgetService();
+class _ViewAllWidgetsState extends State<ViewAllWidgets> {
+  late List<WidgetsInfo> _widgets = [];
+  final WidgetService _widgetsService = WidgetService();
+
+  // Paging
+  int _currentPage = 1;
+  final int _pageSize = 10;
+  int _totalPages = 0;
 
   //Settings to create a new widget
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _iconController = TextEditingController();
   final TextEditingController _pageController = TextEditingController();
 
-  //Widget Tittle Controller
   @override
   void dispose() {
     _titleController.dispose();
@@ -78,139 +63,186 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     // Fetch widgets from Firebase
-    fetchWidgetNames();
+    fetchWidgets();
   }
 
-  Future<void> fetchWidgetNames() async {
-    var widgetsResponse = await _widgetService.fetchWidgets(10, 1, null);
+  Future<void> fetchWidgets() async {
+    var widgetsResponse =
+        await _widgetsService.fetchWidgets(_pageSize, _currentPage, null);
 
     setState(() {
-      _widgetNames = widgetsResponse.widgetsInfoList!;
+      _widgets = widgetsResponse.widgetsInfoList!;
+      _totalPages = widgetsResponse.totalPages!;
     });
   }
 
-  CollectionReference widgets = FirebaseFirestore.instance
-      .collection("UserWidgets")
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection("UserWidgets:${FirebaseAuth.instance.currentUser!.uid}");
+  void nextPage() {
+    setState(() {
+      _currentPage++;
+    });
+
+    fetchWidgets();
+  }
+
+  void previousPage() {
+    if (_currentPage > 1) {
+      setState(() {
+        _currentPage--;
+      });
+
+      fetchWidgets();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Container(
-        color: Styling.foreground,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(Styling.kPadding),
-            child: Column(
-              children: [
-                ListTile(
-                  title: Row(
-                    children: [
-                      Text(
-                        "Admin Menu",
-                        style: TextStyle(
-                          color: Styling.primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SideBarEntry(
-                    title: "View all Widgets",
-                    icon: Icons.arrow_forward,
-                    action: () {
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).push(MaterialPageRoute(
-                          // ignore: prefer_const_constructors
-                          builder: (context) => RoutePage(
-                                appBar: const TopAppBar(),
-                                page: const ViewAllWidgets(),
-                                showDrawer: true,
-                              )));
-                    }),
-                // List of Widgets
-                ...List.generate(
-                  _widgetNames.length,
-                  (index) {
-                    final WidgetsInfo widgetInfo = _widgetNames[index];
-                    return Column(
-                      children: [
-                        Container(
-                          decoration: index == currentWidget?.currentPage
-                              ? BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Styling.gradient1.withOpacity(0.9),
-                                      Styling.gradient2.withOpacity(0.9),
-                                    ],
-                                  ),
-                                )
-                              : null,
-                          child: ListTile(
-                            onTap: () {
-                              setState(() {
-                                currentWidget = WidgetsInfo(
-                                    id: widgetInfo.id,
-                                    title: widgetInfo.title,
-                                    icon: widgetInfo.icon,
-                                    widgetType: widgetInfo.widgetType,
-                                    currentPage: index,
-                                    documentIdData: widgetInfo.documentIdData);
-                              });
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    AppRouter(currentWidget: currentWidget!),
-                              ));
-                            },
-                            title: Text(
-                              widgetInfo.title,
-                              style: TextStyle(
-                                color: Styling.primaryColor,
-                              ),
-                            ),
-                            leading: Padding(
-                              padding: const EdgeInsets.all(Styling.kPadding),
-                              child: Icon(
-                                widgetInfo.icon,
-                                color: Styling.primaryColor,
-                              ),
-                            ),
-                            shape: RoundedRectangleBorder(
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "View All Widgets",
+            style: TextStyle(color: Styling.primaryColor),
+          ),
+          backgroundColor: Styling.foreground,
+          foregroundColor: Styling.primaryColor,
+        ),
+        body: SingleChildScrollView(
+            child: Center(
+                child: Column(children: [
+          const SizedBox(
+            height: 20,
+          ),
+          SideBarEntry(
+            title: "Add Widgets",
+            icon: Icons.add,
+            action: () {
+              showAddWidgetDialog(false, _defaultWidget, widgetsCollection);
+            },
+          ),
+          // List of Widgets
+          ...List.generate(
+            _widgets.length,
+            (index) {
+              final WidgetsInfo widgetInfo = _widgets[index];
+              return Column(
+                children: [
+                  if (widgetInfo.title != "Home")
+                    Container(
+                      decoration: index == currentWidget?.currentPage
+                          ? BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                            ),
-                            trailing: widgetInfo.title !=
-                                    _defaultWidget
-                                        .title // Only show trash icon for non-home entries
-                                ? IconButton(
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Styling.primaryColor,
-                                    ),
-                                    onPressed: () {
-                                      showAddWidgetDialog(
-                                          true, widgetInfo, widgets);
-                                    },
-                                  )
-                                : null, // No trash icon for home entry
+                              gradient: LinearGradient(
+                                colors: [
+                                  Styling.gradient1.withOpacity(0.9),
+                                  Styling.gradient2.withOpacity(0.9),
+                                ],
+                              ),
+                            )
+                          : null,
+                      child: ListTile(
+                        onTap: () {
+                          setState(() {
+                            currentWidget = WidgetsInfo(
+                                id: widgetInfo.id,
+                                title: widgetInfo.title,
+                                icon: widgetInfo.icon,
+                                widgetType: widgetInfo.widgetType,
+                                currentPage: index,
+                                documentIdData: widgetInfo.documentIdData);
+                          });
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                AppRouter(currentWidget: currentWidget!),
+                          ));
+                        },
+                        title: Text(
+                          widgetInfo.title,
+                          style: TextStyle(
+                            color: Styling.primaryColor,
                           ),
                         ),
-                        Divider(
-                          color: Styling.homeBorder,
-                          thickness: 0.1,
+                        leading: Padding(
+                          padding: const EdgeInsets.all(Styling.kPadding),
+                          child: Icon(
+                            widgetInfo.icon,
+                            color: Styling.primaryColor,
+                          ),
                         ),
-                      ],
-                    );
-                  },
-                ),
-              ],
-            ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        trailing: widgetInfo.title !=
+                                _defaultWidget
+                                    .title // Only show edit icon for non-home entries
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Styling.primaryColor,
+                                ),
+                                onPressed: () {
+                                  showAddWidgetDialog(
+                                      true, widgetInfo, widgetsCollection);
+                                },
+                              )
+                            : null, // No trash icon for home entry
+                      ),
+                    ),
+                  Divider(
+                    color: Styling.homeBorder,
+                    thickness: 0.1,
+                  ),
+                ],
+              );
+            },
           ),
-        ),
-      ),
-    );
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_currentPage > 1)
+                GradientButton(
+                  gradient: LinearGradient(
+                      colors: [Styling.gradient1, Styling.gradient2]),
+                  label: 'Page ${_currentPage - 1}',
+                  width: 150,
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Styling.primaryColor,
+                  ),
+                  onPressed: previousPage,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              if (_currentPage < _totalPages)
+                GradientButton(
+                  gradient: LinearGradient(
+                      colors: [Styling.gradient1, Styling.gradient2]),
+                  label: 'Page ${_currentPage + 1}',
+                  width: 150,
+                  icon: Icon(
+                    Icons.arrow_forward,
+                    color: Styling.primaryColor,
+                  ),
+                  onPressed: nextPage,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Page $_currentPage of $_totalPages",
+                style: TextStyle(
+                  color: Styling.primaryColor,
+                ),
+              ),
+            ],
+          ),
+        ]))));
   }
 
   void showAddWidgetDialog(bool edit, WidgetsInfo widgetInfo,
@@ -365,14 +397,14 @@ class _HomePageState extends State<HomePage> {
           TextButton(
             onPressed: () {
               if (edit) {
-                _widgetService.saveWidgetToFireStore(
+                _widgetsService.saveWidgetToFireStore(
                     collectionReference,
                     widgetInfo,
                     context,
                     _titleController.text,
                     _iconController.text);
               } else {
-                _widgetService.addWidgets(context, _titleController.text,
+                _widgetsService.addWidgets(context, _titleController.text,
                     _iconController.text, _pageController.text);
               }
             },
@@ -456,7 +488,7 @@ class _HomePageState extends State<HomePage> {
         .doc(FirebaseAuth.instance.currentUser!.uid.toString())
         .collection(widgetToDelete.documentIdData);
 
-    await widgets
+    await widgetsCollection
         .doc(widgetToDelete.id)
         .delete()
         .then((value) => {

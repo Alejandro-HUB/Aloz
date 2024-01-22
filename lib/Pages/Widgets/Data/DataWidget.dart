@@ -127,7 +127,6 @@ class _DataWidgetState extends State<DataWidget> {
                               });
                             },
                             borderRadius: BorderRadius.circular(10),
-                            child: const Text('Data Table'),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -154,7 +153,6 @@ class _DataWidgetState extends State<DataWidget> {
                               });
                             },
                             borderRadius: BorderRadius.circular(10),
-                            child: const Text('Raw Data'),
                           ),
                         ),
                       ],
@@ -173,7 +171,10 @@ class _DataWidgetState extends State<DataWidget> {
                           //Button for exporting data
                           if (!ResponsiveLayout.isPhone(context))
                             GradientButton(
-                              gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
+                              gradient: LinearGradient(colors: [
+                                Styling.gradient1,
+                                Styling.gradient2
+                              ]),
                               label: "Export Data",
                               width: 150,
                               icon: Icon(
@@ -185,7 +186,6 @@ class _DataWidgetState extends State<DataWidget> {
                                     contactColumns, 'Contacts', true);
                               },
                               borderRadius: BorderRadius.circular(10),
-                              child: const Text('Export Data'),
                             ),
                           //Text box for querying contacts
                           SizedBox(
@@ -224,7 +224,8 @@ class _DataWidgetState extends State<DataWidget> {
                                 hintText: 'Search for Contacts',
                                 icon: Icon(Icons.search,
                                     color: Styling.primaryColor),
-                                hintStyle: TextStyle(color: Styling.primaryColor),
+                                hintStyle:
+                                    TextStyle(color: Styling.primaryColor),
                                 helperStyle:
                                     TextStyle(color: Styling.primaryColor),
                               ),
@@ -236,7 +237,10 @@ class _DataWidgetState extends State<DataWidget> {
                             children: [
                               if (ResponsiveLayout.isPhone(context))
                                 GradientButton(
-                                  gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
+                                  gradient: LinearGradient(colors: [
+                                    Styling.gradient1,
+                                    Styling.gradient2
+                                  ]),
                                   label: "Export Data",
                                   width: 150,
                                   icon: Icon(
@@ -248,11 +252,13 @@ class _DataWidgetState extends State<DataWidget> {
                                         contactColumns, 'Contacts', true);
                                   },
                                   borderRadius: BorderRadius.circular(10),
-                                  child: const Text('Export Data'),
                                 ),
                               const SizedBox(height: 10),
                               GradientButton(
-                                gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
+                                gradient: LinearGradient(colors: [
+                                  Styling.gradient1,
+                                  Styling.gradient2
+                                ]),
                                 label: "Import Data",
                                 width: 150,
                                 icon: Icon(
@@ -269,7 +275,6 @@ class _DataWidgetState extends State<DataWidget> {
                                           )));
                                 },
                                 borderRadius: BorderRadius.circular(10),
-                                child: const Text('Import Data'),
                               ),
                             ],
                           )
@@ -306,8 +311,8 @@ class _DataWidgetState extends State<DataWidget> {
                             final data = snapshot.requireData;
 
                             //Fill the list of Columns
-                            contactColumns = buildListOfDataColumns(
-                                columnsData, Styling.primaryColor, TextAlign.center);
+                            contactColumns = buildListOfDataColumns(columnsData,
+                                Styling.primaryColor, TextAlign.center);
 
                             //Fill the list of Contacts from Firebase
                             // ignore: unnecessary_null_comparison
@@ -391,7 +396,8 @@ class _DataWidgetState extends State<DataWidget> {
                           ),
                           const SizedBox(height: 10),
                           GradientButton(
-                            gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
+                            gradient: LinearGradient(
+                                colors: [Styling.gradient1, Styling.gradient2]),
                             label: "Save",
                             width: 150,
                             icon: Icon(
@@ -400,7 +406,6 @@ class _DataWidgetState extends State<DataWidget> {
                             ),
                             onPressed: saveRawData,
                             borderRadius: BorderRadius.circular(10),
-                            child: const Text('Save'),
                           ),
                         ],
                       ),
@@ -630,8 +635,8 @@ class _DataWidgetState extends State<DataWidget> {
                   print(
                       "Contact Deleted: ${_selectedContact.firstName} ${_selectedContact.lastName}");
                   rowsData.remove(_selectedContact);
-                  contactRows = buildContactListOfDataRows(
-                      context, rowsData, Styling.primaryColor, TextAlign.center);
+                  contactRows = buildContactListOfDataRows(context, rowsData,
+                      Styling.primaryColor, TextAlign.center);
                 },
               )
             })

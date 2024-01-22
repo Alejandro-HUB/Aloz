@@ -1,11 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api, unnecessary_null_comparison, use_build_context_synchronously, duplicate_ignore, avoid_init_to_null, prefer_typing_uninitialized_variables, use_super_parameters
 
-import 'dart:io';
 import 'package:email_validator/email_validator.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projectcrm/Helpers/Firebase/storage_service.dart';
+import 'package:projectcrm/Helpers/Firebase/user_service.dart';
 import '../../Assets/buttons.dart';
 import '../../Helpers/Constants/Styling.dart';
 import '../../main.dart';
@@ -20,6 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final UserService _userService = UserService();
 
   @override
   void dispose() {
@@ -100,7 +100,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 20),
               GradientButton(
-                gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
+                gradient: LinearGradient(
+                    colors: [Styling.gradient1, Styling.gradient2]),
                 label: 'Submit Changes',
                 width: 150,
                 icon: Icon(
@@ -112,7 +113,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       passwordController.text.toString());
                 },
                 borderRadius: BorderRadius.circular(10),
-                child: const Text('Upload File'),
               ),
               const SizedBox(height: 40),
               Text(
@@ -137,16 +137,16 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 20),
               GradientButton(
-                gradient: LinearGradient(colors: [Styling.gradient1, Styling.gradient2]),
+                gradient: LinearGradient(
+                    colors: [Styling.gradient1, Styling.gradient2]),
                 label: 'Upload File',
                 width: 150,
                 icon: Icon(
                   Icons.cloud,
                   color: Styling.primaryColor,
                 ),
-                onPressed: uploadFile,
+                onPressed: uploadProfilePicture,
                 borderRadius: BorderRadius.circular(10),
-                child: const Text('Upload File'),
               ),
             ],
           ),
@@ -210,45 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future uploadFile() async {
-    final Storage storage = Storage();
-    var result = null;
-
-    try {
-      result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['jpg', 'png', 'jpeg'],
-        allowMultiple: false,
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-        ),
-      );
-    }
-
-    if (result != null) {
-      var uploadfile;
-
-      //Use path for all other platforms except Web
-      try {
-        uploadfile = File(result.files.single.path);
-      }
-      //Web does not support the use of path, instead we need to use bytes
-      catch (e) {
-        uploadfile = result.files.single.bytes;
-      }
-      // ignore: prefer_interpolation_to_compose_strings
-      final fileName = 'UserImages/${FirebaseAuth.instance.currentUser!.uid}/' +
-          result.files.first.name;
-      storage.uploadFile(fileName, uploadfile, context, const ProfilePage());
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("No file selected."),
-        ),
-      );
-    }
+  Future uploadProfilePicture() async {
+    _userService.uploadUserProfilePicture(context);
   }
 }

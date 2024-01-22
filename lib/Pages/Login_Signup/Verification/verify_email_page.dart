@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../Home/AppRouter.dart';
+import '../../../Helpers/Routing/AppRouter.dart';
 import '../../../Assets/buttons.dart';
 import '../../../Helpers/Constants/Styling.dart';
 
@@ -120,7 +120,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   ),
                   onPressed: canResendEmail ? sendVerificationEmail : null,
                   borderRadius: BorderRadius.circular(10),
-                  child: const Text('Resend Email'),
                 ),
                 const SizedBox(height: 8),
                 TextButton(

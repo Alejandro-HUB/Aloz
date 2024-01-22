@@ -107,7 +107,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
                 onPressed: signIn,
                 borderRadius: BorderRadius.circular(10),
-                child: const Text('Sign In'),
               ),
               const SizedBox(
                 height: 24,

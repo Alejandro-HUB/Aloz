@@ -8,14 +8,12 @@ class GradientButton extends StatelessWidget {
   final double height;
   final Gradient gradient;
   final VoidCallback? onPressed;
-  final Widget child;
   final Icon icon;
   final String label;
 
   const GradientButton({
     super.key,
     required this.onPressed,
-    required this.child,
     required this.label,
     required this.gradient,
     this.borderRadius,
@@ -39,8 +37,12 @@ class GradientButton extends StatelessWidget {
         icon: icon,
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: ResponsiveLayout.isPhone(context) ? Styling.primaryColor.withOpacity(0.05) : Colors.transparent,
-          shadowColor: ResponsiveLayout.isPhone(context) ? Styling.primaryColor.withOpacity(0.05) : Colors.transparent,
+          backgroundColor: ResponsiveLayout.isPhone(context)
+              ? Styling.primaryColor.withOpacity(0.05)
+              : Colors.transparent,
+          shadowColor: ResponsiveLayout.isPhone(context)
+              ? Styling.primaryColor.withOpacity(0.05)
+              : Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
         ),
       ),
